@@ -1,9 +1,8 @@
 package ru.akvine.iskra.services.integration.istochnik;
 
 import org.springframework.stereotype.Service;
-import ru.akvine.compozit.commons.ColumnConfig;
+import ru.akvine.compozit.commons.ColumnInfo;
 import ru.akvine.compozit.commons.TableConfig;
-import ru.akvine.compozit.commons.istochnik.ColumnDto;
 import ru.akvine.compozit.commons.istochnik.GenerateTableRequest;
 
 @Service
@@ -12,12 +11,8 @@ public class IstochnikDtoConverter {
         return new GenerateTableRequest()
                 .setSize(config.getSize())
                 .setFileType("csv")
-                .setColumns(null);
-    }
-
-    private ColumnDto buildColumnDto(ColumnConfig config) {
-        return new ColumnDto()
-                .setName(config.getName())
-                .setConfig(null);
+                .setColumns(config.getColumnConfigs().stream()
+                        .map(ColumnInfo::getColumn)
+                        .toList());
     }
 }
