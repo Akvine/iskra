@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.enums.ProcessState;
-import ru.akvine.iskra.exceptions.TableProcessNotFoundException;
+import ru.akvine.iskra.exceptions.process.TableProcessNotFoundException;
 import ru.akvine.iskra.repositories.TableProcessRepository;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;

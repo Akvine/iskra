@@ -7,7 +7,7 @@ import ru.akvine.compozit.commons.ConnectionDto;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.events.GenerateDataEvent;
-import ru.akvine.iskra.exceptions.ProcessNotFoundException;
+import ru.akvine.iskra.exceptions.plan.PlanNotFoundException;
 import ru.akvine.iskra.repositories.PlanRepository;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.ConnectionService;
@@ -60,7 +60,7 @@ public class PlanServiceImpl implements PlanService {
         Asserts.isNotNull(byUuid);
         return planRepository
                 .findByUuid(byUuid)
-                .orElseThrow(() -> new ProcessNotFoundException("Process with uuid = [" + byUuid + "] is not found!"));
+                .orElseThrow(() -> new PlanNotFoundException("Plan with uuid = [" + byUuid + "] is not found!"));
     }
 
     private ConnectionDto buildConnectionDto(ConnectionModel connectionModel) {
