@@ -10,7 +10,7 @@ import ru.akvine.iskra.services.dto.GenerateDataAction;
 public interface PlanActionFacade {
     void handleEvent(GenerateDataEvent event);
 
-    void generateData(GenerateDataAction action);
+    void generateData(GenerateDataAction action, ConnectionDto connection);
 
     TableProcessModel generateData(String processPid,
                                    TableName tableName,

@@ -25,7 +25,7 @@ public class PlanConverter {
     public GenerateDataAction convertToGenerateDataAction(String planUuid, GenerateDataRequest request) {
         return new GenerateDataAction()
                 .setPlanUuid(planUuid)
-                .setConnection(request.getConnection())
+                .setConnectionName(request.getConnectionName())
                 .setRelationsMatrix(request.getRelationsMatrix())
                 .setConfiguration(buildConfiguration(request.getConfiguration().getTablesConfigs()));
     }

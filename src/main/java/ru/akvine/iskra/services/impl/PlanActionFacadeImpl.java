@@ -36,14 +36,13 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
     @EventListener
     @Async
     public void handleEvent(GenerateDataEvent event) {
-        generateData(event.getAction());
+        generateData(event.getAction(), event.getConnection());
     }
 
     @Override
-    public void generateData(GenerateDataAction action) {
+    public void generateData(GenerateDataAction action, ConnectionDto connection) {
         RelationsMatrixDto relationsMatrix = action.getRelationsMatrix();
         Map<TableName, TableConfig> configuration = action.getConfiguration();
-        ConnectionDto connection = action.getConnection();
 
         if (CollectionUtils.isEmpty(configuration)) {
             return;
