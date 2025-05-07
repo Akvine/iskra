@@ -7,13 +7,19 @@ import ru.akvine.compozit.commons.ConnectionDto;
 import ru.akvine.compozit.commons.RelationsMatrixDto;
 import ru.akvine.compozit.commons.TableConfig;
 import ru.akvine.compozit.commons.TableName;
+import ru.akvine.iskra.enums.ProcessState;
+import ru.akvine.iskra.exceptions.IntegrationException;
 import ru.akvine.iskra.services.GenerateDataFacade;
+import ru.akvine.iskra.services.PlanService;
 import ru.akvine.iskra.services.TableProcessService;
 import ru.akvine.iskra.services.domain.TableProcessModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
+import ru.akvine.iskra.services.dto.process.CreateTableProcess;
+import ru.akvine.iskra.services.dto.process.UpdateTableProcess;
 import ru.akvine.iskra.services.integration.istochnik.IstochnikService;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +28,7 @@ import java.util.Map;
 public class GenerateDataFacadeImpl implements GenerateDataFacade {
     private final VisorService visorService;
     private final IstochnikService istochnikService;
+    private final PlanService planService;
     private final TableProcessService tableProcessService;
 
     @Override
@@ -39,21 +46,44 @@ public class GenerateDataFacadeImpl implements GenerateDataFacade {
                 .map(row -> new TableName(row.getTableName()))
                 .toList();
 
+        String processUuid = planService.create().getUuid();
+
         for (TableName tableName : tableNamesHasNoRelations) {
             TableConfig config = configuration.get(tableName);
-            generateData(tableName, config, connection);
+            generateData(processUuid, tableName, config, connection);
         }
     }
 
     @Override
-    public TableProcessModel generateData(TableName tableName, TableConfig config, ConnectionDto connection) {
-        TableProcessModel tableProcess = tableProcessService.create(tableName, config);
-        generateDataInternal(tableName, config, connection);
+    public TableProcessModel generateData(String processPid,
+                                          TableName tableName,
+                                          TableConfig config,
+                                          ConnectionDto connection) {
+        CreateTableProcess createTableProcessAction = new CreateTableProcess()
+                .setProcessUuid(processPid)
+                .setTableName(tableName)
+                .setConfig(config);
+        TableProcessModel tableProcess = tableProcessService.create(createTableProcessAction);
+        String pid = tableProcess.getPid();
+        generateDataInternal(pid, tableName, config, connection);
         return tableProcess;
     }
 
-    private void generateDataInternal(TableName tableName, TableConfig config, ConnectionDto connection) {
-        byte[] table = istochnikService.generatedData(config);
-        visorService.sendFile(tableName, table, config, connection);
+    private void generateDataInternal(String pid, TableName tableName, TableConfig config, ConnectionDto connection) {
+        UpdateTableProcess updateTableProcessAction = new UpdateTableProcess()
+                .setPid(pid);
+        try {
+            byte[] table = istochnikService.generatedData(config);
+            visorService.sendFile(tableName, table, config, connection);
+
+            updateTableProcessAction.setCompletedDate(new Date());
+            updateTableProcessAction.setState(ProcessState.SUCCESS);
+        } catch (IntegrationException exception) {
+            updateTableProcessAction
+                    .setErrorMessage(exception.getMessage())
+                    .setState(ProcessState.FAILED);
+        } finally {
+            tableProcessService.update(updateTableProcessAction);
+        }
     }
 }

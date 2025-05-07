@@ -46,4 +46,9 @@ public class TableProcessEntity extends BaseEntity<Long> {
 
     @Column(name = "ERROR_MESSAGE")
     private String errorMessage;
+
+    @JoinColumn(name = "PLAN_ID", nullable = false)
+    @NotNull
+    @ManyToOne
+    private PlanEntity plan;
 }

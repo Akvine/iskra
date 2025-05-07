@@ -9,5 +9,8 @@ import ru.akvine.iskra.services.dto.GenerateDataAction;
 public interface GenerateDataFacade {
     void generateData(GenerateDataAction action);
 
-    TableProcessModel generateData(TableName tableName, TableConfig config, ConnectionDto connection);
+    TableProcessModel generateData(String processPid,
+                                   TableName tableName,
+                                   TableConfig config,
+                                   ConnectionDto connection);
 }

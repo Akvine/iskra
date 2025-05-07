@@ -2,7 +2,22 @@
 
 --changeset akvine:ISKRA-1-1
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
---precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'USER_ENTITY'
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'PLAN_ENTITY'
+CREATE TABLE PLAN_ENTITY (
+    ID                  BIGINT NOT NULL PRIMARY KEY,
+    UUID                VARCHAR(64)         NOT NULL,
+    CREATED_DATE        TIMESTAMP NOT NULL,
+    UPDATED_DATE        TIMESTAMP,
+    IS_DELETED          BOOLEAN NOT NULL,
+    DELETED_DATE        TIMESTAMP
+);
+CREATE SEQUENCE SEQ_PLAN_ENTITY START WITH 1 INCREMENT BY 1000;
+CREATE UNIQUE INDEX PLAN_ENTITY_ID_INDX ON PLAN_ENTITY (ID);
+CREATE INDEX PLAN_ENTITY_UUID_INDX ON PLAN_ENTITY (UUID);
+
+--changeset akvine:ISKRA-1-2
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'TABLE_PROCESS_ENTITY'
 CREATE TABLE TABLE_PROCESS_ENTITY (
     ID                  BIGINT NOT NULL PRIMARY KEY,
     UUID                VARCHAR(64)         NOT NULL,
@@ -12,13 +27,14 @@ CREATE TABLE TABLE_PROCESS_ENTITY (
     STATE               VARCHAR(255) NOT NULL,
     STARTED_DATE        TIMESTAMP,
     COMPLETED_DATE      TIMESTAMP,
-    ERROR_MESSAGE       VARCHAR(255),
+    ERROR_MESSAGE       VARCHAR(512),
     CREATED_DATE        TIMESTAMP NOT NULL,
     UPDATED_DATE        TIMESTAMP,
     IS_DELETED          BOOLEAN NOT NULL,
-    DELETED_DATE        TIMESTAMP
+    DELETED_DATE        TIMESTAMP,
+    PLAN_ID             BIGINT,
+    FOREIGN KEY (PLAN_ID) REFERENCES PLAN_ENTITY(ID) ON DELETE SET NULL
 );
-
 CREATE SEQUENCE SEQ_TABLE_PROCESS_ENTITY START WITH 1 INCREMENT BY 1000;
 CREATE UNIQUE INDEX TABLE_PROCESS_ENTITY_ID_INDX ON TABLE_PROCESS_ENTITY (ID);
 CREATE INDEX TABLE_PROCESS_ENTITY_PID_STATE_INDX ON TABLE_PROCESS_ENTITY (PID, STATE);

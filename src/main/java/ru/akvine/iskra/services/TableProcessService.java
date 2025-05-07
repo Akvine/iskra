@@ -1,14 +1,20 @@
 package ru.akvine.iskra.services;
 
-import ru.akvine.compozit.commons.TableConfig;
-import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
 import ru.akvine.iskra.services.domain.TableProcessModel;
+import ru.akvine.iskra.services.dto.process.CreateTableProcess;
+import ru.akvine.iskra.services.dto.process.UpdateTableProcess;
+
+import java.util.List;
 
 public interface TableProcessService {
-    TableProcessModel create(TableName tableName, TableConfig config);
+    TableProcessModel create(CreateTableProcess createTableProcess);
+
+    TableProcessModel update(UpdateTableProcess updateTableProcess);
 
     TableProcessModel get(String pid);
+
+    List<TableProcessModel> list(String planUuid);
 
     TableProcessEntity verifyExists(String byPid);
 }

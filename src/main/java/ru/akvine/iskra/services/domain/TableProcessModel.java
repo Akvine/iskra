@@ -17,6 +17,7 @@ public class TableProcessModel extends Model<Long> {
     private Date startedDate;
     private Date completedDate;
     private String errorMessage;
+    private PlanModel process;
 
     public TableProcessModel(TableProcessEntity entity) {
         super(entity);
@@ -27,5 +28,6 @@ public class TableProcessModel extends Model<Long> {
         this.startedDate = entity.getStartedDate();
         this.completedDate = entity.getCompletedDate();
         this.errorMessage = entity.getErrorMessage();
+        this.process = new PlanModel(entity.getPlan());
     }
 }
