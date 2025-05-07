@@ -12,6 +12,8 @@ import java.util.Map;
 @Data
 @Accessors(chain = true)
 public class GenerateDataAction {
+    private String planUuid;
+
     private Map<TableName, TableConfig> configuration;
     private RelationsMatrixDto relationsMatrix;
     private ConnectionDto connection;

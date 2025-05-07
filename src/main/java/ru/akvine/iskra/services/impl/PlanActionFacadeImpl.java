@@ -1,6 +1,8 @@
 package ru.akvine.iskra.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.akvine.compozit.commons.ConnectionDto;
@@ -8,9 +10,9 @@ import ru.akvine.compozit.commons.RelationsMatrixDto;
 import ru.akvine.compozit.commons.TableConfig;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.enums.ProcessState;
+import ru.akvine.iskra.events.GenerateDataEvent;
 import ru.akvine.iskra.exceptions.IntegrationException;
-import ru.akvine.iskra.services.GenerateDataFacade;
-import ru.akvine.iskra.services.PlanService;
+import ru.akvine.iskra.services.PlanActionFacade;
 import ru.akvine.iskra.services.TableProcessService;
 import ru.akvine.iskra.services.domain.TableProcessModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
@@ -25,11 +27,17 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class GenerateDataFacadeImpl implements GenerateDataFacade {
+public class PlanActionFacadeImpl implements PlanActionFacade {
     private final VisorService visorService;
     private final IstochnikService istochnikService;
-    private final PlanService planService;
     private final TableProcessService tableProcessService;
+
+    // TODO: из-за циклической зависимости TableProcessService от PlanService пришлось сделать обработку событий
+    @EventListener
+    @Async
+    public void handleEvent(GenerateDataEvent event) {
+        generateData(event.getAction());
+    }
 
     @Override
     public void generateData(GenerateDataAction action) {
@@ -46,11 +54,9 @@ public class GenerateDataFacadeImpl implements GenerateDataFacade {
                 .map(row -> new TableName(row.getTableName()))
                 .toList();
 
-        String processUuid = planService.create().getUuid();
-
         for (TableName tableName : tableNamesHasNoRelations) {
             TableConfig config = configuration.get(tableName);
-            generateData(processUuid, tableName, config, connection);
+            generateData(action.getPlanUuid(), tableName, config, connection);
         }
     }
 
