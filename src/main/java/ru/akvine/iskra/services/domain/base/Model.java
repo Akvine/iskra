@@ -1,10 +1,10 @@
-package ru.akvine.iskra.services.domain;
+package ru.akvine.iskra.services.domain.base;
 
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import ru.akvine.iskra.repositories.entities.BaseEntity;
+import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 
 import java.util.Date;
 
@@ -26,7 +26,5 @@ public abstract class Model<ID> {
         this.uuid = baseEntity.getUuid();
         this.createdDate = baseEntity.getCreatedDate();
         this.updatedDate = baseEntity.getUpdatedDate();
-        this.deletedDate = baseEntity.getDeletedDate();
-        this.deleted = baseEntity.isDeleted();
     }
 }

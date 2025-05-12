@@ -8,13 +8,14 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.DatabaseType;
+import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
 
 @Table(name = "CONNECTION_ENTITY")
 @Entity
 @Accessors(chain = true)
 @Getter
 @Setter
-public class ConnectionEntity extends BaseEntity<Long> {
+public class ConnectionEntity extends SoftBaseEntity<Long> {
     @Id
     @Column(name = "ID", nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "connectionEntitySeq")

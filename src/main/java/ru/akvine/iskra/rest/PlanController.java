@@ -5,14 +5,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.akvine.compozit.commons.GenerateDataRequest;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
 import ru.akvine.iskra.rest.converter.PlanConverter;
+import ru.akvine.iskra.rest.dto.plan.CreatePlanRequest;
+import ru.akvine.iskra.rest.dto.plan.GenerateDataRequest;
 import ru.akvine.iskra.rest.meta.PlanControllerMeta;
 import ru.akvine.iskra.services.PlanService;
 import ru.akvine.iskra.services.domain.PlanModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
+import ru.akvine.iskra.services.dto.plan.CreatePlan;
 
 import java.util.List;
 
@@ -35,5 +37,12 @@ public class PlanController implements PlanControllerMeta {
     public Response list() {
         List<PlanModel> processes = planService.list();
         return planConverter.convertToProcessListResponse(processes);
+    }
+
+    @Override
+    public Response create(@RequestBody @Valid CreatePlanRequest request) {
+        CreatePlan createPlan = planConverter.convertToCreatePlan(request);
+        PlanModel createdPlan = planService.create(createPlan);
+        return planConverter.convertToProcessListResponse(List.of(createdPlan));
     }
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
+import ru.akvine.iskra.services.domain.base.Model;
 
 import java.util.Date;
 

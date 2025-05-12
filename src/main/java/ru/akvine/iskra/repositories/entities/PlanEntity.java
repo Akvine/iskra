@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 
 @Setter
 @Getter
@@ -21,4 +22,12 @@ public class PlanEntity extends BaseEntity<Long> {
 
     @Column(name = "UUID", nullable = false, updatable = false)
     private String uuid;
+
+    @Column(name = "NAME", nullable = false)
+    private String name;
+
+    @OneToOne
+    @JoinColumn(name = "CONNECTION_ID", nullable = false)
+    @NotNull
+    private ConnectionEntity connection;
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.ProcessState;
+import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @Table(name = "TABLE_PROCESS_ENTITY")
 @Entity
-public class TableProcessEntity extends BaseEntity<Long> {
+public class TableProcessEntity extends SoftBaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tableProcessEntitySeq")
     @SequenceGenerator(name = "tableProcessEntitySeq", sequenceName = "SEQ_TABLE_PROCESS_ENTITY", allocationSize = 1000)

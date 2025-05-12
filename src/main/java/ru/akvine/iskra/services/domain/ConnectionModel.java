@@ -6,6 +6,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.DatabaseType;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
+import ru.akvine.iskra.services.domain.base.Model;
 
 @Data
 @Accessors(chain = true)

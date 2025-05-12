@@ -1,4 +1,4 @@
-package ru.akvine.iskra.repositories.entities;
+package ru.akvine.iskra.repositories.entities.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -27,13 +27,6 @@ public abstract class BaseEntity<ID> {
     @Column(name = "UPDATED_DATE")
     @Nullable
     private Date updatedDate;
-
-    @Column(name = "DELETED_DATE")
-    @Nullable
-    private Date deletedDate;
-
-    @Column(name = "IS_DELETED", nullable = false)
-    private boolean deleted;
 
     public abstract ID getId();
 

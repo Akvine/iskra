@@ -9,8 +9,6 @@ import java.util.Optional;
 
 public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
     @Query("from PlanEntity pe " +
-            "where pe.uuid = :uuid " +
-            "and " +
-            "pe.deleted = false")
+            "where pe.uuid = :uuid")
     Optional<PlanEntity> findByUuid(@Param("uuid") String uuid);
 }

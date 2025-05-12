@@ -9,12 +9,14 @@ import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.events.GenerateDataEvent;
 import ru.akvine.iskra.exceptions.plan.PlanNotFoundException;
 import ru.akvine.iskra.repositories.PlanRepository;
+import ru.akvine.iskra.repositories.entities.ConnectionEntity;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.ConnectionService;
 import ru.akvine.iskra.services.PlanService;
 import ru.akvine.iskra.services.domain.ConnectionModel;
 import ru.akvine.iskra.services.domain.PlanModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
+import ru.akvine.iskra.services.dto.plan.CreatePlan;
 
 import java.util.List;
 
@@ -28,18 +30,23 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public String start(GenerateDataAction action) {
         Asserts.isNotNull(action);
-        String planUuid = action.getPlanUuid();
-        verifyExists(planUuid);
-        ConnectionDto connection = buildConnectionDto(connectionService.get(action.getConnectionName()));
+        PlanEntity plan = verifyExists(action.getPlanUuid());
+        ConnectionDto connection = buildConnectionDto(new ConnectionModel(plan.getConnection()));
 
         eventPublisher.publishEvent(new GenerateDataEvent(this, action, connection));
-        return planUuid;
+        return plan.getUuid();
     }
 
     @Override
-    public PlanModel create() {
-        PlanEntity process = new PlanEntity().setUuid(UUIDGenerator.uuid());
-        return new PlanModel(planRepository.save(process));
+    public PlanModel create(CreatePlan createPlan) {
+        Asserts.isNotNull(createPlan);
+        ConnectionEntity connection = connectionService.verifyExists(createPlan.getConnectionName());
+
+        PlanEntity plan = new PlanEntity()
+                .setUuid(UUIDGenerator.uuidWithoutDashes())
+                .setName(createPlan.getName())
+                .setConnection(connection);
+        return new PlanModel(planRepository.save(plan));
     }
 
     @Override
