@@ -3,6 +3,8 @@ package ru.akvine.iskra.services.integration.visor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.*;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
+import ru.akvine.iskra.services.domain.ConnectionModel;
+import ru.akvine.iskra.services.integration.visor.dto.ConnectionRequest;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,17 @@ public class VisorDtoConverter {
                 .setConnection(connection)
                 .setColumnsMetaInfo(buildColumnsMetaInfo(config.getColumnConfigs()));
 
+    }
+
+    public ConnectionRequest convert(ConnectionModel connection) {
+        return new ConnectionRequest()
+                .setDatabaseName(connection.getDatabaseName())
+                .setHost(connection.getHost())
+                .setPort(connection.getPort())
+                .setSchema(connection.getSchema())
+                .setUsername(connection.getUsername())
+                .setPassword(connection.getPassword())
+                .setDatabaseType(connection.getDatabaseType().getValue());
     }
 
     private Map<String, ColumnMetaInfoDto> buildColumnsMetaInfo(List<ColumnInfo> columnConfigs) {
