@@ -1,0 +1,36 @@
+package ru.akvine.iskra.services.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.repositories.DictionaryRepository;
+import ru.akvine.iskra.repositories.entities.DictionaryEntity;
+import ru.akvine.iskra.services.DictionaryService;
+import ru.akvine.iskra.services.domain.DictionaryModel;
+import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class DictionaryServiceImpl implements DictionaryService {
+    private final DictionaryRepository dictionaryRepository;
+
+    @Override
+    public List<DictionaryModel> list() {
+        return dictionaryRepository.findAll().stream()
+                .map(DictionaryModel::new)
+                .toList();
+    }
+
+    @Override
+    public DictionaryModel create(CreateDictionary createDictionary) {
+        Asserts.isNotNull(createDictionary);
+
+        DictionaryEntity dictionaryToCreate = new DictionaryEntity()
+                .setName(createDictionary.getName())
+                .setDescription(createDictionary.getDescription())
+                .setValues(String.join(",", createDictionary.getValues()));
+        return new DictionaryModel(dictionaryRepository.save(dictionaryToCreate));
+    }
+}

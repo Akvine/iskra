@@ -83,3 +83,21 @@ CREATE TABLE TABLE_ENTITY (
 CREATE SEQUENCE SEQ_TABLE_ENTITY START WITH 1 INCREMENT BY 1000;
 CREATE UNIQUE INDEX TABLE_ENTITY_ID_INDX ON TABLE_PROCESS_ENTITY (ID);
 --rollback not required
+
+--changeset akvine:ISKRA-1-5
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'DICTIONARY_ENTITY'
+CREATE TABLE DICTIONARY_ENTITY (
+    ID           BIGINT                  NOT NULL PRIMARY KEY,
+    UUID         VARCHAR(64)             NOT NULL,
+    NAME         VARCHAR(255)            NOT NULL,
+    DESCRIPTION  VARCHAR(255),
+    IS_SYSTEM    BOOLEAN                 NOT NULL,
+    VALUES       TEXT                    NOT NULL,
+    CREATED_DATE TIMESTAMP               NOT NULL,
+    UPDATED_DATE TIMESTAMP
+);
+CREATE SEQUENCE SEQ_DICTIONARY_ENTITY START WITH 1 INCREMENT BY 1000;
+CREATE UNIQUE INDEX DICTIONARY_ENTITY_ID_INDX ON DICTIONARY_ENTITY (ID);
+
+--rollback not required
