@@ -8,8 +8,10 @@ import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.iskra.exceptions.IntegrationException;
 import ru.akvine.iskra.services.domain.ConnectionModel;
-import ru.akvine.iskra.services.dto.TableMetadataDto;
+import ru.akvine.iskra.services.integration.visor.dto.ColumnMetadataDto;
+import ru.akvine.iskra.services.integration.visor.dto.TableMetadataDto;
 import ru.akvine.iskra.services.integration.visor.dto.ConnectionRequest;
+import ru.akvine.iskra.services.integration.visor.dto.GetColumnsRequest;
 
 import java.util.List;
 
@@ -35,6 +37,21 @@ public class VisorService {
         ConnectionRequest request = visorDtoConverter.convert(connection);
         try {
            return visorClient.loadTables(request).getTables();
+        } catch (Exception exception) {
+            String message = String.format(
+                    "Error while send request to Visor. Message = [%s]",
+                    exception.getMessage());
+            throw new IntegrationException(message);
+        }
+    }
+
+    public List<ColumnMetadataDto> loadColumns(String tableName, ConnectionModel connection) {
+        ConnectionRequest connectionRequest = visorDtoConverter.convert(connection);
+        GetColumnsRequest request = new GetColumnsRequest()
+                .setConnection(connectionRequest)
+                .setTableName(tableName);
+        try {
+            return visorClient.loadColumns(request).getColumns();
         } catch (Exception exception) {
             String message = String.format(
                     "Error while send request to Visor. Message = [%s]",

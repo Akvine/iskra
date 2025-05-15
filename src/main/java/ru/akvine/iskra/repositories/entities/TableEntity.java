@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -31,6 +34,9 @@ public class TableEntity extends BaseEntity<Long> {
 
     @Column(name = "DATABASE")
     private String database;
+
+    @OneToMany(mappedBy = "table", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ColumnEntity> columns = new ArrayList<>();
 
     @JoinColumn(name = "PLAN_ID", nullable = false)
     @ManyToOne

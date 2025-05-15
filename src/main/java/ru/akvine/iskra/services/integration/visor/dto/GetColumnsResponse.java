@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
-public class GetTableResponse {
-    private List<TableMetadataDto> tables;
+public class GetColumnsResponse {
+    private List<ColumnMetadataDto> columns;
 }

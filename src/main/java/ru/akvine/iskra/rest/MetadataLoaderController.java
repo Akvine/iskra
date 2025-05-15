@@ -5,21 +5,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.rest.converter.TableConverter;
-import ru.akvine.iskra.rest.meta.TableControllerMeta;
-import ru.akvine.iskra.services.TableService;
+import ru.akvine.iskra.rest.meta.MetadataLoaderMeta;
+import ru.akvine.iskra.services.MetadataLoaderService;
 import ru.akvine.iskra.services.dto.table.TableModel;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class TableController implements TableControllerMeta {
-    private final TableService tableService;
+public class MetadataLoaderController implements MetadataLoaderMeta {
+    private final MetadataLoaderService metadataLoaderService;
     private final TableConverter tableConverter;
 
     @Override
-    public Response createOrListIfExist(@RequestParam("planUuid") String planUuid) {
-        List<TableModel> tables = tableService.createOrListIfExist(planUuid);
+    public Response loadOrList(@RequestParam("planUuid") String planUuid) {
+        List<TableModel> tables = metadataLoaderService.loadOrList(planUuid);
         return tableConverter.convertToListTablesResponse(tables);
     }
 }

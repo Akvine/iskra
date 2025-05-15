@@ -4,8 +4,11 @@ import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.TableEntity;
+import ru.akvine.iskra.services.domain.ColumnModel;
 import ru.akvine.iskra.services.domain.PlanModel;
 import ru.akvine.iskra.services.domain.base.Model;
+
+import java.util.List;
 
 @Data
 @Accessors(chain = false)
@@ -16,6 +19,7 @@ public class TableModel extends Model<Long> {
     @Nullable
     private String database;
     private PlanModel plan;
+    private List<ColumnModel> columns;
 
     public TableModel(TableEntity table) {
         super(table);
@@ -24,5 +28,8 @@ public class TableModel extends Model<Long> {
         this.schema = table.getSchema();
         this.database = table.getDatabase();
         this.plan = new PlanModel(table.getPlan());
+        this.columns = table.getColumns().stream()
+                .map(ColumnModel::new)
+                .toList();
     }
 }

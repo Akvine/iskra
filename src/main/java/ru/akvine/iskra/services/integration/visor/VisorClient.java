@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.iskra.constants.ServiceTypeConstants;
 import ru.akvine.iskra.services.integration.visor.dto.ConnectionRequest;
+import ru.akvine.iskra.services.integration.visor.dto.GetColumnsRequest;
+import ru.akvine.iskra.services.integration.visor.dto.GetColumnsResponse;
 import ru.akvine.iskra.services.integration.visor.dto.GetTableResponse;
 
 @FeignClient(value = ServiceTypeConstants.VISOR)
@@ -16,4 +18,7 @@ public interface VisorClient {
 
     @PostMapping(value = "/databases/tables")
     GetTableResponse loadTables(@RequestBody @Valid ConnectionRequest request);
+
+    @PostMapping(value = "/databases/columns")
+    GetColumnsResponse loadColumns(@RequestBody @Valid GetColumnsRequest request);
 }

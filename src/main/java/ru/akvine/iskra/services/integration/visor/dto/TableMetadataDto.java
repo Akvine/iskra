@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.dto;
+package ru.akvine.iskra.services.integration.visor.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
