@@ -13,6 +13,7 @@ public class ColumnModel extends Model<Long> {
     private String rawDataType;
     private int orderIndex;
     private int size;
+    private boolean selected;
     private boolean generatedAlways;
     private boolean primaryKey;
     @Nullable
@@ -29,6 +30,7 @@ public class ColumnModel extends Model<Long> {
         this.size = entity.getSize();
         this.generatedAlways = entity.isGeneratedAlways();
         this.primaryKey = entity.isPrimaryKey();
+        this.selected = entity.isSelected();
 
         this.database = entity.getDatabase();
         this.schemaName = entity.getSchemaName();

@@ -22,12 +22,14 @@ public class TableConverter {
     private TableDto buildTableDto(TableModel table) {
         return new TableDto()
                 .setTableName(table.getTableName())
+                .setSelected(table.isSelected())
                 .setColumns(table.getColumns().stream().map(this::buildColumnDto).toList());
     }
 
     private ColumnDto buildColumnDto(ColumnModel column) {
         return new ColumnDto()
                 .setColumnName(column.getColumnName())
+                .setSelected(column.isSelected())
                 .setDatabase(column.getDatabase())
                 .setSize(column.getSize())
                 .setPrimaryKey(column.isPrimaryKey())

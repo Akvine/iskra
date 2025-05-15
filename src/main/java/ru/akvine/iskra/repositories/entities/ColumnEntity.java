@@ -48,6 +48,9 @@ public class ColumnEntity extends BaseEntity<Long> {
     @JoinColumn(name = "table_id")
     private TableEntity table;
 
+    @Column(name = "IS_SELECTED", nullable = false)
+    private boolean selected = true;
+
     @Column(name = "DATABASE")
     @Nullable
     private String database;

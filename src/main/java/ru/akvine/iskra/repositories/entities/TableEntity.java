@@ -29,6 +29,9 @@ public class TableEntity extends BaseEntity<Long> {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @Column(name = "IS_SELECTED", nullable = false)
+    private boolean selected;
+
     @Column(name = "SCHEMA")
     private String schema;
 

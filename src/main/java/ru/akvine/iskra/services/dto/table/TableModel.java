@@ -20,6 +20,7 @@ public class TableModel extends Model<Long> {
     private String database;
     private PlanModel plan;
     private List<ColumnModel> columns;
+    private boolean selected;
 
     public TableModel(TableEntity table) {
         super(table);
@@ -28,6 +29,7 @@ public class TableModel extends Model<Long> {
         this.schema = table.getSchema();
         this.database = table.getDatabase();
         this.plan = new PlanModel(table.getPlan());
+        this.selected = table.isSelected();
         this.columns = table.getColumns().stream()
                 .map(ColumnModel::new)
                 .toList();

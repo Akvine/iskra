@@ -9,5 +9,6 @@ import java.util.List;
 @Accessors(chain = true)
 public class TableDto {
     private String tableName;
+    private boolean selected;
     private List<ColumnDto> columns;
 }

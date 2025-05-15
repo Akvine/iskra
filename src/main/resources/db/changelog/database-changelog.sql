@@ -126,3 +126,13 @@ CREATE TABLE COLUMN_ENTITY (
 CREATE SEQUENCE SEQ_COLUMN_ENTITY START WITH 1 INCREMENT BY 1000;
 CREATE UNIQUE INDEX COLUMN_ENTITY_ID_IDX ON COLUMN_ENTITY (ID);
 --rollback not required
+
+--changeset akvine:ISKRA-1-7
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_SELECTED' and upper(table_name) = 'TABLE_ENTITY';
+ALTER TABLE TABLE_ENTITY ADD IS_SELECTED BOOLEAN DEFAULT FALSE;
+
+--changeset akvine:ISKRA-1-8
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_SELECTED' and upper(table_name) = 'COLUMN_ENTITY';
+ALTER TABLE COLUMN_ENTITY ADD IS_SELECTED BOOLEAN DEFAULT TRUE;

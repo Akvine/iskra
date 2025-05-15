@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ColumnDto {
     private String columnName;
+    private boolean selected;
     private String rawDataType;
     private int orderIndex;
     private int size;
