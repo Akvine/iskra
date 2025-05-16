@@ -2,8 +2,10 @@ package ru.akvine.iskra.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.exceptions.column.configuration.ConfigurationMaxCountException;
 import ru.akvine.iskra.repositories.ColumnConfigurationRepository;
 import ru.akvine.iskra.repositories.entities.ColumnConfigurationEntity;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
@@ -20,6 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ColumnConfigurationServiceImpl implements ColumnConfigurationService {
     private final ColumnConfigurationRepository columnConfigurationRepository;
+
+    @Value("${max.configs.per.column}")
+    private int maxConfigsPerColumn;
 
     private final ColumnService columnService;
     private final DictionaryService dictionaryService;
@@ -38,6 +43,11 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
         Asserts.isNotNull(action);
 
         ColumnEntity column = columnService.verifyExists(action.getColumnUuid());
+
+        if (columnConfigurationRepository.count(column.getUuid()) == maxConfigsPerColumn) {
+            String message = "Max configurations count [" + maxConfigsPerColumn + "] was exceeded! Remove unnecessary configurations";
+            throw new ConfigurationMaxCountException(message);
+        }
 
         ColumnConfigurationEntity columnConfigurationToCreate = new ColumnConfigurationEntity()
                 .setSelected(action.isSelected())

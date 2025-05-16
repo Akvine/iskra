@@ -34,6 +34,7 @@ public class ColumnConfigurationConverter {
     public ConfigurationListResponse convertToConfigurationListResponse(List<ColumnConfigurationModel> configs) {
         Asserts.isNotNull(configs);
         return new ConfigurationListResponse()
+                .setCount(configs.size())
                 .setConfigurations(configs.stream().map(this::buildConfigurationDto).toList());
     }
 

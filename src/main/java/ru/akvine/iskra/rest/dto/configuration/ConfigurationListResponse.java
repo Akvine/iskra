@@ -9,5 +9,6 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 public class ConfigurationListResponse extends SuccessfulResponse {
+    private int count;
     private List<ConfigurationDto> configurations;
 }
