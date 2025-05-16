@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.DatabaseType;
+import ru.akvine.iskra.repositories.entities.base.Identifiable;
 import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
 
 @Table(name = "CONNECTION_ENTITY")

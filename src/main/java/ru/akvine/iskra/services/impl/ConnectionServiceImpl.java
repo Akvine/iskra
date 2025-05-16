@@ -3,7 +3,6 @@ package ru.akvine.iskra.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
-import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.exceptions.connection.ConnectionNotFoundException;
 import ru.akvine.iskra.repositories.ConnectionRepository;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
@@ -28,7 +27,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public ConnectionModel create(CreateConnection connection) {
         Asserts.isNotNull(connection);
-        ConnectionEntity connectionEntity = (ConnectionEntity) new ConnectionEntity()
+        ConnectionEntity connectionEntity = new ConnectionEntity()
                 .setConnectionName(connection.getConnectionName())
                 .setHost(connection.getHost())
                 .setPort(connection.getPort())
@@ -36,8 +35,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                 .setPassword(connection.getPassword())
                 .setUsername(connection.getUsername())
                 .setDatabaseName(connection.getDatabaseName())
-                .setDatabaseType(connection.getDatabaseType())
-                .setUuid(UUIDGenerator.uuidWithoutDashes());
+                .setDatabaseType(connection.getDatabaseType());
         return new ConnectionModel(connectionRepository.save(connectionEntity));
     }
 

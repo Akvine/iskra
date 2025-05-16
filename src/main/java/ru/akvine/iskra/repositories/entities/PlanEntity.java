@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
+import ru.akvine.iskra.repositories.entities.base.Identifiable;
 
 @Setter
 @Getter
 @Accessors(chain = true)
 @Table(name = "PLAN_ENTITY")
 @Entity
-public class PlanEntity extends BaseEntity<Long> {
+public class PlanEntity extends BaseEntity<Long> implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "planEntitySeq")
     @SequenceGenerator(name = "planEntitySeq", sequenceName = "SEQ_PLAN_ENTITY", allocationSize = 1000)

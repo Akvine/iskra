@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
+import ru.akvine.iskra.repositories.entities.base.Identifiable;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 @NoArgsConstructor
 @Table(name = "COLUMN_ENTITY")
 @Entity
-public class ColumnEntity extends BaseEntity<Long> {
+public class ColumnEntity extends BaseEntity<Long> implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "columnEntitySeq")
     @SequenceGenerator(name = "columnEntitySeq", sequenceName = "SEQ_COLUMN_ENTITY", allocationSize = 1000)

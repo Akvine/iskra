@@ -23,9 +23,6 @@ public class ColumnConfigurationEntity extends BaseEntity<Long> {
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "UUID", nullable = false, updatable = false)
-    private String uuid = "STUB_UUID";
-
     @Column(name = "NAME", nullable = false)
     @NotNull
     private String name;

@@ -9,6 +9,7 @@ import ru.akvine.iskra.services.domain.base.Model;
 @Data
 @Accessors(chain = true)
 public class ColumnModel extends Model<Long> {
+    private String uuid;
     private String columnName;
     private String rawDataType;
     private int orderIndex;
@@ -24,6 +25,7 @@ public class ColumnModel extends Model<Long> {
     public ColumnModel(ColumnEntity entity) {
         super(entity);
 
+        this.uuid = entity.getUuid();
         this.columnName = entity.getColumnName();
         this.rawDataType = entity.getRawDataType();
         this.orderIndex = entity.getOrderIndex();

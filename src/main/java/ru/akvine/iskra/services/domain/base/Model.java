@@ -23,7 +23,6 @@ public abstract class Model<ID> {
 
     public Model(BaseEntity<ID> baseEntity) {
         this.id = baseEntity.getId();
-        this.uuid = baseEntity.getUuid();
         this.createdDate = baseEntity.getCreatedDate();
         this.updatedDate = baseEntity.getUpdatedDate();
     }

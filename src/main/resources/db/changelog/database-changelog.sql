@@ -5,7 +5,6 @@
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'CONNECTION_ENTITY'
 CREATE TABLE CONNECTION_ENTITY (
     ID BIGINT               PRIMARY KEY,
-    UUID                    VARCHAR(255)        NOT NULL,
     CONNECTION_NAME         VARCHAR(255)        NOT NULL,
     DATABASE_NAME           VARCHAR(255),
     SCHEMA                  VARCHAR(255),
@@ -22,7 +21,6 @@ CREATE TABLE CONNECTION_ENTITY (
 CREATE SEQUENCE SEQ_CONNECTION_ENTITY START WITH 1 INCREMENT BY 1000;
 CREATE UNIQUE INDEX UX_CONNECTION_ENTITY_ID ON CONNECTION_ENTITY (ID);
 CREATE UNIQUE INDEX UX_CONNECTION_ENTITY_NAME ON CONNECTION_ENTITY (CONNECTION_NAME);
-CREATE UNIQUE INDEX UX_CONNECTION_ENTITY_UUID ON CONNECTION_ENTITY (UUID);
 --rollback not required
 
 --changeset akvine:ISKRA-1-2
@@ -46,7 +44,6 @@ CREATE INDEX PLAN_ENTITY_UUID_INDX ON PLAN_ENTITY (UUID);
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'TABLE_PROCESS_ENTITY'
 CREATE TABLE TABLE_PROCESS_ENTITY (
     ID                  BIGINT NOT NULL PRIMARY KEY,
-    UUID                VARCHAR(64)         NOT NULL,
     PID                 VARCHAR(255) NOT NULL,
     TABLE_NAME          VARCHAR(255) NOT NULL,
     SUCCESS_ROWS_COUNT  BIGINT,
@@ -71,7 +68,6 @@ CREATE INDEX TABLE_PROCESS_ENTITY_PID_STATE_INDX ON TABLE_PROCESS_ENTITY (PID, S
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'TABLE_ENTITY'
 CREATE TABLE TABLE_ENTITY (
     ID                      BIGINT                  NOT NULL PRIMARY KEY,
-    UUID                    VARCHAR(64)             NOT NULL,
     NAME                    VARCHAR(255)            NOT NULL,
     SCHEMA                  VARCHAR(128),
     DATABASE                VARCHAR(128),
@@ -89,7 +85,6 @@ CREATE UNIQUE INDEX TABLE_ENTITY_ID_INDX ON TABLE_PROCESS_ENTITY (ID);
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'DICTIONARY_ENTITY'
 CREATE TABLE DICTIONARY_ENTITY (
     ID           BIGINT                  NOT NULL PRIMARY KEY,
-    UUID         VARCHAR(64)             NOT NULL,
     NAME         VARCHAR(255)            NOT NULL,
     DESCRIPTION  VARCHAR(255),
     IS_SYSTEM    BOOLEAN                 NOT NULL,
@@ -107,7 +102,7 @@ CREATE UNIQUE INDEX DICTIONARY_ENTITY_ID_INDX ON DICTIONARY_ENTITY (ID);
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'COLUMN_ENTITY'
 CREATE TABLE COLUMN_ENTITY (
     ID                   BIGINT          NOT NULL PRIMARY KEY,
-    UUID                 VARCHAR(64)     DEFAULT 'STUB_UUID',
+    UUID                 VARCHAR(64),
     COLUMN_NAME          VARCHAR(255)    NOT NULL,
     RAW_DATA_TYPE        VARCHAR(255)    NOT NULL,
     ORDER_INDEX          INT             NOT NULL,
@@ -144,7 +139,6 @@ ALTER TABLE COLUMN_ENTITY ADD IS_SELECTED BOOLEAN DEFAULT TRUE;
 CREATE TABLE COLUMN_CONFIGURATION_ENTITY (
     ID                      BIGINT          NOT NULL PRIMARY KEY,
     NAME                    VARCHAR(255)    NOT NULL,
-    UUID                    VARCHAR(64)     DEFAULT 'STUB_UUID',
     SELECTED                BOOLEAN         NOT NULL,
     TYPE                    VARCHAR(255)    NOT NULL,
     GENERATION_STRATEGY     VARCHAR(255)    NOT NULL,
