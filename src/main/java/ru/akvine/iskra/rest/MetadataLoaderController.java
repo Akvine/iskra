@@ -7,7 +7,7 @@ import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.rest.converter.TableConverter;
 import ru.akvine.iskra.rest.meta.MetadataLoaderMeta;
 import ru.akvine.iskra.services.MetadataLoaderService;
-import ru.akvine.iskra.services.dto.table.TableModel;
+import ru.akvine.iskra.services.domain.TableModel;
 
 import java.util.List;
 

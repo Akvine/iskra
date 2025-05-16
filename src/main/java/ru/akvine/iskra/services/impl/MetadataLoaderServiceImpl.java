@@ -3,6 +3,7 @@ package ru.akvine.iskra.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
@@ -12,7 +13,7 @@ import ru.akvine.iskra.services.MetadataLoaderService;
 import ru.akvine.iskra.services.PlanService;
 import ru.akvine.iskra.services.TableService;
 import ru.akvine.iskra.services.domain.ConnectionModel;
-import ru.akvine.iskra.services.dto.table.TableModel;
+import ru.akvine.iskra.services.domain.TableModel;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 import ru.akvine.iskra.services.integration.visor.dto.ColumnMetadataDto;
 import ru.akvine.iskra.services.integration.visor.dto.TableMetadataDto;
@@ -53,6 +54,7 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
 
             List<ColumnEntity> columnsToSave = columnsMetadata.stream()
                     .map(column -> new ColumnEntity()
+                            .setUuid(UUIDGenerator.uuidWithoutDashes())
                             .setColumnName(column.getColumnName())
                             .setTable(savedTable)
                             .setSize(column.getSize())

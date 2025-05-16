@@ -23,8 +23,9 @@ public class ColumnEntity extends BaseEntity<Long> {
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "UUID")
-    private String uuid = "STUB_UUID";
+    @Column(name = "UUID", nullable = false, updatable = false)
+    @NotNull
+    private String uuid;
 
     @Column(name = "COLUMN_NAME", nullable = false)
     private String columnName;

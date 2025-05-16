@@ -6,7 +6,7 @@ import ru.akvine.iskra.rest.dto.table.ColumnDto;
 import ru.akvine.iskra.rest.dto.table.ListTablesResponse;
 import ru.akvine.iskra.rest.dto.table.TableDto;
 import ru.akvine.iskra.services.domain.ColumnModel;
-import ru.akvine.iskra.services.dto.table.TableModel;
+import ru.akvine.iskra.services.domain.TableModel;
 
 import java.util.List;
 
@@ -28,6 +28,7 @@ public class TableConverter {
 
     private ColumnDto buildColumnDto(ColumnModel column) {
         return new ColumnDto()
+                .setUuid(column.getUuid())
                 .setColumnName(column.getColumnName())
                 .setSelected(column.isSelected())
                 .setDatabase(column.getDatabase())

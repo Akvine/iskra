@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class ColumnDto {
+    private String uuid;
     private String columnName;
     private boolean selected;
     private String rawDataType;

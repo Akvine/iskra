@@ -6,7 +6,7 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.services.TableService;
-import ru.akvine.iskra.services.dto.table.TableModel;
+import ru.akvine.iskra.services.domain.TableModel;
 
 import java.util.List;
 

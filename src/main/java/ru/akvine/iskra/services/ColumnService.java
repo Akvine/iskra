@@ -12,6 +12,10 @@ public interface ColumnService {
     @Transactional(readOnly = true)
     List<ColumnModel> getAll(Collection<String> tableNames);
 
+    ColumnModel getByUuid(String uuid);
+
+    ColumnEntity verifyExists(String uuid);
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     List<ColumnModel> saveAll(Collection<ColumnEntity> columnsToSave);
 }

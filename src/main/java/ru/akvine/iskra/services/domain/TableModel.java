@@ -1,11 +1,9 @@
-package ru.akvine.iskra.services.dto.table;
+package ru.akvine.iskra.services.domain;
 
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.TableEntity;
-import ru.akvine.iskra.services.domain.ColumnModel;
-import ru.akvine.iskra.services.domain.PlanModel;
 import ru.akvine.iskra.services.domain.base.Model;
 
 import java.util.List;

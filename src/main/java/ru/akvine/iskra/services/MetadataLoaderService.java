@@ -1,7 +1,7 @@
 package ru.akvine.iskra.services;
 
 import org.springframework.transaction.annotation.Transactional;
-import ru.akvine.iskra.services.dto.table.TableModel;
+import ru.akvine.iskra.services.domain.TableModel;
 
 import java.util.List;
 

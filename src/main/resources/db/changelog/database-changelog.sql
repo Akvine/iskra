@@ -136,3 +136,33 @@ ALTER TABLE TABLE_ENTITY ADD IS_SELECTED BOOLEAN DEFAULT FALSE;
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_SELECTED' and upper(table_name) = 'COLUMN_ENTITY';
 ALTER TABLE COLUMN_ENTITY ADD IS_SELECTED BOOLEAN DEFAULT TRUE;
+
+--changeset akvine:ISKRA-1-9
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
+
+CREATE TABLE COLUMN_CONFIGURATION_ENTITY (
+    ID                      BIGINT          NOT NULL PRIMARY KEY,
+    NAME                    VARCHAR(255)    NOT NULL,
+    UUID                    VARCHAR(64)     DEFAULT 'STUB_UUID',
+    SELECTED                BOOLEAN         NOT NULL,
+    TYPE                    VARCHAR(255)    NOT NULL,
+    GENERATION_STRATEGY     VARCHAR(255)    NOT NULL,
+    IS_UNIQUE               BOOLEAN         NOT NULL,
+    IS_NOT_NULL             BOOLEAN         NOT NULL,
+    RANGE_TYPE              VARCHAR(255),
+    START                   VARCHAR(255),
+    END_VAR                 VARCHAR(255),
+    STEP                    VARCHAR(255),
+    IS_VALID                BOOLEAN,
+    REGEXPS                 TEXT,
+    DICTIONARY_ID           BIGINT,
+    COLUMN_ID               BIGINT          NOT NULL,
+    CREATED_DATE            TIMESTAMP       NOT NULL,
+    UPDATED_DATE            TIMESTAMP,
+    FOREIGN KEY (DICTIONARY_ID) REFERENCES DICTIONARY_ENTITY(ID) ON DELETE SET NULL,
+    FOREIGN KEY (COLUMN_ID) REFERENCES COLUMN_ENTITY(ID) ON DELETE CASCADE
+);
+CREATE SEQUENCE SEQ_COLUMN_CONFIGURATION_ENTITY START WITH 1 INCREMENT BY 1000;
+CREATE UNIQUE INDEX COLUMN_CONFIGURATION_ENTITY_ID_IDX ON COLUMN_CONFIGURATION_ENTITY (ID);
+--rollback not required

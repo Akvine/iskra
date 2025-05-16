@@ -10,4 +10,5 @@ public interface ColumnControllerMeta {
     @GetMapping
     Response list(@RequestParam("planUuid") String planUuid,
                   @RequestParam("tableName") String tableName);
+
 }

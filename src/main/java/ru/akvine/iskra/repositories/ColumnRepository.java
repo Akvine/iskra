@@ -7,8 +7,12 @@ import ru.akvine.iskra.repositories.entities.ColumnEntity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface ColumnRepository extends JpaRepository<ColumnEntity, Long> {
     @Query("from ColumnEntity ce where ce.table.name in :tableNames")
     List<ColumnEntity> findAll(@Param("tableNames") Collection<String> tableNames);
+
+    @Query("from ColumnEntity ce where ce.uuid = :uuid")
+    Optional<ColumnEntity> findByUuid(@Param("uuid") String uuid);
 }
