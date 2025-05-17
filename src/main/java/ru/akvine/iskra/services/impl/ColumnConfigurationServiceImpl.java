@@ -86,6 +86,7 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
         Asserts.isNotNull(action);
 
         columnService.verifyExists(action.getColumnUuid());
+        verifyExistsBy(action.getColumnUuid(), action.getName());
 
         List<ColumnConfigurationEntity> configs = columnConfigurationRepository.findAll(action.getColumnUuid());
         for (ColumnConfigurationEntity configEntity : configs) {
