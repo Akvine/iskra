@@ -5,7 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.exceptions.column.configuration.ConfigurationAlreadyExistsException;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationMaxCountException;
+import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotFoundException;
 import ru.akvine.iskra.repositories.ColumnConfigurationRepository;
 import ru.akvine.iskra.repositories.entities.ColumnConfigurationEntity;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
@@ -50,27 +52,33 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
             throw new ConfigurationMaxCountException(message);
         }
 
-        ColumnConfigurationEntity columnConfigurationToCreate = new ColumnConfigurationEntity()
-                .setSelected(action.isSelected())
-                .setName(action.getName())
-                .setType(action.getType())
-                .setGenerationStrategy(action.getGenerationStrategy())
-                .setUnique(action.isUnique())
-                .setNotNull(action.isNotNull())
-                .setRangeType(action.getRangeType())
-                .setStart(action.getStart())
-                .setEnd(action.getEnd())
-                .setStep(action.getStep())
-                .setValid(action.getValid())
-                .setRegexps(String.join(";", action.getRegexps()))
-                .setColumn(column);
+        try {
+            verifyExistsBy(action.getColumnUuid(), action.getName());
+            String message = "Config with name = [" + action.getName() + "] already exists!";
+            throw new ConfigurationAlreadyExistsException(message);
+        } catch (ConfigurationNotFoundException exception) {
+            ColumnConfigurationEntity columnConfigurationToCreate = new ColumnConfigurationEntity()
+                    .setSelected(action.isSelected())
+                    .setName(action.getName())
+                    .setType(action.getType())
+                    .setGenerationStrategy(action.getGenerationStrategy())
+                    .setUnique(action.isUnique())
+                    .setNotNull(action.isNotNull())
+                    .setRangeType(action.getRangeType())
+                    .setStart(action.getStart())
+                    .setEnd(action.getEnd())
+                    .setStep(action.getStep())
+                    .setValid(action.getValid())
+                    .setRegexps(String.join(";", action.getRegexps()))
+                    .setColumn(column);
 
-        if (StringUtils.isNotBlank(action.getDictionaryName())) {
-            DictionaryEntity dictionary = dictionaryService.verifyExists(action.getDictionaryName());
-            columnConfigurationToCreate.setDictionary(dictionary);
+            if (StringUtils.isNotBlank(action.getDictionaryName())) {
+                DictionaryEntity dictionary = dictionaryService.verifyExists(action.getDictionaryName());
+                columnConfigurationToCreate.setDictionary(dictionary);
+            }
+
+            return new ColumnConfigurationModel(columnConfigurationRepository.save(columnConfigurationToCreate));
         }
-
-        return new ColumnConfigurationModel(columnConfigurationRepository.save(columnConfigurationToCreate));
     }
 
     @Override
@@ -87,5 +95,21 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
         return columnConfigurationRepository.saveAll(configs).stream()
                 .map(ColumnConfigurationModel::new)
                 .toList();
+    }
+
+    @Override
+    public ColumnConfigurationEntity verifyExistsBy(String columnUuid, String name) {
+        Asserts.isNotNull(columnUuid);
+        Asserts.isNotNull(name);
+
+        return columnConfigurationRepository
+                .findBy(columnUuid, name)
+                .orElseThrow(() -> {
+                    String message = String.format(
+                            "Column config not found by column uuid = [%s] and name = [%s]",
+                            columnUuid, name
+                    );
+                    return new ConfigurationNotFoundException(message);
+                });
     }
 }
