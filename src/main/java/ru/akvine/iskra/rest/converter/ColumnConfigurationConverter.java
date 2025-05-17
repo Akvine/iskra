@@ -5,8 +5,10 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.rest.dto.configuration.ConfigurationDto;
 import ru.akvine.iskra.rest.dto.configuration.ConfigurationListResponse;
 import ru.akvine.iskra.rest.dto.configuration.CreateConfigurationRequest;
+import ru.akvine.iskra.rest.dto.configuration.SelectConfigurationRequest;
 import ru.akvine.iskra.services.domain.ColumnConfigurationModel;
 import ru.akvine.iskra.services.dto.configuration.CreateColumnConfiguration;
+import ru.akvine.iskra.services.dto.configuration.SelectColumnConfiguration;
 
 import java.util.List;
 
@@ -36,6 +38,13 @@ public class ColumnConfigurationConverter {
         return new ConfigurationListResponse()
                 .setCount(configs.size())
                 .setConfigurations(configs.stream().map(this::buildConfigurationDto).toList());
+    }
+
+    public SelectColumnConfiguration convertToSelectColumnConfiguration(SelectConfigurationRequest request) {
+        Asserts.isNotNull(request);
+        return new SelectColumnConfiguration()
+                .setColumnUuid(request.getColumnUuid())
+                .setName(request.getName());
     }
 
     private ConfigurationDto buildConfigurationDto(ColumnConfigurationModel model) {

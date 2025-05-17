@@ -15,6 +15,7 @@ import ru.akvine.iskra.services.ColumnService;
 import ru.akvine.iskra.services.DictionaryService;
 import ru.akvine.iskra.services.domain.ColumnConfigurationModel;
 import ru.akvine.iskra.services.dto.configuration.CreateColumnConfiguration;
+import ru.akvine.iskra.services.dto.configuration.SelectColumnConfiguration;
 
 import java.util.List;
 
@@ -70,5 +71,21 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
         }
 
         return new ColumnConfigurationModel(columnConfigurationRepository.save(columnConfigurationToCreate));
+    }
+
+    @Override
+    public List<ColumnConfigurationModel> select(SelectColumnConfiguration action) {
+        Asserts.isNotNull(action);
+
+        columnService.verifyExists(action.getColumnUuid());
+
+        List<ColumnConfigurationEntity> configs = columnConfigurationRepository.findAll(action.getColumnUuid());
+        for (ColumnConfigurationEntity configEntity : configs) {
+            configEntity.setSelected(configEntity.getName().equals(action.getName()));
+        }
+
+        return columnConfigurationRepository.saveAll(configs).stream()
+                .map(ColumnConfigurationModel::new)
+                .toList();
     }
 }
