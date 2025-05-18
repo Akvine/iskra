@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.services.domain.ColumnModel;
+import ru.akvine.iskra.services.dto.column.SelectColumn;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +16,8 @@ public interface ColumnService {
     ColumnModel getByUuid(String uuid);
 
     ColumnEntity verifyExists(String uuid);
+
+    List<ColumnModel> selectAll(SelectColumn selectColumn);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     List<ColumnModel> saveAll(Collection<ColumnEntity> columnsToSave);

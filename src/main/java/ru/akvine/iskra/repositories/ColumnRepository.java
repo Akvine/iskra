@@ -13,6 +13,13 @@ public interface ColumnRepository extends JpaRepository<ColumnEntity, Long> {
     @Query("from ColumnEntity ce where ce.table.name in :tableNames")
     List<ColumnEntity> findAll(@Param("tableNames") Collection<String> tableNames);
 
+    @Query("from ColumnEntity ce " +
+            "where ce.table.name = :tableName " +
+            "and " +
+            "ce.uuid in :uuids")
+    List<ColumnEntity> findAll(@Param("tableName") String tableName,
+                               @Param("uuids") Collection<String> uuids);
+
     @Query("from ColumnEntity ce where ce.uuid = :uuid")
     Optional<ColumnEntity> findByUuid(@Param("uuid") String uuid);
 }

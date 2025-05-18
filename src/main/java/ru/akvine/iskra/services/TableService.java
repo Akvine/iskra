@@ -12,4 +12,6 @@ public interface TableService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     TableEntity save(TableEntity tableToSave);
+
+    TableEntity verifyExistsByName(String name);
 }
