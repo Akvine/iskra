@@ -1,0 +1,15 @@
+{
+  "description": "Список основных браузеров на русском языке",
+  "values": [
+    "Google Chrome",
+    "Mozilla Firefox",
+    "Microsoft Edge",
+    "Safari",
+    "Opera",
+    "Brave",
+    "Vivaldi",
+    "Tor Browser",
+    "Yandex Browser",
+    "Chromium"
+  ]
+}
