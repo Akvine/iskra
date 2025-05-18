@@ -160,3 +160,8 @@ CREATE TABLE COLUMN_CONFIGURATION_ENTITY (
 CREATE SEQUENCE SEQ_COLUMN_CONFIGURATION_ENTITY START WITH 1 INCREMENT BY 1000;
 CREATE UNIQUE INDEX COLUMN_CONFIGURATION_ENTITY_ID_IDX ON COLUMN_CONFIGURATION_ENTITY (ID);
 --rollback not required
+
+--changeset akvine:ISKRA-1-10
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'LANGUAGE' and upper(table_name) = 'DICTIONARY_ENTITY';
+ALTER TABLE DICTIONARY_ENTITY ADD LANGUAGE VARCHAR(64) DEFAULT 'RU';

@@ -13,6 +13,8 @@ public class CreateDictionaryRequest {
     @NotBlank
     private String name;
 
+    private String language;
+
     @NotNull
     private Set<String> values;
 

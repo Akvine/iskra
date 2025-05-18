@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class DictionaryDto {
     private String name;
+    private String language;
     private String description;
     private String values;
     private boolean system;

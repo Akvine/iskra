@@ -3,6 +3,7 @@ package ru.akvine.iskra.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.exceptions.dictionary.DictionaryNotFoundException;
 import ru.akvine.iskra.repositories.DictionaryRepository;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
@@ -32,6 +33,10 @@ public class DictionaryServiceImpl implements DictionaryService {
                 .setName(createDictionary.getName())
                 .setDescription(createDictionary.getDescription())
                 .setValues(String.join(",", createDictionary.getValues()));
+        if (createDictionary.getLanguage() != null) {
+            dictionaryToCreate.setLanguage(Language.from(createDictionary.getLanguage()));
+        }
+
         return new DictionaryModel(dictionaryRepository.save(dictionaryToCreate));
     }
 

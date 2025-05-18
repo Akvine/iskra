@@ -13,4 +13,5 @@ public class CreateDictionary {
     private Set<String> values;
     @Nullable
     private String description;
+    private String language;
 }

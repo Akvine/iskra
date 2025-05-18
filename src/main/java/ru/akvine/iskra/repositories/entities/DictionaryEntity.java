@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 
 @Getter
@@ -24,6 +25,10 @@ public class DictionaryEntity extends BaseEntity<Long> {
 
     @Column(name = "NAME", nullable = false)
     private String name;
+
+    @Column(name = "LANGUAGE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Language language = Language.RU;
 
     @Column(name = "DESCRIPTION")
     private String description;

@@ -20,6 +20,7 @@ public class DictionaryConverter {
     private DictionaryDto buildDictionaryDto(DictionaryModel dictionary) {
         return new DictionaryDto()
                 .setName(dictionary.getName())
+                .setLanguage(dictionary.getLanguage().toString())
                 .setDescription(dictionary.getDescription())
                 .setSystem(dictionary.isSystem())
                 .setValues(StringHelper.replaceAroundMiddle(
@@ -29,6 +30,7 @@ public class DictionaryConverter {
     public CreateDictionary convertToCreateDictionary(CreateDictionaryRequest request) {
         return new CreateDictionary()
                 .setName(request.getName())
+                .setLanguage(request.getLanguage())
                 .setDescription(request.getDescription())
                 .setValues(request.getValues());
     }

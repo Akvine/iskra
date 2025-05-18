@@ -32,7 +32,7 @@ public class DictionaryLoader {
 
         Collection<File> files = FileUtils.listFiles(folder,
                 new String[]{"json"},
-                false);
+                true);
 
         Map<String, File> fileNameWithFile = files.stream()
                 .collect(Collectors.toMap(
