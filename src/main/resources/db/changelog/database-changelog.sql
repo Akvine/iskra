@@ -165,3 +165,8 @@ CREATE UNIQUE INDEX COLUMN_CONFIGURATION_ENTITY_ID_IDX ON COLUMN_CONFIGURATION_E
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'LANGUAGE' and upper(table_name) = 'DICTIONARY_ENTITY';
 ALTER TABLE DICTIONARY_ENTITY ADD LANGUAGE VARCHAR(64) DEFAULT 'RU';
+
+--changeset akvine:ISKRA-1-11
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CONSTRAINTS' and upper(table_name) = 'COLUMN_ENTITY';
+ALTER TABLE COLUMN_ENTITY ADD CONSTRAINTS VARCHAR(256);

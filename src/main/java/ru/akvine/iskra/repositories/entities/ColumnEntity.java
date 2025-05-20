@@ -7,8 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import ru.akvine.iskra.enums.ConstraintType;
+import ru.akvine.iskra.repositories.converters.ConstraintListToStringConverter;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -52,6 +56,10 @@ public class ColumnEntity extends BaseEntity<Long> implements Identifiable {
 
     @Column(name = "IS_SELECTED", nullable = false)
     private boolean selected = true;
+
+    @Column(name = "CONSTRAINTS")
+    @Convert(converter = ConstraintListToStringConverter.class)
+    private List<ConstraintType> constraintTypes;
 
     @Column(name = "DATABASE")
     @Nullable

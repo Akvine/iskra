@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
+import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
@@ -53,17 +54,21 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
             List<ColumnMetadataDto> columnsMetadata = visorService.loadColumns(tableToCreate.getName(), connection);
 
             List<ColumnEntity> columnsToSave = columnsMetadata.stream()
-                    .map(column -> new ColumnEntity()
-                            .setUuid(UUIDGenerator.uuidWithoutDashes())
-                            .setColumnName(column.getColumnName())
-                            .setTable(savedTable)
-                            .setSize(column.getSize())
-                            .setOrderIndex(column.getOrderIndex())
-                            .setRawDataType(column.getDataType())
-                            .setPrimaryKey(column.isPrimaryKey())
-                            .setGeneratedAlways(column.isGeneratedAlways())
-                            .setDatabase(column.getDatabase())
-                            .setSchemaName(column.getSchemaName())).toList();
+                    .map(column -> {
+                        List<ConstraintType> constraints = visorService.loadConstraints(table.getTableName(), column.getColumnName(), connection);
+                        return new ColumnEntity()
+                                .setUuid(UUIDGenerator.uuidWithoutDashes())
+                                .setColumnName(column.getColumnName())
+                                .setTable(savedTable)
+                                .setSize(column.getSize())
+                                .setOrderIndex(column.getOrderIndex())
+                                .setRawDataType(column.getDataType())
+                                .setPrimaryKey(column.isPrimaryKey())
+                                .setGeneratedAlways(column.isGeneratedAlways())
+                                .setDatabase(column.getDatabase())
+                                .setSchemaName(column.getSchemaName())
+                                .setConstraintTypes(constraints);
+                    }).toList();
             columnService.saveAll(columnsToSave);
         }
 

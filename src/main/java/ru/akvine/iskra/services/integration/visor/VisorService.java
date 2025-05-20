@@ -6,12 +6,10 @@ import ru.akvine.compozit.commons.ConnectionDto;
 import ru.akvine.compozit.commons.TableConfig;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
+import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.exceptions.IntegrationException;
 import ru.akvine.iskra.services.domain.ConnectionModel;
-import ru.akvine.iskra.services.integration.visor.dto.ColumnMetadataDto;
-import ru.akvine.iskra.services.integration.visor.dto.TableMetadataDto;
-import ru.akvine.iskra.services.integration.visor.dto.ConnectionRequest;
-import ru.akvine.iskra.services.integration.visor.dto.GetColumnsRequest;
+import ru.akvine.iskra.services.integration.visor.dto.*;
 
 import java.util.List;
 
@@ -52,6 +50,22 @@ public class VisorService {
                 .setTableName(tableName);
         try {
             return visorClient.loadColumns(request).getColumns();
+        } catch (Exception exception) {
+            String message = String.format(
+                    "Error while send request to Visor. Message = [%s]",
+                    exception.getMessage());
+            throw new IntegrationException(message);
+        }
+    }
+
+    public List<ConstraintType> loadConstraints(String tableName, String columnName, ConnectionModel connection) {
+        ConnectionRequest connectionRequest = visorDtoConverter.convert(connection);
+        ListConstraintsRequest request = new ListConstraintsRequest()
+                .setConnectionInfo(connectionRequest)
+                .setColumnName(columnName)
+                .setTableName(tableName);
+        try {
+            return visorClient.loadConstraints(request).getConstraintTypes();
         } catch (Exception exception) {
             String message = String.format(
                     "Error while send request to Visor. Message = [%s]",
