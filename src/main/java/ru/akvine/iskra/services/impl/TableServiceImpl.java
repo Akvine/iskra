@@ -8,8 +8,12 @@ import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.services.TableService;
 import ru.akvine.iskra.services.domain.TableModel;
+import ru.akvine.iskra.services.dto.table.ToogleSelectedTables;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +42,38 @@ public class TableServiceImpl implements TableService {
                     String message = "Table by name = [" + name + "] not found!";
                     return new TableNotFoundException(message);
                 });
+    }
+
+    @Override
+    public List<TableModel> toggleSelected(ToogleSelectedTables action) {
+        Asserts.isNotNull(action);
+
+        Map<String, Boolean> toggled = action.getToggled();
+        Map<String, TableEntity> tablesToUpdate = map(tableRepository.findAll(
+                action.getPlanUuid(),
+                action.getToggled().keySet()
+        ));
+
+        for (String tableName : tablesToUpdate.keySet()) {
+            Boolean isSelect = toggled.get(tableName);
+            TableEntity tableToUpdate = tablesToUpdate.get(tableName);
+
+            if (isSelect != null && tableToUpdate != null) {
+                tableToUpdate.setSelected(isSelect);
+            }
+        }
+
+        return tableRepository.saveAll(tablesToUpdate.values()).stream()
+                .map(TableModel::new)
+                .toList();
+    }
+
+
+    private Map<String, TableEntity> map(List<TableEntity> tablesToUpdate) {
+        return tablesToUpdate.stream()
+                .collect(Collectors.toMap(
+                        TableEntity::getName,
+                        Function.identity()
+                ));
     }
 }

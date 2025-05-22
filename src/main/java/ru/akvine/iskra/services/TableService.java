@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.services.domain.TableModel;
+import ru.akvine.iskra.services.dto.table.ToogleSelectedTables;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface TableService {
     TableEntity save(TableEntity tableToSave);
 
     TableEntity verifyExistsByName(String name);
+
+    List<TableModel> toggleSelected(ToogleSelectedTables action);
 }

@@ -1,0 +1,13 @@
+package ru.akvine.iskra.services.dto.table;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.util.Map;
+
+@Data
+@Accessors(chain = true)
+public class ToogleSelectedTables {
+    private String planUuid;
+    private Map<String, Boolean> toggled;
+}
