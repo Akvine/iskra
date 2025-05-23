@@ -18,4 +18,8 @@ public final class ApiErrorCodes {
     public interface Connection {
         String CONNECTION_NOT_FOUND_ERROR = "connection.notFound.error";
     }
+
+    public interface Configuration {
+        String TABLE_CONFIGURATION_ERROR = "table.configuration.error";
+    }
 }

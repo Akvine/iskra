@@ -180,3 +180,31 @@ ALTER TABLE TABLE_PROCESS_ENTITY ADD PROCESS_UUID VARCHAR(128) NOT NULL;
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'LAST_PROCESS_UUID' and upper(table_name) = 'TABLE_PROCESS_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD LAST_PROCESS_UUID VARCHAR(128);
+
+--changeset akvine:ISKRA-1-14
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
+CREATE TABLE TABLE_CONFIGURATION_ENTITY (
+    ID                      BIGINT          NOT NULL PRIMARY KEY,
+    NAME                    VARCHAR(255)    NOT NULL,
+    ROWS_COUNT              INTEGER         NOT NULL,
+    BATCH_SIZE              INTEGER         NOT NULL,
+    TABLE_ID                BIGINT          NOT NULL,
+    CREATED_DATE            TIMESTAMP       NOT NULL,
+    UPDATED_DATE            TIMESTAMP,
+    FOREIGN KEY (TABLE_ID) REFERENCES TABLE_ENTITY(ID)
+);
+CREATE SEQUENCE SEQ_TABLE_CONFIGURATION_ENTITY START WITH 1 INCREMENT BY 1000;
+CREATE INDEX TABLE_CONFIGURATION_ENTITY_NAME_IDX ON TABLE_CONFIGURATION_ENTITY(NAME);
+CREATE UNIQUE INDEX TABLE_CONFIGURATION_ENTITY_ID_IDX ON TABLE_CONFIGURATION_ENTITY (ID);
+--rollback not required
+
+--changeset akvine:ISKRA-1-15
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CONFIGURATION_ID' and upper(table_name) = 'TABLE_ENTITY';
+ALTER TABLE TABLE_ENTITY ADD COLUMN CONFIGURATION_ID BIGINT;
+
+--changeset akvine:ISKRA-1-16
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.table_constraints where constraint_type = 'FOREIGN KEY' and upper(constraint_name) = 'FK_CONFIGURATION' and upper(table_name) = 'TABLE_ENTITY';
+ALTER TABLE TABLE_ENTITY ADD CONSTRAINT FK_CONFIGURATION FOREIGN KEY (CONFIGURATION_ID) REFERENCES TABLE_CONFIGURATION_ENTITY (ID);

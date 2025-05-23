@@ -1,19 +1,17 @@
 package ru.akvine.iskra.services.integration.istochnik;
 
 import org.springframework.stereotype.Service;
-import ru.akvine.compozit.commons.ColumnInfo;
 import ru.akvine.compozit.commons.istochnik.ColumnDto;
 import ru.akvine.compozit.commons.istochnik.ConfigDto;
 import ru.akvine.compozit.commons.istochnik.GenerateTableRequest;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotSelectedException;
-import ru.akvine.iskra.services.domain.ColumnConfigurationModel;
+import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
 import ru.akvine.iskra.services.domain.ColumnModel;
 import ru.akvine.iskra.services.domain.TableModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class IstochnikDtoConverter {

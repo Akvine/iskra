@@ -1,4 +1,4 @@
-package ru.akvine.iskra.repositories.entities;
+package ru.akvine.iskra.repositories.entities.config;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import ru.akvine.iskra.repositories.entities.ColumnEntity;
+import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 
 @Getter

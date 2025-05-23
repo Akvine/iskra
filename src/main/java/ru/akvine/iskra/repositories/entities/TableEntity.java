@@ -1,11 +1,13 @@
 package ru.akvine.iskra.repositories.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
+import ru.akvine.iskra.repositories.entities.config.TableConfigurationEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,4 +44,9 @@ public class TableEntity extends BaseEntity<Long> {
     @ManyToOne
     @NotNull
     private PlanEntity plan;
+
+    @OneToOne
+    @JoinColumn(name = "CONFIGURATION_ID")
+    @Nullable
+    private TableConfigurationEntity configuration;
 }

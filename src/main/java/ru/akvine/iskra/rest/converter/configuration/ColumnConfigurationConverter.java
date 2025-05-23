@@ -1,14 +1,14 @@
-package ru.akvine.iskra.rest.converter;
+package ru.akvine.iskra.rest.converter.configuration;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
-import ru.akvine.iskra.rest.dto.configuration.ConfigurationDto;
-import ru.akvine.iskra.rest.dto.configuration.ConfigurationListResponse;
-import ru.akvine.iskra.rest.dto.configuration.CreateConfigurationRequest;
-import ru.akvine.iskra.rest.dto.configuration.SelectConfigurationRequest;
-import ru.akvine.iskra.services.domain.ColumnConfigurationModel;
-import ru.akvine.iskra.services.dto.configuration.CreateColumnConfiguration;
-import ru.akvine.iskra.services.dto.configuration.SelectColumnConfiguration;
+import ru.akvine.iskra.rest.dto.configuration.column.ConfigurationDto;
+import ru.akvine.iskra.rest.dto.configuration.column.ConfigurationListResponse;
+import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
+import ru.akvine.iskra.rest.dto.configuration.column.SelectConfigurationRequest;
+import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
+import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
 
 import java.util.List;
 

@@ -1,11 +1,12 @@
-package ru.akvine.iskra.services.domain;
+package ru.akvine.iskra.services.domain.configuration;
 
 import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
-import ru.akvine.iskra.repositories.entities.ColumnConfigurationEntity;
+import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
+import ru.akvine.iskra.services.domain.DictionaryModel;
 import ru.akvine.iskra.services.domain.base.Model;
 
 import java.util.ArrayList;

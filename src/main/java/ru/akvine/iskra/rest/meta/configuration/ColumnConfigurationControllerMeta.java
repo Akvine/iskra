@@ -1,12 +1,12 @@
-package ru.akvine.iskra.rest.meta;
+package ru.akvine.iskra.rest.meta.configuration;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import ru.akvine.compozit.commons.dto.Response;
-import ru.akvine.iskra.rest.dto.configuration.CreateConfigurationRequest;
-import ru.akvine.iskra.rest.dto.configuration.SelectConfigurationRequest;
+import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
+import ru.akvine.iskra.rest.dto.configuration.column.SelectConfigurationRequest;
 
-@RequestMapping(value = "/configurations")
+@RequestMapping(value = "/columns/configurations")
 public interface ColumnConfigurationControllerMeta {
 
     @GetMapping("/{columnUuid}")

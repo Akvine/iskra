@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.dto.configuration;
+package ru.akvine.iskra.services.dto.configuration.column;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

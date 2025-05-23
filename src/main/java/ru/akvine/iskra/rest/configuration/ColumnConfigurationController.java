@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest;
+package ru.akvine.iskra.rest.configuration;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
-import ru.akvine.iskra.rest.converter.ColumnConfigurationConverter;
-import ru.akvine.iskra.rest.dto.configuration.CreateConfigurationRequest;
-import ru.akvine.iskra.rest.dto.configuration.SelectConfigurationRequest;
-import ru.akvine.iskra.rest.meta.ColumnConfigurationControllerMeta;
-import ru.akvine.iskra.services.ColumnConfigurationService;
-import ru.akvine.iskra.services.domain.ColumnConfigurationModel;
-import ru.akvine.iskra.services.dto.configuration.CreateColumnConfiguration;
-import ru.akvine.iskra.services.dto.configuration.SelectColumnConfiguration;
+import ru.akvine.iskra.rest.converter.configuration.ColumnConfigurationConverter;
+import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
+import ru.akvine.iskra.rest.dto.configuration.column.SelectConfigurationRequest;
+import ru.akvine.iskra.rest.meta.configuration.ColumnConfigurationControllerMeta;
+import ru.akvine.iskra.services.configuration.ColumnConfigurationService;
+import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
+import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
 
 import java.util.List;
 

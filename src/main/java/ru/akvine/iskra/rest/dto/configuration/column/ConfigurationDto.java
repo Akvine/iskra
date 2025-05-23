@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.dto.configuration;
+package ru.akvine.iskra.rest.dto.configuration.column;
 
 import jakarta.annotation.Nullable;
 import lombok.Data;
@@ -9,8 +9,7 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
-public class CreateColumnConfiguration {
-    private String columnUuid;
+public class ConfigurationDto {
     private String name;
     @Nullable
     private String dictionaryName;
@@ -20,13 +19,9 @@ public class CreateColumnConfiguration {
     private boolean unique;
     private boolean notNull;
     private String rangeType;
-    @Nullable
     private String start;
-    @Nullable
     private String end;
-    @Nullable
     private String step;
-    @Nullable
     private Boolean valid;
     private List<String> regexps = new ArrayList<>();
 }

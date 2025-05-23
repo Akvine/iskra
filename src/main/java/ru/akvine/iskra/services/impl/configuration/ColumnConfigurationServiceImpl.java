@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl;
+package ru.akvine.iskra.services.impl.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -9,15 +9,15 @@ import ru.akvine.iskra.exceptions.column.configuration.ConfigurationAlreadyExist
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationMaxCountException;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotFoundException;
 import ru.akvine.iskra.repositories.ColumnConfigurationRepository;
-import ru.akvine.iskra.repositories.entities.ColumnConfigurationEntity;
+import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
-import ru.akvine.iskra.services.ColumnConfigurationService;
+import ru.akvine.iskra.services.configuration.ColumnConfigurationService;
 import ru.akvine.iskra.services.ColumnService;
 import ru.akvine.iskra.services.DictionaryService;
-import ru.akvine.iskra.services.domain.ColumnConfigurationModel;
-import ru.akvine.iskra.services.dto.configuration.CreateColumnConfiguration;
-import ru.akvine.iskra.services.dto.configuration.SelectColumnConfiguration;
+import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
+import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
 
 import java.util.List;
 

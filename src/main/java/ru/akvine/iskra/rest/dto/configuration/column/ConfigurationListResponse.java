@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.dto.configuration;
+package ru.akvine.iskra.rest.dto.configuration.column;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

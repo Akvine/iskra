@@ -11,6 +11,7 @@ import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.repositories.converters.ConstraintListToStringConverter;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
+import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 
 import java.util.ArrayList;
 import java.util.List;

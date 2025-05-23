@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.services.domain.base.Model;
+import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
 
 import java.util.List;
 

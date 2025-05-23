@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.services.domain.base.Model;
+import ru.akvine.iskra.services.domain.configuration.TableConfigurationModel;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class TableModel extends Model<Long> {
     private PlanModel plan;
     private List<ColumnModel> columns;
     private boolean selected;
+    private TableConfigurationModel configuration;
 
     public TableModel(TableEntity table) {
         super(table);
@@ -31,5 +33,9 @@ public class TableModel extends Model<Long> {
         this.columns = table.getColumns().stream()
                 .map(ColumnModel::new)
                 .toList();
+
+        if (table.getConfiguration() != null) {
+            this.configuration = new TableConfigurationModel(table.getConfiguration());
+        }
     }
 }
