@@ -5,9 +5,9 @@ import ru.akvine.compozit.commons.istochnik.ColumnDto;
 import ru.akvine.compozit.commons.istochnik.ConfigDto;
 import ru.akvine.compozit.commons.istochnik.GenerateTableRequest;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotSelectedException;
-import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
 import ru.akvine.iskra.services.domain.ColumnModel;
 import ru.akvine.iskra.services.domain.TableModel;
+import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,8 +15,10 @@ import java.util.List;
 
 @Service
 public class IstochnikDtoConverter {
-    public GenerateTableRequest convertToGenerateTableRequest(TableModel table) {
+    public GenerateTableRequest convertToGenerateTableRequest(int processedRowsCount,
+                                                              TableModel table) {
 
+        int batchSize = table.getConfiguration().getBatchSize();
         List<ColumnDto> columns = new ArrayList<>();
         for (ColumnModel column : table.getColumns()) {
             ColumnConfigurationModel config = column.getConfigurations().stream()
@@ -31,33 +33,41 @@ public class IstochnikDtoConverter {
                         return new ConfigurationNotSelectedException(message);
                     });
 
-            columns.add(buildColumnDto(column, config));
+            columns.add(buildColumnDto(column, config, processedRowsCount, batchSize));
         }
 
         return new GenerateTableRequest()
-                .setSize(100)
+                .setSize(table.getConfiguration().getBatchSize())
                 .setFileType("csv")
                 .setColumns(columns);
     }
 
-    private ColumnDto buildColumnDto(ColumnModel column, ColumnConfigurationModel config) {
+    private ColumnDto buildColumnDto(ColumnModel column,
+                                     ColumnConfigurationModel config,
+                                     int processedRowsCount,
+                                     int batchSize) {
         return new ColumnDto()
                 .setName(column.getColumnName())
                 .setType(config.getType())
                 .setGenerationStrategy(config.getGenerationStrategy())
-                .setConfig(buildConfigDto(config));
+                .setConfig(buildConfigDto(batchSize, processedRowsCount, config));
     }
 
-    private ConfigDto buildConfigDto(ColumnConfigurationModel config) {
+    private ConfigDto buildConfigDto(int batchSize, int processedRowsCount, ColumnConfigurationModel config) {
         ConfigDto configDto = new ConfigDto()
                 .setStart(config.getStart())
-                .setEnd(config.getEnd())
                 .setStep(config.getStep())
+                .setEnd(config.getEnd())
                 .setRangeType(config.getRangeType())
                 .setNotNull(config.isNotNull())
                 .setUnique(config.isUnique())
                 .setValid(Boolean.TRUE.equals(config.getValid()))
                 .setRegexps(new HashSet<>(config.getRegexps()));
+
+        if (!config.isRepeatable()) {
+            configDto.setStart(String.valueOf(processedRowsCount));
+            configDto.setEnd(String.valueOf(processedRowsCount + batchSize));
+        }
 
         if (config.getDictionary() != null) {
             configDto.setDictionary(config.getDictionary().getValues());

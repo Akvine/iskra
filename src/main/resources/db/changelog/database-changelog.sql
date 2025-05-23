@@ -208,3 +208,8 @@ ALTER TABLE TABLE_ENTITY ADD COLUMN CONFIGURATION_ID BIGINT;
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.table_constraints where constraint_type = 'FOREIGN KEY' and upper(constraint_name) = 'FK_CONFIGURATION' and upper(table_name) = 'TABLE_ENTITY';
 ALTER TABLE TABLE_ENTITY ADD CONSTRAINT FK_CONFIGURATION FOREIGN KEY (CONFIGURATION_ID) REFERENCES TABLE_CONFIGURATION_ENTITY (ID);
+
+--changeset akvine:ISKRA-1-17
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'REPEATABLE' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
+ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD REPEATABLE BOOLEAN NOT NULL DEFAULT TRUE;

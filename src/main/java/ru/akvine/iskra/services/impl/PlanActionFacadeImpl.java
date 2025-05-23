@@ -20,6 +20,7 @@ import ru.akvine.iskra.services.TableProcessService;
 import ru.akvine.iskra.services.TableService;
 import ru.akvine.iskra.services.domain.TableModel;
 import ru.akvine.iskra.services.domain.TableProcessModel;
+import ru.akvine.iskra.services.domain.configuration.TableConfigurationModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.dto.process.CreateTableProcess;
 import ru.akvine.iskra.services.dto.process.UpdateTableProcess;
@@ -101,9 +102,16 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
     private void generateDataInternal(String pid, TableModel tableModel) {
         UpdateTableProcess updateTableProcessAction = new UpdateTableProcess()
                 .setPid(pid);
+        TableConfigurationModel configuration = tableModel.getConfiguration();
+        int processedRowsCount = 0;
+
         try {
-            byte[] table = istochnikService.generatedData(tableModel);
-            visorService.sendFile(tableModel, table);
+            while (processedRowsCount < configuration.getRowsCount()) {
+                byte[] table = istochnikService.generatedData(processedRowsCount, tableModel);
+                visorService.sendFile(tableModel, table);
+
+                processedRowsCount += configuration.getBatchSize();
+            }
 
             updateTableProcessAction.setCompletedDate(new Date());
             updateTableProcessAction.setState(ProcessState.SUCCESS);

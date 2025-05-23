@@ -36,6 +36,7 @@ public class ColumnConfigurationModel extends Model<Long> {
     @Nullable
     private DictionaryModel dictionary;
     private Long columnId;
+    private boolean repeatable;
 
     public ColumnConfigurationModel(ColumnConfigurationEntity entity) {
         super(entity);
@@ -48,9 +49,11 @@ public class ColumnConfigurationModel extends Model<Long> {
         this.notNull = entity.isNotNull();
         this.rangeType = entity.getRangeType();
         this.start = entity.getStart();
+        this.step = entity.getStep();
         this.end = entity.getEnd();
         this.valid = entity.getValid();
         this.columnId = entity.getColumn().getId();
+        this.repeatable = entity.isRepeatable();
 
         if (StringUtils.isNotBlank(entity.getRegexps())) {
             this.regexps = Arrays.stream(entity.getRegexps().split(";")).toList();

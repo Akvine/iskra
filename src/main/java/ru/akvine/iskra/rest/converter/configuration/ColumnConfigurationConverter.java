@@ -23,6 +23,7 @@ public class ColumnConfigurationConverter {
                 .setType(request.getType())
                 .setGenerationStrategy(request.getGenerationStrategy())
                 .setSelected(request.isSelected())
+                .setRepeatable(request.isRepeatable())
                 .setDictionaryName(request.getDictionaryName())
                 .setUnique(request.isUnique())
                 .setNotNull(request.isNotNull())
@@ -50,6 +51,7 @@ public class ColumnConfigurationConverter {
     private ConfigurationDto buildConfigurationDto(ColumnConfigurationModel model) {
         ConfigurationDto config = new ConfigurationDto()
                 .setName(model.getName())
+                .setRepeatable(model.isRepeatable())
                 .setSelected(model.isSelected())
                 .setType(model.getType())
                 .setGenerationStrategy(model.getGenerationStrategy())

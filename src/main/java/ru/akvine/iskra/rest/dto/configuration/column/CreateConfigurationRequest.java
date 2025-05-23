@@ -20,6 +20,9 @@ public class CreateConfigurationRequest {
 
     private boolean selected;
 
+    // TODO: добавить валидацю для данного поля (Его можно проставить в false только для Numeric-полей)
+    private boolean repeatable = true;
+
     @NotBlank
     private String type;
 

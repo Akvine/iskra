@@ -15,6 +15,7 @@ public class CreateColumnConfiguration {
     @Nullable
     private String dictionaryName;
     private boolean selected;
+    private boolean repeatable;
     private String type;
     private String generationStrategy;
     private boolean unique;

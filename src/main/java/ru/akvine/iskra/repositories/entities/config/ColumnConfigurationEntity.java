@@ -71,4 +71,7 @@ public class ColumnConfigurationEntity extends BaseEntity<Long> {
     @JoinColumn(name = "COLUMN_ID", nullable = false)
     @NotNull
     private ColumnEntity column;
+
+    @Column(name = "REPEATABLE", nullable = false)
+    private boolean repeatable = true;
 }

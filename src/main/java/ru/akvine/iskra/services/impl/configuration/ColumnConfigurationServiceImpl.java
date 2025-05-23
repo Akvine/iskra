@@ -61,6 +61,7 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
                     .setSelected(action.isSelected())
                     .setName(action.getName())
                     .setType(action.getType())
+                    .setRepeatable(action.isRepeatable())
                     .setGenerationStrategy(action.getGenerationStrategy())
                     .setUnique(action.isUnique())
                     .setNotNull(action.isNotNull())

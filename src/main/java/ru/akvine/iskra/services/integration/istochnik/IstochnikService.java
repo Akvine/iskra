@@ -12,8 +12,8 @@ public class IstochnikService {
     private final IstochnikClient client;
     private final IstochnikDtoConverter converter;
 
-    public byte[] generatedData(TableModel table) {
-        GenerateTableRequest request = converter.convertToGenerateTableRequest(table);
+    public byte[] generatedData(int processedRowsCount, TableModel table) {
+        GenerateTableRequest request = converter.convertToGenerateTableRequest(processedRowsCount, table);
         try {
             return client.generate(request);
         } catch (Exception exception) {
