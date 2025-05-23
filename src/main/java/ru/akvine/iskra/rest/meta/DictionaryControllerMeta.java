@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.rest.dto.dictionary.CreateDictionaryRequest;
+import ru.akvine.iskra.rest.dto.dictionary.ListDictionariesRequest;
 
 @RequestMapping(value = "/dictionaries")
 public interface DictionaryControllerMeta {
 
     @GetMapping
-    Response list();
+    Response list(@RequestBody @Valid ListDictionariesRequest request);
 
     @PostMapping
     Response create(@RequestBody @Valid CreateDictionaryRequest request);

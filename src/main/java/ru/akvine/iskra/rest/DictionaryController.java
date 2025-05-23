@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.rest.converter.DictionaryConverter;
 import ru.akvine.iskra.rest.dto.dictionary.CreateDictionaryRequest;
+import ru.akvine.iskra.rest.dto.dictionary.ListDictionariesRequest;
 import ru.akvine.iskra.rest.meta.DictionaryControllerMeta;
 import ru.akvine.iskra.services.DictionaryService;
 import ru.akvine.iskra.services.domain.DictionaryModel;
 import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
+import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
 
 import java.util.List;
 
@@ -21,8 +23,9 @@ public class DictionaryController implements DictionaryControllerMeta {
     private final DictionaryConverter dictionaryConverter;
 
     @Override
-    public Response list() {
-        List<DictionaryModel> dictionaries = dictionaryService.list();
+    public Response list(@RequestBody @Valid ListDictionariesRequest request) {
+        ListDictionaries action = dictionaryConverter.convertToListDictionaries(request);
+        List<DictionaryModel> dictionaries = dictionaryService.list(action);
         return dictionaryConverter.convertToDictionaryListResponse(dictionaries);
     }
 

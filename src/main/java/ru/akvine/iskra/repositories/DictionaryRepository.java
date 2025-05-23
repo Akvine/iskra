@@ -15,4 +15,10 @@ public interface DictionaryRepository extends JpaRepository<DictionaryEntity, Lo
 
     @Query("from DictionaryEntity de where de.name = :name")
     Optional<DictionaryEntity> findByName(@Param("name") String name);
+
+    @Query("from DictionaryEntity de where de.name in :names")
+    List<DictionaryEntity> findByNames(@Param("names") Collection<String> names);
+
+    @Query("from DictionaryEntity de where de.system = :system")
+    List<DictionaryEntity> findBy(@Param("system") boolean system);
 }
