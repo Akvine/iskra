@@ -2,9 +2,9 @@ package ru.akvine.iskra.services.integration.istochnik;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.akvine.compozit.commons.TableConfig;
 import ru.akvine.compozit.commons.istochnik.GenerateTableRequest;
 import ru.akvine.iskra.exceptions.IntegrationException;
+import ru.akvine.iskra.services.domain.TableModel;
 
 @Service
 @RequiredArgsConstructor
@@ -12,8 +12,8 @@ public class IstochnikService {
     private final IstochnikClient client;
     private final IstochnikDtoConverter converter;
 
-    public byte[] generatedData(TableConfig config) {
-        GenerateTableRequest request = converter.convertToGenerateTableRequest(config);
+    public byte[] generatedData(TableModel table) {
+        GenerateTableRequest request = converter.convertToGenerateTableRequest(table);
         try {
             return client.generate(request);
         } catch (Exception exception) {

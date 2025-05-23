@@ -12,6 +12,7 @@ import ru.akvine.iskra.repositories.converters.ConstraintListToStringConverter;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -60,6 +61,11 @@ public class ColumnEntity extends BaseEntity<Long> implements Identifiable {
     @Column(name = "CONSTRAINTS")
     @Convert(converter = ConstraintListToStringConverter.class)
     private List<ConstraintType> constraintTypes;
+
+    @Column(name = "CONFIGURATIONS", nullable = false)
+    @OneToMany(mappedBy = "column", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotNull
+    private List<ColumnConfigurationEntity> configurations = new ArrayList<>();
 
     @Column(name = "DATABASE")
     @Nullable

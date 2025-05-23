@@ -17,6 +17,12 @@ public interface TableRepository extends JpaRepository<TableEntity, Long> {
     List<TableEntity> findAll(@Param("uuid") String planUuid);
 
     @Query("from TableEntity te " +
+            "where te.plan.uuid = :uuid")
+    @EntityGraph(attributePaths = "columns")
+    List<TableEntity> findAll(@Param("uuid") String planUuid,
+                              @Param("selected") boolean selected);
+
+    @Query("from TableEntity te " +
             "where te.plan.uuid = :uuid " +
             "and " +
             "te.name in :tableNames")

@@ -1,9 +1,12 @@
 package ru.akvine.iskra.services.integration.visor;
 
 import org.springframework.stereotype.Service;
-import ru.akvine.compozit.commons.*;
+import ru.akvine.compozit.commons.ColumnMetaInfoDto;
+import ru.akvine.compozit.commons.ConnectionDto;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
+import ru.akvine.iskra.services.domain.ColumnModel;
 import ru.akvine.iskra.services.domain.ConnectionModel;
+import ru.akvine.iskra.services.domain.TableModel;
 import ru.akvine.iskra.services.integration.visor.dto.ConnectionRequest;
 
 import java.util.HashMap;
@@ -12,15 +15,13 @@ import java.util.Map;
 
 @Service
 public class VisorDtoConverter {
-    public InsertValuesRequest convert(TableName tableName,
-                                       byte[] table,
-                                       TableConfig config,
-                                       ConnectionDto connection) {
+    public InsertValuesRequest convert(TableModel tableModel,
+                                       byte[] table) {
         return new InsertValuesRequest()
-                .setTableName(tableName.getName())
+                .setTableName(tableModel.getTableName())
                 .setContent(table)
-                .setConnection(connection)
-                .setColumnsMetaInfo(buildColumnsMetaInfo(config.getColumnConfigs()));
+                .setConnection(convertToConnectionDto(tableModel.getPlan().getConnection()))
+                .setColumnsMetaInfo(buildColumnsMetaInfo(tableModel.getColumns()));
 
     }
 
@@ -35,11 +36,24 @@ public class VisorDtoConverter {
                 .setDatabaseType(connection.getDatabaseType().getValue());
     }
 
-    private Map<String, ColumnMetaInfoDto> buildColumnsMetaInfo(List<ColumnInfo> columnConfigs) {
+    private ConnectionDto convertToConnectionDto(ConnectionModel connection) {
+        return new ConnectionDto()
+                .setDatabaseType(connection.getDatabaseType().toString())
+                .setHost(connection.getHost())
+                .setPort(connection.getPort())
+                .setUsername(connection.getUsername())
+                .setPassword(connection.getPassword())
+                .setDatabaseName(connection.getDatabaseName())
+                .setConnectionName(connection.getConnectionName());
+    }
+
+    private Map<String, ColumnMetaInfoDto> buildColumnsMetaInfo(List<ColumnModel> columns) {
         Map<String, ColumnMetaInfoDto> metaInfo = new HashMap<>();
-        columnConfigs.forEach(config -> metaInfo.put(config
-                .getColumn()
-                .getName(), config.getColumnMetaInfo()));
+
+        columns.forEach(column -> {
+            metaInfo.put(column.getColumnName(), new ColumnMetaInfoDto()
+                    .setColumnTypeName(column.getRawDataType()));
+        });
         return metaInfo;
     }
 }

@@ -34,11 +34,11 @@ public class TableProcessServiceImpl implements TableProcessService {
     public TableProcessModel create(CreateTableProcess createTableProcess) {
         Asserts.isNotNull(createTableProcess);
 
-        PlanEntity process = planService.verifyExists(createTableProcess.getProcessUuid());
+        PlanEntity process = planService.verifyExists(createTableProcess.getPlanUuid());
 
         TableProcessEntity entityToCreate = new TableProcessEntity()
                 .setPid(PIDGenerator.generate(pidLength))
-                .setTableName(createTableProcess.getTableName().getName())
+                .setTableName(createTableProcess.getTableName())
                 .setStartedDate(new Date())
                 .setProcessState(ProcessState.IN_PROGRESS)
                 .setPlan(process);

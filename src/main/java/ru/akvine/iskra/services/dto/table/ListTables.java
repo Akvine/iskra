@@ -1,11 +1,11 @@
-package ru.akvine.iskra.services.dto.process;
+package ru.akvine.iskra.services.dto.table;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class CreateTableProcess {
+public class ListTables {
     private String planUuid;
-    private String tableName;
+    private boolean selected;
 }

@@ -24,6 +24,8 @@ public class ColumnModel extends Model<Long> {
     private String database;
     @Nullable
     private String schemaName;
+    private String tableName;
+    private List<ColumnConfigurationModel> configurations;
     private List<ConstraintType> constraints;
 
     public ColumnModel(ColumnEntity entity) {
@@ -38,7 +40,11 @@ public class ColumnModel extends Model<Long> {
         this.primaryKey = entity.isPrimaryKey();
         this.selected = entity.isSelected();
         this.constraints = entity.getConstraintTypes();
+        this.configurations = entity.getConfigurations().stream()
+                .map(ColumnConfigurationModel::new)
+                .toList();
 
+        this.tableName = entity.getTable().getName();
         this.database = entity.getDatabase();
         this.schemaName = entity.getSchemaName();
     }

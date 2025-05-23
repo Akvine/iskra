@@ -34,7 +34,7 @@ public class ColumnConfigurationModel extends Model<Long> {
     private List<String> regexps = new ArrayList<>();
     @Nullable
     private DictionaryModel dictionary;
-    private ColumnModel column;
+    private Long columnId;
 
     public ColumnConfigurationModel(ColumnConfigurationEntity entity) {
         super(entity);
@@ -49,7 +49,7 @@ public class ColumnConfigurationModel extends Model<Long> {
         this.start = entity.getStart();
         this.end = entity.getEnd();
         this.valid = entity.getValid();
-        this.column = new ColumnModel(entity.getColumn());
+        this.columnId = entity.getColumn().getId();
 
         if (StringUtils.isNotBlank(entity.getRegexps())) {
             this.regexps = Arrays.stream(entity.getRegexps().split(";")).toList();

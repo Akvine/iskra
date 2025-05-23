@@ -21,7 +21,7 @@ public class CreateConfigurationRequest {
     private boolean selected;
 
     @NotBlank
-        private String type;
+    private String type;
 
     @NotBlank
     private String generationStrategy;

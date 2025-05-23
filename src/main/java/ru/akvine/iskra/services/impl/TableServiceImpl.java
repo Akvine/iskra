@@ -8,6 +8,7 @@ import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.services.TableService;
 import ru.akvine.iskra.services.domain.TableModel;
+import ru.akvine.iskra.services.dto.table.ListTables;
 import ru.akvine.iskra.services.dto.table.ToogleSelectedTables;
 
 import java.util.List;
@@ -42,6 +43,15 @@ public class TableServiceImpl implements TableService {
                     String message = "Table by name = [" + name + "] not found!";
                     return new TableNotFoundException(message);
                 });
+    }
+
+    @Override
+    public List<TableModel> list(ListTables listTables) {
+        Asserts.isNotNull(listTables);
+        return tableRepository.findAll(listTables.getPlanUuid(), listTables.isSelected())
+                .stream()
+                .map(TableModel::new)
+                .toList();
     }
 
     @Override

@@ -2,13 +2,11 @@ package ru.akvine.iskra.services.integration.visor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.akvine.compozit.commons.ConnectionDto;
-import ru.akvine.compozit.commons.TableConfig;
-import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.exceptions.IntegrationException;
 import ru.akvine.iskra.services.domain.ConnectionModel;
+import ru.akvine.iskra.services.domain.TableModel;
 import ru.akvine.iskra.services.integration.visor.dto.*;
 
 import java.util.List;
@@ -19,8 +17,8 @@ public class VisorService {
     private final VisorClient visorClient;
     private final VisorDtoConverter visorDtoConverter;
 
-    public void sendFile(TableName tableName, byte[] table, TableConfig config, ConnectionDto connection) {
-        InsertValuesRequest request = visorDtoConverter.convert(tableName, table, config, connection);
+    public void sendFile(TableModel tableModel, byte[] table) {
+        InsertValuesRequest request = visorDtoConverter.convert(tableModel, table);
         try {
             visorClient.insertValues(request);
         } catch (Exception exception) {
