@@ -14,6 +14,7 @@ import ru.akvine.iskra.services.PlanService;
 import ru.akvine.iskra.services.TableProcessService;
 import ru.akvine.iskra.services.domain.TableProcessModel;
 import ru.akvine.iskra.services.dto.process.CreateTableProcess;
+import ru.akvine.iskra.services.dto.process.ListTableProcess;
 import ru.akvine.iskra.services.dto.process.UpdateTableProcess;
 import ru.akvine.iskra.utils.PIDGenerator;
 
@@ -37,6 +38,7 @@ public class TableProcessServiceImpl implements TableProcessService {
         PlanEntity process = planService.verifyExists(createTableProcess.getPlanUuid());
 
         TableProcessEntity entityToCreate = new TableProcessEntity()
+                .setProcessUuid(createTableProcess.getProcessUuid())
                 .setPid(PIDGenerator.generate(pidLength))
                 .setTableName(createTableProcess.getTableName())
                 .setStartedDate(new Date())
@@ -77,12 +79,20 @@ public class TableProcessServiceImpl implements TableProcessService {
     }
 
     @Override
-    public List<TableProcessModel> list(String planUuid) {
-        Asserts.isNotNull(planUuid);
-        return tableProcessRepository
-                .findAll(planUuid).stream()
+    public List<TableProcessModel> list(ListTableProcess listTableProcess) {
+        Asserts.isNotNull(listTableProcess);
+        List<TableProcessModel> tableProcessModels = tableProcessRepository
+                .findAll(listTableProcess.getPlanUuid()).stream()
                 .map(TableProcessModel::new)
                 .toList();
+
+        // TODO : сделать через Criteria API или Query DSL, т.к. выгружать в память - не самая лучшая идея, особенно если много таблиц
+        if (StringUtils.isNotBlank(listTableProcess.getProcessUuid())) {
+            tableProcessModels = tableProcessModels.stream()
+                    .filter(tableProcess -> tableProcess.getProcessUuid().equals(listTableProcess.getProcessUuid()))
+                    .toList();
+        }
+        return tableProcessModels;
     }
 
     @Override

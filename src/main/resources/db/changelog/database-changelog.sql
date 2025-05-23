@@ -170,3 +170,13 @@ ALTER TABLE DICTIONARY_ENTITY ADD LANGUAGE VARCHAR(64) DEFAULT 'RU';
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CONSTRAINTS' and upper(table_name) = 'COLUMN_ENTITY';
 ALTER TABLE COLUMN_ENTITY ADD CONSTRAINTS VARCHAR(256);
+
+--changeset akvine:ISKRA-1-12
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'PROCESS_UUID' and upper(table_name) = 'TABLE_PROCESS_ENTITY';
+ALTER TABLE TABLE_PROCESS_ENTITY ADD PROCESS_UUID VARCHAR(128) NOT NULL;
+
+--changeset akvine:ISKRA-1-13
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'LAST_PROCESS_UUID' and upper(table_name) = 'TABLE_PROCESS_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD LAST_PROCESS_UUID VARCHAR(128);

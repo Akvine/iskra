@@ -5,11 +5,19 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.rest.dto.process.TableProcessDto;
 import ru.akvine.iskra.rest.dto.process.TableProcessListResponse;
 import ru.akvine.iskra.services.domain.TableProcessModel;
+import ru.akvine.iskra.services.dto.process.ListTableProcess;
 
 import java.util.List;
 
 @Component
 public class TableProcessConverter {
+
+    public ListTableProcess convertToListTableProcess(String planUuid, String processUuid) {
+        return new ListTableProcess()
+                .setPlanUuid(planUuid)
+                .setProcessUuid(processUuid);
+    }
+
     public TableProcessListResponse convertToTableProcessListResponse(List<TableProcessModel> tableProcesses) {
         Asserts.isNotNull(tableProcesses);
         return new TableProcessListResponse()
@@ -18,6 +26,7 @@ public class TableProcessConverter {
 
     private TableProcessDto buildTableProcessDto(TableProcessModel tableProcess) {
         return new TableProcessDto()
+                .setProcessUuid(tableProcess.getProcessUuid())
                 .setPid(tableProcess.getPid())
                 .setTableName(tableProcess.getTableName())
                 .setProcessState(tableProcess.getProcessState().toString())

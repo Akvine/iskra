@@ -1,5 +1,6 @@
 package ru.akvine.iskra.repositories.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -26,6 +27,10 @@ public class PlanEntity extends BaseEntity<Long> implements Identifiable {
 
     @Column(name = "NAME", nullable = false)
     private String name;
+
+    @Column(name = "LAST_PROCESS_UUID")
+    @Nullable
+    private String lastProcessUuid;
 
     @OneToOne
     @JoinColumn(name = "CONNECTION_ID", nullable = false)

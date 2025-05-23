@@ -35,6 +35,7 @@ public class PlanConverter {
 
     private PlanDto buildPlanDto(PlanModel plan) {
         return new PlanDto()
+                .setLastProcessUuid(plan.getLastProcessUuid())
                 .setUuid(plan.getUuid())
                 .setName(plan.getName());
     }

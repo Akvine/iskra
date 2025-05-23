@@ -8,4 +8,5 @@ import lombok.experimental.Accessors;
 public class PlanDto {
     private String uuid;
     private String name;
+    private String lastProcessUuid;
 }

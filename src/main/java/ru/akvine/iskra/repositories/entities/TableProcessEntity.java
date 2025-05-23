@@ -23,6 +23,9 @@ public class TableProcessEntity extends SoftBaseEntity<Long> {
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;
 
+    @Column(name = "PROCESS_UUID", nullable = false, updatable = false)
+    private String processUuid;
+
     @Column(name = "PID", nullable = false, updatable = false)
     private String pid;
 

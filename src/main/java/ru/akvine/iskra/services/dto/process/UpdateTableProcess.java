@@ -11,6 +11,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class UpdateTableProcess {
     private String pid;
+    private String processUuid;
 
     @Nullable
     private String errorMessage;

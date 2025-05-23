@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.domain;
 
+import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
@@ -9,6 +10,8 @@ import ru.akvine.iskra.services.domain.base.Model;
 @Accessors(chain = true)
 public class PlanModel extends Model<Long> {
     private String uuid;
+    @Nullable
+    private String lastProcessUuid;
     private String name;
     private ConnectionModel connection;
 
@@ -16,6 +19,7 @@ public class PlanModel extends Model<Long> {
         super(entity);
 
         this.uuid = entity.getUuid();
+        this.lastProcessUuid = entity.getLastProcessUuid();
         this.name = entity.getName();
         this.connection = new ConnectionModel(entity.getConnection());
     }

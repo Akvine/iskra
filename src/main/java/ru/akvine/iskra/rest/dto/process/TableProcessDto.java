@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class TableProcessDto {
+    private String processUuid;
     private String pid;
     private String tableName;
     private long successRowsCount;
