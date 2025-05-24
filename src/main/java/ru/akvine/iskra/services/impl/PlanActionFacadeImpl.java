@@ -1,6 +1,8 @@
 package ru.akvine.iskra.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PlanActionFacadeImpl implements PlanActionFacade {
     private final VisorService visorService;
     private final IstochnikService istochnikService;
@@ -43,6 +46,9 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
     private final TableService tableService;
     private final PlanService planService;
     private final PlanRepository planRepository;
+
+    @Value("${update.table.process.on.iteration}")
+    private int updateIteration;
 
     // TODO: из-за циклической зависимости TableProcessService от PlanService пришлось сделать обработку событий
     @EventListener
@@ -80,6 +86,8 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
         plan.setLastProcessUuid(processUuid);
         planRepository.save(plan);
 
+        log.info("Start generation data process with uuid = {}", processUuid);
+
         for (TableName tableName : tableNamesHasNoRelations) {
             generateData(processUuid, selectedTables.get(tableName));
         }
@@ -106,18 +114,33 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
         TableConfigurationModel configuration = tableModel.getConfiguration();
         int processedRowsCount = 0;
 
+        int processedRowsCountBeforeUpdate = 0;
+        int iterationCounter = 1;
         try {
             while (processedRowsCount < configuration.getRowsCount()) {
+                log.info("Sending batch count = [{}] for [{}]. Batch size = [{}]",
+                        iterationCounter,
+                        tableModel.getTableName(),
+                        configuration.getBatchSize());
                 byte[] table = istochnikService.generatedData(processedRowsCount, tableModel);
                 visorService.sendFile(tableModel, table);
+                processedRowsCountBeforeUpdate += configuration.getBatchSize();
 
-                // TODO : постоянное обращение в базу и обновление сущностей. Можно сгружать через определенное количество пачек, а не через каждую итерацию
-                updateTableProcessAction.setAddSuccessRowsCount((long) configuration.getBatchSize());
-                tableProcessService.update(updateTableProcessAction);
+                if (iterationCounter % updateIteration == 0) {
+                    log.info("Update table process with pid = [{}] and table name = [{}]. Processed rows count = [{}]",
+                            pid,
+                            tableModel.getTableName(),
+                            processedRowsCount);
+                    updateTableProcessAction.setAddSuccessRowsCount((long) processedRowsCountBeforeUpdate);
+                    tableProcessService.update(updateTableProcessAction);
+                    processedRowsCountBeforeUpdate = 0;
+                }
 
                 processedRowsCount += configuration.getBatchSize();
+                iterationCounter++;
             }
 
+            log.info("Table with pid = [{}] and name = [{}] was successfully filled in!", pid, tableModel.getTableName());
             updateTableProcessAction.setCompletedDate(new Date());
             updateTableProcessAction.setState(ProcessState.SUCCESS);
             updateTableProcessAction.setAddSuccessRowsCount(null);
