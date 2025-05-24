@@ -15,11 +15,13 @@ public class TableProcessModel extends Model<Long> {
     private String processUuid;
     private String tableName;
     private long successRowsCount;
+    private long totalRowsCount;
     private ProcessState processState;
     private Date startedDate;
     private Date completedDate;
     private String errorMessage;
     private PlanModel plan;
+    private int successRowsPercent;
 
     public TableProcessModel(TableProcessEntity entity) {
         super(entity);
@@ -27,10 +29,15 @@ public class TableProcessModel extends Model<Long> {
         this.processUuid = entity.getProcessUuid();
         this.tableName = entity.getTableName();
         this.successRowsCount = entity.getSuccessRowsCount();
+        this.totalRowsCount = entity.getTotalRowsCount();
         this.processState = entity.getProcessState();
         this.startedDate = entity.getStartedDate();
         this.completedDate = entity.getCompletedDate();
         this.errorMessage = entity.getErrorMessage();
         this.plan = new PlanModel(entity.getPlan());
+
+        if (totalRowsCount != 0) {
+            successRowsPercent = (int) (successRowsCount / totalRowsCount * 100);
+        }
     }
 }

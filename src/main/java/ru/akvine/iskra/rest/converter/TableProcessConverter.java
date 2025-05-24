@@ -29,6 +29,9 @@ public class TableProcessConverter {
                 .setProcessUuid(tableProcess.getProcessUuid())
                 .setPid(tableProcess.getPid())
                 .setTableName(tableProcess.getTableName())
+                .setSuccessRowsCount(tableProcess.getSuccessRowsCount())
+                .setTotalRowsCount(tableProcess.getTotalRowsCount())
+                .setSuccessRowsPercent(tableProcess.getSuccessRowsPercent())
                 .setProcessState(tableProcess.getProcessState().toString())
                 .setErrorMessage(tableProcess.getErrorMessage())
                 .setCompletedDate(tableProcess.getCompletedDate());

@@ -35,6 +35,9 @@ public class TableProcessEntity extends SoftBaseEntity<Long> {
     @Column(name = "SUCCESS_ROWS_COUNT")
     private long successRowsCount;
 
+    @Column(name = "TOTAL_ROWS_COUNT", nullable = false)
+    private long totalRowsCount;
+
     @Column(name = "STATE", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProcessState processState;

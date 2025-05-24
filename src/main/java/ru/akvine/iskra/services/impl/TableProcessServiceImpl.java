@@ -38,6 +38,7 @@ public class TableProcessServiceImpl implements TableProcessService {
         PlanEntity process = planService.verifyExists(createTableProcess.getPlanUuid());
 
         TableProcessEntity entityToCreate = new TableProcessEntity()
+                .setTotalRowsCount(createTableProcess.getTotalRowsCount())
                 .setProcessUuid(createTableProcess.getProcessUuid())
                 .setPid(PIDGenerator.generate(pidLength))
                 .setTableName(createTableProcess.getTableName())
@@ -67,6 +68,11 @@ public class TableProcessServiceImpl implements TableProcessService {
 
         if (completedDate != null) {
             tableProcessToUpdate.setCompletedDate(completedDate);
+        }
+
+        if (updateTableProcess.getAddSuccessRowsCount() != null) {
+            tableProcessToUpdate.setSuccessRowsCount(
+                    tableProcessToUpdate.getSuccessRowsCount() + updateTableProcess.getAddSuccessRowsCount());
         }
 
         tableProcessToUpdate.setUpdatedDate(new Date());

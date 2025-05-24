@@ -213,3 +213,8 @@ ALTER TABLE TABLE_ENTITY ADD CONSTRAINT FK_CONFIGURATION FOREIGN KEY (CONFIGURAT
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'REPEATABLE' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
 ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD REPEATABLE BOOLEAN NOT NULL DEFAULT TRUE;
+
+--changeset akvine:ISKRA-1-18
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'TOTAL_ROWS_COUNT' and upper(table_name) = 'TABLE_PROCESS_ENTITY';
+ALTER TABLE TABLE_PROCESS_ENTITY ADD TOTAL_ROWS_COUNT BIGINT NOT NULL DEFAULT 0;

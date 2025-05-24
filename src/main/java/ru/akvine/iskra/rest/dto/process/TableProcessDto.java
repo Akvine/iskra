@@ -12,6 +12,8 @@ public class TableProcessDto {
     private String pid;
     private String tableName;
     private long successRowsCount;
+    private long totalRowsCount;
+    private int successRowsPercent;
     private String processState;
     private Date completedDate;
     private String errorMessage;

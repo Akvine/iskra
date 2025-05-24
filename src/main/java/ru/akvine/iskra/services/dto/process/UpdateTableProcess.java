@@ -14,6 +14,8 @@ public class UpdateTableProcess {
     private String processUuid;
 
     @Nullable
+    private Long addSuccessRowsCount;
+    @Nullable
     private String errorMessage;
     @Nullable
     private ProcessState state;

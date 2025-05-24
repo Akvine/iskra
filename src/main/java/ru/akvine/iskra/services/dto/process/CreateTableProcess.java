@@ -9,4 +9,5 @@ public class CreateTableProcess {
     private String planUuid;
     private String processUuid;
     private String tableName;
+    private long totalRowsCount;
 }

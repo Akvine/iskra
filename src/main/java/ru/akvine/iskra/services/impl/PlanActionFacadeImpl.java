@@ -92,7 +92,8 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
         CreateTableProcess createTableProcessAction = new CreateTableProcess()
                 .setPlanUuid(table.getPlan().getUuid())
                 .setProcessUuid(processUuid)
-                .setTableName(table.getTableName());
+                .setTableName(table.getTableName())
+                .setTotalRowsCount(table.getConfiguration().getRowsCount());
         TableProcessModel tableProcess = tableProcessService.create(createTableProcessAction);
         String pid = tableProcess.getPid();
         generateDataInternal(pid, table);
@@ -110,13 +111,19 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
                 byte[] table = istochnikService.generatedData(processedRowsCount, tableModel);
                 visorService.sendFile(tableModel, table);
 
+                // TODO : постоянное обращение в базу и обновление сущностей. Можно сгружать через определенное количество пачек, а не через каждую итерацию
+                updateTableProcessAction.setAddSuccessRowsCount((long) configuration.getBatchSize());
+                tableProcessService.update(updateTableProcessAction);
+
                 processedRowsCount += configuration.getBatchSize();
             }
 
             updateTableProcessAction.setCompletedDate(new Date());
             updateTableProcessAction.setState(ProcessState.SUCCESS);
+            updateTableProcessAction.setAddSuccessRowsCount(null);
         } catch (IntegrationException exception) {
             updateTableProcessAction
+                    .setAddSuccessRowsCount(null)
                     .setErrorMessage(exception.getMessage())
                     .setState(ProcessState.FAILED);
         } finally {
