@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
+import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 
@@ -33,6 +35,17 @@ public class TableConfigurationEntity extends BaseEntity<Long> {
 
     @Column(name = "BATCH_SIZE", nullable = false)
     private int batchSize;
+
+    @Column(name = "DELETE_DATA_BEFORE_START", nullable = false)
+    private boolean deleteDataBeforeStart;
+
+    @Column(name = "DELETE_MODE")
+    @Enumerated(EnumType.STRING)
+    private DeleteMode deleteMode;
+
+    @Column(name = "CLEAR_SCRIPT")
+    @Nullable
+    private String clearScript = StringUtils.EMPTY;
 
     @OneToOne
     @JoinColumn(name = "TABLE_ID")

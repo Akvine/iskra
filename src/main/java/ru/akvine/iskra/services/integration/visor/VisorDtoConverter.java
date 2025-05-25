@@ -3,12 +3,16 @@ package ru.akvine.iskra.services.integration.visor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.ColumnMetaInfoDto;
 import ru.akvine.compozit.commons.ConnectionDto;
+import ru.akvine.compozit.commons.ConnectionRequest;
+import ru.akvine.compozit.commons.GenerateClearScriptRequest;
+import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
+import ru.akvine.compozit.commons.scripts.ExecuteScriptsRequest;
 import ru.akvine.iskra.services.domain.ColumnModel;
 import ru.akvine.iskra.services.domain.ConnectionModel;
 import ru.akvine.iskra.services.domain.TableModel;
-import ru.akvine.iskra.services.integration.visor.dto.ConnectionRequest;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +29,13 @@ public class VisorDtoConverter {
 
     }
 
-    public ConnectionRequest convert(ConnectionModel connection) {
+    public ExecuteScriptsRequest convertToExecuteScriptsRequest(ConnectionModel connectionModel, Collection<String> scripts) {
+        return new ExecuteScriptsRequest()
+                .setConnection(convertToConnectionRequest(connectionModel))
+                .setScripts(scripts);
+    }
+
+    public ConnectionRequest convertToConnectionRequest(ConnectionModel connection) {
         return new ConnectionRequest()
                 .setDatabaseName(connection.getDatabaseName())
                 .setHost(connection.getHost())
@@ -34,6 +44,15 @@ public class VisorDtoConverter {
                 .setUsername(connection.getUsername())
                 .setPassword(connection.getPassword())
                 .setDatabaseType(connection.getDatabaseType().getValue());
+    }
+
+    public GenerateClearScriptRequest convertToGenerateClearScriptRequest(String tableName,
+                                                                          DeleteMode deleteMode,
+                                                                          ConnectionModel connectionModel) {
+        return new GenerateClearScriptRequest()
+                .setConnection(convertToConnectionRequest(connectionModel))
+                .setTableName(tableName)
+                .setDeleteMode(deleteMode.getName());
     }
 
     private ConnectionDto convertToConnectionDto(ConnectionModel connection) {

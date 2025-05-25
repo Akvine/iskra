@@ -7,14 +7,18 @@ import ru.akvine.compozit.commons.enums.DeleteMode;
 
 @Data
 @Accessors(chain = true)
-public class CreateTableConfiguration {
+public class UpdateTableConfiguration {
     private String tableName;
+    @Nullable
     private String name;
-    private int rowsCount;
-    private int batchSize;
-    private boolean deleteDataBeforeStart;
+    @Nullable
+    private Integer rowsCount;
+    @Nullable
+    private Integer batchSize;
     @Nullable
     private Boolean generateClearScript;
+    @Nullable
+    private Boolean deleteDataBeforeStart;
     @Nullable
     private DeleteMode deleteMode;
 }

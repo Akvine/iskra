@@ -21,5 +21,6 @@ public final class ApiErrorCodes {
 
     public interface Configuration {
         String TABLE_CONFIGURATION_ERROR = "table.configuration.error";
+        String GENERATE_CLEAR_SCRIPT_ERROR = "generate.clear.script.error";
     }
 }

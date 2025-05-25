@@ -2,9 +2,9 @@ package ru.akvine.iskra.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.akvine.compozit.commons.ConnectionDto;
@@ -14,6 +14,7 @@ import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.events.GenerateDataEvent;
 import ru.akvine.iskra.exceptions.IntegrationException;
+import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
 import ru.akvine.iskra.repositories.PlanRepository;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.PlanActionFacade;
@@ -33,6 +34,7 @@ import ru.akvine.iskra.services.integration.visor.VisorService;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -52,7 +54,6 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
 
     // TODO: из-за циклической зависимости TableProcessService от PlanService пришлось сделать обработку событий
     @EventListener
-    @Async
     public void handleEvent(GenerateDataEvent event) {
         generateData(event.getAction(), event.getConnection());
     }
@@ -97,6 +98,21 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
 
     @Override
     public TableProcessModel generateData(String processUuid, TableModel table) {
+        TableConfigurationModel tableConfiguration = table.getConfiguration();
+        if (tableConfiguration == null) {
+            String errorMessage = String.format("Table with name = [%s] has no configuration!", table.getTableName());
+            throw new TableConfigurationNotFoundException(errorMessage);
+        }
+
+        if (tableConfiguration.isDeleteDataBeforeStart() &&
+                StringUtils.isNotBlank(tableConfiguration.getClearScript())) {
+            log.info("Execute clear script for table = [{}]", table.getTableName());
+            visorService.executeScripts(
+                    Set.of(tableConfiguration.getClearScript()),
+                    table.getPlan().getConnection()
+            );
+        }
+
         CreateTableProcess createTableProcessAction = new CreateTableProcess()
                 .setPlanUuid(table.getPlan().getUuid())
                 .setProcessUuid(processUuid)

@@ -218,3 +218,18 @@ ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD REPEATABLE BOOLEAN NOT NULL DEFAULT 
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'TOTAL_ROWS_COUNT' and upper(table_name) = 'TABLE_PROCESS_ENTITY';
 ALTER TABLE TABLE_PROCESS_ENTITY ADD TOTAL_ROWS_COUNT BIGINT NOT NULL DEFAULT 0;
+
+--changeset akvine:ISKRA-1-19
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'DELETE_DATA_BEFORE_START' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
+ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD DELETE_DATA_BEFORE_START BOOLEAN NOT NULL DEFAULT FALSE;
+
+--changeset akvine:ISKRA-1-20
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'DELETE_MODE' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
+ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD DELETE_MODE VARCHAR(64);
+
+--changeset akvine:ISKRA-1-21
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CLEAR_SCRIPT' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
+ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD CLEAR_SCRIPT VARCHAR(256);

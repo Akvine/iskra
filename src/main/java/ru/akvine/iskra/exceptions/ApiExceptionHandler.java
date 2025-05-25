@@ -16,6 +16,7 @@ import ru.akvine.iskra.exceptions.process.TableProcessNotFoundException;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({Exception.class})
     public ResponseEntity<?> handleException(Exception exception) {
+        logger.error("Error was occurred {}", exception);
         ErrorResponse errorResponse = new ErrorResponse(
                 ApiErrorCodes.GENERAL_ERROR,
                 exception.getMessage()

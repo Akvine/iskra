@@ -9,4 +9,7 @@ public class TableConfigurationDto {
     private String name;
     private int rowsCount;
     private int batchSize;
+    private boolean deleteDataBeforeStart;
+    private String deleteMode;
+    private String clearScript;
 }
