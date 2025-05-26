@@ -1,16 +1,14 @@
 package ru.akvine.iskra.configs.async;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import ru.akvine.iskra.configs.async.executors.ParallelGenerationExecutor;
-import ru.akvine.iskra.configs.properties.ParallelGenerationProperties;
+import ru.akvine.iskra.configs.properties.ParallelExecutorProperties;
 import ru.akvine.iskra.utils.ThreadsUtils;
 
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -18,26 +16,19 @@ import java.util.concurrent.TimeUnit;
 @EnableAsync
 @RequiredArgsConstructor
 public class AsyncConfig {
-    private final ParallelGenerationProperties parallelGenerationProperties;
-
-    // TODO: сделать через @ConfigurationProperties
-    @Value("${parallel.executor.threads.core.poolSize}")
-    private int corePoolSize;
-    @Value("${parallel.executor.threads.max.poolSize}")
-    private int maxPoolSize;
-    @Value("${parallel.executor.threads.keepAlive.seconds}")
-    private long keepAliveSeconds;
+    private final ParallelExecutorProperties parallelExecutorProperties;
 
     private static final String PARALLEL_EXECUTOR_BASE_NAME = "parallel-generation-data-executor";
 
+    // TODO: сделать бин необязательным, если настройка выключена parallel.execution.enabled=false
     @Bean
     public ParallelGenerationExecutor parallelGenerationExecutor() {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                corePoolSize,
-                maxPoolSize,
-                keepAliveSeconds,
+                parallelExecutorProperties.getThreadsCount(),
+                parallelExecutorProperties.getThreadsCount(),
+                0,
                 TimeUnit.SECONDS,
-                new SynchronousQueue<>(),
+                new LinkedBlockingQueue<>(parallelExecutorProperties.getQueueCapacity()),
                 ThreadsUtils.newThreadFactory(PARALLEL_EXECUTOR_BASE_NAME));
         return new ParallelGenerationExecutor(executor);
     }
