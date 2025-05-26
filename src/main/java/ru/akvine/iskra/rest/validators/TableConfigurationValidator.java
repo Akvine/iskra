@@ -41,13 +41,15 @@ public class TableConfigurationValidator {
     }
 
     private void verify(int batchSize) {
-        String errorMessage = String.format(
-                "Request batch size = [%s] can't be more than max limit batch size = [%s]",
-                batchSize, maxBatchSize
-        );
-        throw new ValidationException(
-                ApiErrorCodes.Configuration.TABLE_CONFIGURATION_ERROR,
-                errorMessage
-        );
+        if (batchSize > maxBatchSize) {
+            String errorMessage = String.format(
+                    "Request batch size = [%s] can't be more than max limit batch size = [%s]",
+                    batchSize, maxBatchSize
+            );
+            throw new ValidationException(
+                    ApiErrorCodes.Configuration.TABLE_CONFIGURATION_ERROR,
+                    errorMessage
+            );
+        }
     }
 }

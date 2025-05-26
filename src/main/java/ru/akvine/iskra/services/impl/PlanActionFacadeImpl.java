@@ -1,5 +1,7 @@
 package ru.akvine.iskra.services.impl;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +13,7 @@ import ru.akvine.compozit.commons.ConnectionDto;
 import ru.akvine.compozit.commons.RelationsMatrixDto;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
+import ru.akvine.iskra.configs.async.executors.ParallelGenerationExecutor;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.events.GenerateDataEvent;
 import ru.akvine.iskra.exceptions.IntegrationException;
@@ -35,8 +38,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -49,10 +55,20 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
     private final PlanService planService;
     private final PlanRepository planRepository;
 
+    private final ParallelGenerationExecutor executor;
+
     @Value("${update.table.process.on.iteration}")
     private int updateIteration;
+    @Value("${parallel.execution.enabled}")
+    private boolean parallelExecutionEnabled;
 
-    // TODO: из-за циклической зависимости TableProcessService от PlanService пришлось сделать обработку событий
+    @PostConstruct
+    public void init() {
+        if (parallelExecutionEnabled) {
+            log.info("Parallel generation functionality is enabled");
+        }
+    }
+
     @EventListener
     public void handleEvent(GenerateDataEvent event) {
         generateData(event.getAction(), event.getConnection());
@@ -88,9 +104,23 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
         planRepository.save(plan);
 
         log.info("Start generation data process with uuid = {}", processUuid);
-
-        for (TableName tableName : tableNamesHasNoRelations) {
-            generateData(processUuid, selectedTables.get(tableName));
+        if (parallelExecutionEnabled) {
+            try {
+                List<CompletableFuture<Void>> futures = tableNamesHasNoRelations.stream()
+                        .map(tableName -> CompletableFuture.runAsync(
+                                () -> generateData(processUuid, selectedTables.get(tableName)),
+                                executor.executor()))
+                        .toList();
+                CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+            } catch (RejectedExecutionException exception) {
+                log.info("Executor [{}] is full. Task was rejected: ",
+                        executor.executor().toString(),
+                        exception);
+            }
+        } else {
+            for (TableName tableName : tableNamesHasNoRelations) {
+                generateData(processUuid, selectedTables.get(tableName));
+            }
         }
 
         return processUuid;
@@ -168,5 +198,10 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
         } finally {
             tableProcessService.update(updateTableProcessAction);
         }
+    }
+
+    @PreDestroy
+    public void destroy() {
+        executor.executor().shutdown();
     }
 }

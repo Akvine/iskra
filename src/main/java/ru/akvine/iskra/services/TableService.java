@@ -20,5 +20,6 @@ public interface TableService {
     @Transactional
     List<TableModel> list(ListTables listTables);
 
+    @Transactional
     List<TableModel> toggleSelected(ToogleSelectedTables action);
 }
