@@ -4,6 +4,7 @@ import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.domain.PlanModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
+import ru.akvine.iskra.services.dto.plan.UpdatePlan;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface PlanService {
     List<PlanModel> list();
 
     PlanEntity verifyExists(String byUuid);
+
+    PlanModel update(UpdatePlan action);
 }

@@ -1,6 +1,7 @@
 package ru.akvine.iskra.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.ConnectionDto;
@@ -17,6 +18,7 @@ import ru.akvine.iskra.services.domain.ConnectionModel;
 import ru.akvine.iskra.services.domain.PlanModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
+import ru.akvine.iskra.services.dto.plan.UpdatePlan;
 
 import java.util.List;
 
@@ -68,6 +70,20 @@ public class PlanServiceImpl implements PlanService {
         return planRepository
                 .findByUuid(byUuid)
                 .orElseThrow(() -> new PlanNotFoundException("Plan with uuid = [" + byUuid + "] is not found!"));
+    }
+
+    @Override
+    public PlanModel update(UpdatePlan action) {
+        Asserts.isNotNull(action);
+
+        PlanEntity planToUpdate = verifyExists(action.getPlanUuid());
+
+        if (StringUtils.isNotBlank(action.getLastProcessUuid()) &&
+                !action.getLastProcessUuid().equals(planToUpdate.getLastProcessUuid())) {
+            planToUpdate.setLastProcessUuid(planToUpdate.getLastProcessUuid());
+        }
+
+        return new PlanModel(planRepository.save(planToUpdate));
     }
 
     private ConnectionDto buildConnectionDto(ConnectionModel connectionModel) {

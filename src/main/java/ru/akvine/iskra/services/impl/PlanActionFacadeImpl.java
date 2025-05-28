@@ -18,8 +18,6 @@ import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.events.GenerateDataEvent;
 import ru.akvine.iskra.exceptions.IntegrationException;
 import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
-import ru.akvine.iskra.repositories.PlanRepository;
-import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.PlanActionFacade;
 import ru.akvine.iskra.services.PlanService;
 import ru.akvine.iskra.services.TableProcessService;
@@ -28,6 +26,7 @@ import ru.akvine.iskra.services.domain.TableModel;
 import ru.akvine.iskra.services.domain.TableProcessModel;
 import ru.akvine.iskra.services.domain.configuration.TableConfigurationModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
+import ru.akvine.iskra.services.dto.plan.UpdatePlan;
 import ru.akvine.iskra.services.dto.process.CreateTableProcess;
 import ru.akvine.iskra.services.dto.process.UpdateTableProcess;
 import ru.akvine.iskra.services.dto.table.ListTables;
@@ -42,7 +41,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +51,6 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
     private final TableProcessService tableProcessService;
     private final TableService tableService;
     private final PlanService planService;
-    private final PlanRepository planRepository;
 
     private final ParallelGenerationExecutor executor;
 
@@ -99,9 +96,10 @@ public class PlanActionFacadeImpl implements PlanActionFacade {
 
         // TODO: создать отдельный метод сервисного класса для обновления сущности PlanEntity
         String processUuid = UUIDGenerator.uuid();
-        PlanEntity plan = planService.verifyExists(action.getPlanUuid());
-        plan.setLastProcessUuid(processUuid);
-        planRepository.save(plan);
+        UpdatePlan updateAction = new UpdatePlan()
+                .setPlanUuid(action.getPlanUuid())
+                .setLastProcessUuid(processUuid);
+        planService.update(updateAction);
 
         log.info("Start generation data process with uuid = {}", processUuid);
         if (parallelExecutionEnabled) {
