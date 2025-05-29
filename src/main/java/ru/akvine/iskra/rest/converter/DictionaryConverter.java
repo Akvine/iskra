@@ -1,6 +1,7 @@
 package ru.akvine.iskra.rest.converter;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.rest.dto.dictionary.CreateDictionaryRequest;
 import ru.akvine.iskra.rest.dto.dictionary.DictionaryDto;
@@ -9,8 +10,10 @@ import ru.akvine.iskra.rest.dto.dictionary.ListDictionariesRequest;
 import ru.akvine.iskra.services.domain.DictionaryModel;
 import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
 import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
+import ru.akvine.iskra.utils.FileUtils;
 import ru.akvine.iskra.utils.StringHelper;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -44,5 +47,16 @@ public class DictionaryConverter {
                 .setLanguage(request.getLanguage())
                 .setDescription(request.getDescription())
                 .setValues(request.getValues());
+    }
+
+    public CreateDictionary convertToCreateDictionary(MultipartFile file,
+                                                      String name,
+                                                      String locale,
+                                                      String description) {
+        return new CreateDictionary()
+                .setName(name)
+                .setValues(new HashSet<>(FileUtils.parseValues(FileUtils.extractInputStream(file))))
+                .setLanguage(locale)
+                .setDescription(description);
     }
 }

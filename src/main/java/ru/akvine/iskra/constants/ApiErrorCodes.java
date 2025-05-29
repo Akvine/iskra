@@ -7,6 +7,11 @@ public final class ApiErrorCodes {
 
     public static final String GENERAL_ERROR = "general.error";
 
+    public interface Validation {
+        String ELEMENTS_MAX_COUNT_ERROR = "elements.max.count.error";
+        String FILE_EXTENSION_NOT_SUPPORTED = "file.extension.not.supported.error";
+    }
+
     public interface Plan {
         String PLAN_NOT_FOUND_ERROR = "plan.notFound.error";
     }
