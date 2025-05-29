@@ -11,4 +11,5 @@ public class DictionaryDto {
     private String description;
     private String values;
     private boolean system;
+    private int elements;
 }

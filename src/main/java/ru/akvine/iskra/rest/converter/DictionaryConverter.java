@@ -33,6 +33,7 @@ public class DictionaryConverter {
                 .setLanguage(dictionary.getLanguage().toString())
                 .setDescription(dictionary.getDescription())
                 .setSystem(dictionary.isSystem())
+                .setElements(dictionary.getValues().size())
                 .setValues(StringHelper.replaceAroundMiddle(
                         dictionary.getValues().stream().toList(), 3));
     }
