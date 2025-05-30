@@ -233,3 +233,18 @@ ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD DELETE_MODE VARCHAR(64);
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CLEAR_SCRIPT' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
 ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD CLEAR_SCRIPT VARCHAR(256);
+
+--changeset akvine:ISKRA-1-22
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_CONVERT_TO_STRING' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
+ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD IS_CONVERT_TO_STRING BOOLEAN NOT NULL DEFAULT FALSE;
+
+--changeset akvine:ISKRA-1-23
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'FILTERS' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
+ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD FILTERS TEXT;
+
+--changeset akvine:ISKRA-1-24
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'POST_FILTERS' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
+ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD POST_FILTERS TEXT;

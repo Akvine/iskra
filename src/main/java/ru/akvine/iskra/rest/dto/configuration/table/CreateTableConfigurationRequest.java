@@ -9,6 +9,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CreateTableConfigurationRequest {
     @NotBlank
+    private String planUuid;
+
+    @NotBlank
     private String tableName;
 
     @NotBlank

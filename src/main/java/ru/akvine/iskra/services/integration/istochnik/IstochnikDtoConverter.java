@@ -50,6 +50,9 @@ public class IstochnikDtoConverter {
                 .setName(column.getColumnName())
                 .setType(config.getType())
                 .setGenerationStrategy(config.getGenerationStrategy())
+                .setConvertToString(config.isConvertToString())
+                .setFilters(config.getFilters())
+                .setPostFilters(config.getPostFilters())
                 .setConfig(buildConfigDto(batchSize, processedRowsCount, config));
     }
 

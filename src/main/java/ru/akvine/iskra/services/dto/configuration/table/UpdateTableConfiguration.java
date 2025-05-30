@@ -8,6 +8,7 @@ import ru.akvine.compozit.commons.enums.DeleteMode;
 @Data
 @Accessors(chain = true)
 public class UpdateTableConfiguration {
+    private String planUuid;
     private String tableName;
     @Nullable
     private String name;

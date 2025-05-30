@@ -3,9 +3,12 @@ package ru.akvine.iskra.services.dto.configuration.column;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import ru.akvine.compozit.commons.istochnik.FilterDto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Accessors(chain = true)
@@ -15,6 +18,7 @@ public class CreateColumnConfiguration {
     @Nullable
     private String dictionaryName;
     private boolean selected;
+    private boolean convertToString;
     private boolean repeatable;
     private String type;
     private String generationStrategy;
@@ -30,4 +34,6 @@ public class CreateColumnConfiguration {
     @Nullable
     private Boolean valid;
     private List<String> regexps = new ArrayList<>();
+    private List<FilterDto> filters = new ArrayList<>();
+    private List<FilterDto> postFilters = new ArrayList<>();
 }

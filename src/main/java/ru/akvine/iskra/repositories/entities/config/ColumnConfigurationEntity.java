@@ -7,9 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import ru.akvine.compozit.commons.istochnik.FilterDto;
+import ru.akvine.iskra.repositories.converters.FiltersToStringConverter;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -74,4 +79,15 @@ public class ColumnConfigurationEntity extends BaseEntity<Long> {
 
     @Column(name = "REPEATABLE", nullable = false)
     private boolean repeatable = true;
+
+    @Column(name = "IS_CONVERT_TO_STRING", nullable = false)
+    private boolean convertToString;
+
+    @Column(name = "FILTERS")
+    @Convert(converter = FiltersToStringConverter.class)
+    private List<FilterDto> filters = new ArrayList<>();
+
+    @Column(name = "POST_FILTERS")
+    @Convert(converter = FiltersToStringConverter.class)
+    private List<FilterDto> postFilters = new ArrayList<>();
 }

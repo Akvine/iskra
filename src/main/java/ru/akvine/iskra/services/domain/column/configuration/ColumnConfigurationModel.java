@@ -4,10 +4,12 @@ import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import ru.akvine.compozit.commons.istochnik.FilterDto;
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
-import ru.akvine.iskra.services.domain.dictionary.DictionaryModel;
 import ru.akvine.iskra.services.domain.base.Model;
+import ru.akvine.iskra.services.domain.dictionary.DictionaryModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +25,7 @@ public class ColumnConfigurationModel extends Model<Long> {
     private String generationStrategy;
     private boolean unique;
     private boolean notNull;
+    private boolean convertToString;
     private String rangeType;
     @Nullable
     private String start;
@@ -37,11 +40,14 @@ public class ColumnConfigurationModel extends Model<Long> {
     private DictionaryModel dictionary;
     private Long columnId;
     private boolean repeatable;
+    private List<FilterDto> filters = List.of();
+    private List<FilterDto> postFilters = List.of();
 
     public ColumnConfigurationModel(ColumnConfigurationEntity entity) {
         super(entity);
 
         this.selected = entity.isSelected();
+        this.convertToString = entity.isConvertToString();
         this.name = entity.getName();
         this.type = entity.getType();
         this.generationStrategy = entity.getGenerationStrategy();
@@ -60,6 +66,12 @@ public class ColumnConfigurationModel extends Model<Long> {
         }
         if (entity.getDictionary() != null) {
             this.dictionary = new DictionaryModel(entity.getDictionary());
+        }
+        if (CollectionUtils.isNotEmpty(entity.getFilters())) {
+            this.filters = entity.getFilters();
+        }
+        if (CollectionUtils.isNotEmpty(entity.getPostFilters())) {
+            this.postFilters = entity.getPostFilters();
         }
     }
 }

@@ -15,6 +15,7 @@ public class ColumnConverter {
     public SelectColumn convertToSelectColumn(SelectColumnRequest request) {
         Asserts.isNotNull(request);
         return new SelectColumn()
+                .setPlanUuid(request.getPlanUuid())
                 .setTableName(request.getTableName())
                 .setSelected(request.getSelected());
     }

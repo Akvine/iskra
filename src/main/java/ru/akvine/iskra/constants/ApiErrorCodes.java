@@ -10,6 +10,7 @@ public final class ApiErrorCodes {
     public interface Validation {
         String ELEMENTS_MAX_COUNT_ERROR = "elements.max.count.error";
         String FILE_EXTENSION_NOT_SUPPORTED = "file.extension.not.supported.error";
+        String FILTERS_MAX_COUNT_ERROR = "filters.max.count.error";
     }
 
     public interface Plan {

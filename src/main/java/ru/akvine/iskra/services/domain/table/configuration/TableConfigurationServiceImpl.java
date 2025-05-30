@@ -28,7 +28,7 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
     public TableConfigurationModel create(CreateTableConfiguration action) {
         Asserts.isNotNull(action);
 
-        TableEntity table = tableService.verifyExistsByName(action.getTableName());
+        TableEntity table = tableService.verifyExistsBy(action.getPlanUuid(), action.getTableName());
         TableConfigurationEntity configurationToSave = new TableConfigurationEntity()
                 .setName(action.getName())
                 .setRowsCount(action.getRowsCount())
@@ -58,7 +58,7 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
     public TableConfigurationModel update(UpdateTableConfiguration action) {
         Asserts.isNotNull(action);
 
-        TableEntity table = tableService.verifyExistsByName(action.getTableName());
+        TableEntity table = tableService.verifyExistsBy(action.getPlanUuid(), action.getTableName());
         TableConfigurationEntity configurationToUpdate = verifyExistsByName(action.getTableName());
 
         if (StringUtils.isNotBlank(action.getName()) &&

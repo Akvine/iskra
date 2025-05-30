@@ -68,6 +68,9 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
                     .setEnd(action.getEnd())
                     .setStep(action.getStep())
                     .setValid(action.getValid())
+                    .setConvertToString(action.isConvertToString())
+                    .setFilters(action.getFilters())
+                    .setPostFilters(action.getPostFilters())
                     .setRegexps(String.join(";", action.getRegexps()))
                     .setColumn(column);
 

@@ -50,8 +50,9 @@ public class ColumnServiceImpl implements ColumnService {
     public List<ColumnModel> selectAll(SelectColumn selectColumn) {
         Asserts.isNotNull(selectColumn);
 
+        String planUuid = selectColumn.getPlanUuid();
         String tableName = selectColumn.getTableName();
-        tableService.verifyExistsByName(tableName);
+        tableService.verifyExistsBy(planUuid, tableName);
 
         Map<String, Boolean> selected = selectColumn.getSelected();
         Map<String, ColumnEntity> columnsToUpdate = map(columnRepository.findAll(

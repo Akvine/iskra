@@ -11,6 +11,9 @@ import java.util.Map;
 @Accessors(chain = true)
 public class SelectColumnRequest {
     @NotBlank
+    private String planUuid;
+
+    @NotBlank
     private String tableName;
 
     @NotNull

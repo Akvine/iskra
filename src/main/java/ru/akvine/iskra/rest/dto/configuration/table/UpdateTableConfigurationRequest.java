@@ -8,6 +8,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class UpdateTableConfigurationRequest {
     @NotBlank
+    private String planUuid;
+
+    @NotBlank
     private String tableName;
 
     private String name;

@@ -3,8 +3,11 @@ package ru.akvine.iskra.rest.dto.configuration.column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import ru.akvine.compozit.commons.istochnik.FilterDto;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -44,5 +47,12 @@ public class CreateConfigurationRequest {
 
     private Boolean valid;
 
+    private boolean convertToString;
+
+    // TODO: нужно вместо Set сделать List, т.к. пользователь может захотеть генерировать данные по списку выражений
     private Set<String> regexps = new HashSet<>();
+
+    private List<FilterDto> filters = new ArrayList<>();
+
+    private List<FilterDto> postFilters = new ArrayList<>();
 }

@@ -34,11 +34,12 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public TableEntity verifyExistsByName(String name) {
+    public TableEntity verifyExistsBy(String planUuid, String name) {
         Asserts.isNotNull(name);
-        return tableRepository.findBy(name)
+        Asserts.isNotNull(planUuid);
+        return tableRepository.findBy(planUuid, name)
                 .orElseThrow(() -> {
-                    String message = "Table by name = [" + name + "] not found!";
+                    String message = "Table by name = [" + name + "] not found for plan = [" + planUuid + "]";
                     return new TableNotFoundException(message);
                 });
     }

@@ -11,6 +11,7 @@ import ru.akvine.iskra.rest.converter.configuration.ColumnConfigurationConverter
 import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
 import ru.akvine.iskra.rest.dto.configuration.column.SelectConfigurationRequest;
 import ru.akvine.iskra.rest.meta.configuration.ColumnConfigurationControllerMeta;
+import ru.akvine.iskra.rest.validators.ColumnConfigurationValidator;
 import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationService;
 import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
 import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
@@ -23,6 +24,7 @@ import java.util.List;
 public class ColumnConfigurationController implements ColumnConfigurationControllerMeta {
     private final ColumnConfigurationService columnConfigurationService;
     private final ColumnConfigurationConverter columnConfigurationConverter;
+    private final ColumnConfigurationValidator columnConfigurationValidator;
 
     @Override
     public Response list(@PathVariable("columnUuid") String columnUuid) {
@@ -32,6 +34,7 @@ public class ColumnConfigurationController implements ColumnConfigurationControl
 
     @Override
     public Response create(@RequestBody @Valid CreateConfigurationRequest request) {
+        columnConfigurationValidator.verifyCreateConfigurationRequest(request);
         CreateColumnConfiguration action = columnConfigurationConverter.convertToCreateColumnConfiguration(request);
         ColumnConfigurationModel createdModel = columnConfigurationService.create(action);
         return columnConfigurationConverter.convertToConfigurationListResponse(List.of(createdModel));

@@ -19,6 +19,7 @@ public class TableConfigurationConverter {
     public CreateTableConfiguration convertToCreateTableConfiguration(CreateTableConfigurationRequest request) {
         Asserts.isNotNull(request);
         return new CreateTableConfiguration()
+                .setPlanUuid(request.getPlanUuid())
                 .setTableName(request.getTableName())
                 .setBatchSize(request.getBatchSize())
                 .setRowsCount(request.getRowsCount())
@@ -31,6 +32,7 @@ public class TableConfigurationConverter {
     public UpdateTableConfiguration convertToUpdateTableConfiguration(UpdateTableConfigurationRequest request) {
         Asserts.isNotNull(request);
         return new UpdateTableConfiguration()
+                .setPlanUuid(request.getPlanUuid())
                 .setTableName(request.getTableName())
                 .setBatchSize(request.getBatchSize())
                 .setRowsCount(request.getRowsCount())

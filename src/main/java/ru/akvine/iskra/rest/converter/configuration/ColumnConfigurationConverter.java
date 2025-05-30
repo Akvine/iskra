@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest.converter.configuration;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.rest.dto.configuration.column.ConfigurationDto;
@@ -22,7 +23,9 @@ public class ColumnConfigurationConverter {
                 .setName(request.getName())
                 .setType(request.getType())
                 .setGenerationStrategy(request.getGenerationStrategy())
+                .setRangeType(request.getRangeType())
                 .setSelected(request.isSelected())
+                .setConvertToString(request.isConvertToString())
                 .setRepeatable(request.isRepeatable())
                 .setDictionaryName(request.getDictionaryName())
                 .setUnique(request.isUnique())
@@ -31,7 +34,9 @@ public class ColumnConfigurationConverter {
                 .setRegexps(request.getRegexps().stream().toList())
                 .setStart(request.getStart())
                 .setEnd(request.getEnd())
-                .setStep(request.getStep());
+                .setStep(request.getStep())
+                .setFilters(request.getFilters())
+                .setPostFilters(request.getPostFilters());
     }
 
     public ConfigurationListResponse convertToConfigurationListResponse(List<ColumnConfigurationModel> configs) {
@@ -52,6 +57,7 @@ public class ColumnConfigurationConverter {
         ConfigurationDto config = new ConfigurationDto()
                 .setName(model.getName())
                 .setRepeatable(model.isRepeatable())
+                .setConvertToString(model.isConvertToString())
                 .setSelected(model.isSelected())
                 .setType(model.getType())
                 .setGenerationStrategy(model.getGenerationStrategy())
@@ -66,6 +72,13 @@ public class ColumnConfigurationConverter {
 
         if (model.getDictionary() != null) {
             config.setDictionaryName(model.getDictionary().getName());
+        }
+
+        if (CollectionUtils.isNotEmpty(model.getFilters())) {
+            config.setFilters(model.getFilters());
+        }
+        if (CollectionUtils.isNotEmpty(model.getPostFilters())) {
+            config.setPostFilters(model.getPostFilters());
         }
 
         return config;

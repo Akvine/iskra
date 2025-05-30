@@ -14,7 +14,7 @@ public interface TableService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     TableEntity save(TableEntity tableToSave);
 
-    TableEntity verifyExistsByName(String name);
+    TableEntity verifyExistsBy(String planUuid, String name);
 
     @Transactional
     List<TableModel> list(ListTables listTables);

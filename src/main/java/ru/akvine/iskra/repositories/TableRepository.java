@@ -33,6 +33,11 @@ public interface TableRepository extends JpaRepository<TableEntity, Long> {
                               @Param("tableNames") Collection<String> tableNames);
 
     @Query("from TableEntity te " +
-            "where te.name = :name")
-    Optional<TableEntity> findBy(@Param("name") String name);
+            "where te.name = :name " +
+            "and " +
+            "te.plan.uuid = :planUuid")
+    Optional<TableEntity> findBy(
+            @Param("planUuid") String planUuid,
+            @Param("name") String name
+    );
 }
