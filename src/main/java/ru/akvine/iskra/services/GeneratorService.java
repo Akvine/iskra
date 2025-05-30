@@ -1,7 +1,7 @@
 package ru.akvine.iskra.services;
 
-import ru.akvine.iskra.services.domain.table.TableModel;
+import ru.akvine.iskra.services.dto.GenerateDataAction;
 
 public interface GeneratorService {
-    boolean generate(String planUuid, TableModel table);
+    boolean generate(GenerateDataAction action);
 }

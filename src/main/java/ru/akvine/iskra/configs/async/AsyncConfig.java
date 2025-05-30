@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import ru.akvine.iskra.configs.async.executors.TaskExecutor;
 import ru.akvine.iskra.configs.properties.ParallelExecutorProperties;
+import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorService;
 import ru.akvine.iskra.services.domain.table.process.TableProcessService;
 import ru.akvine.iskra.services.impl.RestGeneratorServiceImpl;
@@ -41,7 +42,12 @@ public class AsyncConfig {
     @Bean
     public GeneratorService generatorService(final VisorService visorService,
                                              final IstochnikService istochnikService,
-                                             final TableProcessService tableProcessService) {
-        return new RestGeneratorServiceImpl(visorService, istochnikService, tableProcessService);
+                                             final TableProcessService tableProcessService,
+                                             final GeneratorCacheService generatorCacheService) {
+        return new RestGeneratorServiceImpl(
+                visorService,
+                istochnikService,
+                tableProcessService,
+                generatorCacheService);
     }
 }

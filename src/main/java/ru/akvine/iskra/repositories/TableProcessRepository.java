@@ -16,6 +16,16 @@ public interface TableProcessRepository extends JpaRepository<TableProcessEntity
             "tbe.deleted = false")
     Optional<TableProcessEntity> find(@Param("pid") String pid);
 
+    @Query("from TableProcessEntity tpe " +
+            "where " +
+            "tpe.processUuid = :uuid " +
+            "and " +
+            "tpe.tableName = :tableName " +
+            "and " +
+            "tpe.deleted = false")
+    Optional<TableProcessEntity> find(@Param("uuid") String processUuid,
+                                      @Param("tableName") String tableName);
+
     @Query("from TableProcessEntity tbe " +
             "where " +
             "tbe.plan.uuid = :uuid " +

@@ -50,7 +50,13 @@ public class TableProcessServiceImpl implements TableProcessService {
     public TableProcessModel update(UpdateTableProcess updateTableProcess) {
         Asserts.isNotNull(updateTableProcess);
 
-        TableProcessEntity tableProcessToUpdate = verifyExists(updateTableProcess.getPid());
+        TableProcessEntity tableProcessToUpdate;
+        if (StringUtils.isNotBlank(updateTableProcess.getPid())) {
+            tableProcessToUpdate = verifyExists(updateTableProcess.getPid());
+        } else {
+            tableProcessToUpdate = verifyExists(updateTableProcess.getProcessUuid(), updateTableProcess.getTableName());
+        }
+
         ProcessState processState = updateTableProcess.getState();
         String errorMessage = updateTableProcess.getErrorMessage();
         Date completedDate = updateTableProcess.getCompletedDate();
@@ -80,6 +86,25 @@ public class TableProcessServiceImpl implements TableProcessService {
     @Override
     public TableProcessModel get(String pid) {
         return new TableProcessModel(verifyExists(pid));
+    }
+
+    @Override
+    public TableProcessModel get(String processUuid, String tableName) {
+        return new TableProcessModel(verifyExists(processUuid, tableName));
+    }
+
+    @Override
+    public TableProcessEntity verifyExists(String byProcessUuid, String byTableName) {
+        Asserts.isNotNull(byProcessUuid);
+        Asserts.isNotNull(byTableName);
+        return tableProcessRepository
+                .find(byProcessUuid, byTableName)
+                .orElseThrow(() -> {
+                    String errorMessage = String.format(
+                            "Table process not found by processUuid = [%s] and table name = [%s]",
+                            byProcessUuid, byTableName);
+                    return new TableProcessNotFoundException(errorMessage);
+                });
     }
 
     @Override

@@ -11,6 +11,7 @@ import ru.akvine.iskra.services.GeneratorFacade;
 import ru.akvine.iskra.services.GeneratorService;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
+import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.dto.plan.UpdatePlan;
 
 import java.util.List;
@@ -27,21 +28,32 @@ public class GeneratorFacadeImpl implements GeneratorFacade {
     private final TaskExecutor taskExecutor;
 
     @Override
-    public String generate(String planUuid, Map<TableName, TableModel> selectedTables) {
+    public String generate(String planUuid, Map<TableName, TableModel> selectedTables, boolean resume) {
         Asserts.isNotNull(selectedTables);
 
         List<TableName> tableNamesHasNoRelations = selectedTables.keySet().stream().toList();
 
-        String processUuid = UUIDGenerator.uuid();
-        UpdatePlan updateAction = new UpdatePlan()
-                .setPlanUuid(planUuid)
-                .setLastProcessUuid(processUuid);
-        planService.update(updateAction);
+        String processUuid;
+        if (resume) {
+            processUuid = planService.verifyExists(planUuid).getLastProcessUuid();
+        } else {
+            processUuid = UUIDGenerator.uuid();
+            UpdatePlan updateAction = new UpdatePlan()
+                    .setPlanUuid(planUuid)
+                    .setLastProcessUuid(processUuid);
+            planService.update(updateAction);
+        }
 
         for (TableName tableName : tableNamesHasNoRelations) {
             try {
                 CompletableFuture.runAsync(
-                        () -> generatorService.generate(processUuid, selectedTables.get(tableName)),
+                        () -> {
+                            GenerateDataAction action = new GenerateDataAction()
+                                    .setProcessUuid(processUuid)
+                                    .setTable(selectedTables.get(tableName))
+                                    .setResume(resume);
+                            generatorService.generate(action);
+                        },
                         taskExecutor.executor()
                 );
             } catch (RejectedExecutionException exception) {

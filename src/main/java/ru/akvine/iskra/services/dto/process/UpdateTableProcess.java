@@ -12,6 +12,7 @@ import java.util.Date;
 public class UpdateTableProcess {
     private String pid;
     private String processUuid;
+    private String tableName;
 
     @Nullable
     private Long addSuccessRowsCount;

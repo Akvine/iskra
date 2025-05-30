@@ -12,4 +12,7 @@ public interface PlanActionsControllerMeta {
 
     @PostMapping(value = "/stop/{uuid}")
     Response stop(@PathVariable("uuid") String planUuid);
+
+    @PostMapping(value = "/resume/{uuid}")
+    Response resume(@PathVariable("uuid") String planUuid);
 }

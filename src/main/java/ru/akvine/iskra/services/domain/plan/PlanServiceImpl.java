@@ -60,9 +60,9 @@ public class PlanServiceImpl implements PlanService {
 
         PlanEntity planToUpdate = verifyExists(action.getPlanUuid());
 
-        if (StringUtils.isNotBlank(action.getLastProcessUuid()) &&
-                !action.getLastProcessUuid().equals(planToUpdate.getLastProcessUuid())) {
-            planToUpdate.setLastProcessUuid(planToUpdate.getLastProcessUuid());
+        if (StringUtils.isNotBlank(action.getLastProcessUuid()) && (
+                StringUtils.isBlank(planToUpdate.getLastProcessUuid()) || !action.getLastProcessUuid().equals(planToUpdate.getLastProcessUuid()))) {
+            planToUpdate.setLastProcessUuid(action.getLastProcessUuid());
         }
 
         return new PlanModel(planRepository.save(planToUpdate));
