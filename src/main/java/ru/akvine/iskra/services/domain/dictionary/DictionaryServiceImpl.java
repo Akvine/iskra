@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,12 +37,10 @@ public class DictionaryServiceImpl implements DictionaryService {
             log.info("Dictionaries cache enabled. Start loading...");
 
             List<DictionaryEntity> dictionaries = dictionaryRepository.findBy(true);
-            DICTIONARIES.putAll(
-                    dictionaries.stream().collect(Collectors.toMap(
-                            DictionaryEntity::getName,
-                            DictionaryModel::new
-                    ))
-            );
+            for (DictionaryEntity dictionaryToLoad : dictionaries) {
+                log.info("{} --> loading data is complete!", dictionaryToLoad.getName());
+                DICTIONARIES.put(dictionaryToLoad.getName(), new DictionaryModel(dictionaryToLoad));
+            }
 
             log.info("Dictionaries cache loaded successful!");
         } else {
