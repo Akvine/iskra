@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl;
+package ru.akvine.iskra.services.domain.table.process;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -10,9 +10,7 @@ import ru.akvine.iskra.exceptions.process.TableProcessNotFoundException;
 import ru.akvine.iskra.repositories.TableProcessRepository;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
-import ru.akvine.iskra.services.PlanService;
-import ru.akvine.iskra.services.TableProcessService;
-import ru.akvine.iskra.services.domain.TableProcessModel;
+import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.dto.process.CreateTableProcess;
 import ru.akvine.iskra.services.dto.process.ListTableProcess;
 import ru.akvine.iskra.services.dto.process.UpdateTableProcess;

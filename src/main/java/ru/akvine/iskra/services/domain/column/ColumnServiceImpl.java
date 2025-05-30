@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl;
+package ru.akvine.iskra.services.domain.column;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,9 +6,7 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.exceptions.column.ColumnNotFoundException;
 import ru.akvine.iskra.repositories.ColumnRepository;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
-import ru.akvine.iskra.services.ColumnService;
-import ru.akvine.iskra.services.TableService;
-import ru.akvine.iskra.services.domain.ColumnModel;
+import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.dto.column.SelectColumn;
 
 import java.util.Collection;

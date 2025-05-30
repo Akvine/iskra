@@ -1,7 +1,6 @@
-package ru.akvine.iskra.services;
+package ru.akvine.iskra.services.domain.table.process;
 
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
-import ru.akvine.iskra.services.domain.TableProcessModel;
 import ru.akvine.iskra.services.dto.process.CreateTableProcess;
 import ru.akvine.iskra.services.dto.process.ListTableProcess;
 import ru.akvine.iskra.services.dto.process.UpdateTableProcess;

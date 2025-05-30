@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.istochnik.GenerateTableRequest;
 import ru.akvine.iskra.exceptions.IntegrationException;
-import ru.akvine.iskra.services.domain.TableModel;
+import ru.akvine.iskra.services.domain.table.TableModel;
 
 @Service
 @RequiredArgsConstructor

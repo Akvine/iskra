@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.rest.converter.TableProcessConverter;
 import ru.akvine.iskra.rest.meta.TableProcessControllerMeta;
-import ru.akvine.iskra.services.TableProcessService;
-import ru.akvine.iskra.services.domain.TableProcessModel;
+import ru.akvine.iskra.services.domain.table.process.TableProcessService;
+import ru.akvine.iskra.services.domain.table.process.TableProcessModel;
 import ru.akvine.iskra.services.dto.process.ListTableProcess;
 
 import java.util.List;

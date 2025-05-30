@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl.configuration;
+package ru.akvine.iskra.services.domain.column.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -12,10 +12,8 @@ import ru.akvine.iskra.repositories.ColumnConfigurationRepository;
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
-import ru.akvine.iskra.services.configuration.ColumnConfigurationService;
-import ru.akvine.iskra.services.ColumnService;
-import ru.akvine.iskra.services.DictionaryService;
-import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.domain.column.ColumnService;
+import ru.akvine.iskra.services.domain.dictionary.DictionaryService;
 import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
 import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
 

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.rest.dto.process.TableProcessDto;
 import ru.akvine.iskra.rest.dto.process.TableProcessListResponse;
-import ru.akvine.iskra.services.domain.TableProcessModel;
+import ru.akvine.iskra.services.domain.table.process.TableProcessModel;
 import ru.akvine.iskra.services.dto.process.ListTableProcess;
 
 import java.util.List;

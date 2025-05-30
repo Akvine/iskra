@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl.configuration;
+package ru.akvine.iskra.services.domain.table.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -9,10 +9,8 @@ import ru.akvine.iskra.repositories.TableConfigurationRepository;
 import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.repositories.entities.config.TableConfigurationEntity;
-import ru.akvine.iskra.services.TableService;
-import ru.akvine.iskra.services.configuration.TableConfigurationService;
-import ru.akvine.iskra.services.domain.ConnectionModel;
-import ru.akvine.iskra.services.domain.configuration.TableConfigurationModel;
+import ru.akvine.iskra.services.domain.table.TableService;
+import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration;
 import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
 import ru.akvine.iskra.services.integration.visor.VisorService;

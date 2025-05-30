@@ -1,9 +1,10 @@
-package ru.akvine.iskra.services.domain;
+package ru.akvine.iskra.services.domain.plan;
 
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
+import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.base.Model;
 
 @Data

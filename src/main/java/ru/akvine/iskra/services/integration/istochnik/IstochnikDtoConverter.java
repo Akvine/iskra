@@ -5,9 +5,9 @@ import ru.akvine.compozit.commons.istochnik.ColumnDto;
 import ru.akvine.compozit.commons.istochnik.ConfigDto;
 import ru.akvine.compozit.commons.istochnik.GenerateTableRequest;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotSelectedException;
-import ru.akvine.iskra.services.domain.ColumnModel;
-import ru.akvine.iskra.services.domain.TableModel;
-import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.domain.column.ColumnModel;
+import ru.akvine.iskra.services.domain.table.TableModel;
+import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;

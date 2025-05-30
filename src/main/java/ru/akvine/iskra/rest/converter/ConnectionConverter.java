@@ -6,7 +6,7 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.enums.DatabaseType;
 import ru.akvine.iskra.rest.dto.connection.ConnectionResponse;
 import ru.akvine.iskra.rest.dto.connection.CreateConnectionRequest;
-import ru.akvine.iskra.services.domain.ConnectionModel;
+import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.dto.connection.CreateConnection;
 
 import java.util.List;

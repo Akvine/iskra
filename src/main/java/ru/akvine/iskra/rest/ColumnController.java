@@ -8,8 +8,8 @@ import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.rest.converter.ColumnConverter;
 import ru.akvine.iskra.rest.dto.column.SelectColumnRequest;
 import ru.akvine.iskra.rest.meta.ColumnControllerMeta;
-import ru.akvine.iskra.services.ColumnService;
-import ru.akvine.iskra.services.domain.ColumnModel;
+import ru.akvine.iskra.services.domain.column.ColumnService;
+import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.dto.column.SelectColumn;
 
 import java.util.List;

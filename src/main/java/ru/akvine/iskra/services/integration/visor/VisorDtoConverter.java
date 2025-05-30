@@ -8,9 +8,9 @@ import ru.akvine.compozit.commons.GenerateClearScriptRequest;
 import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.compozit.commons.scripts.ExecuteScriptsRequest;
-import ru.akvine.iskra.services.domain.ColumnModel;
-import ru.akvine.iskra.services.domain.ConnectionModel;
-import ru.akvine.iskra.services.domain.TableModel;
+import ru.akvine.iskra.services.domain.column.ColumnModel;
+import ru.akvine.iskra.services.domain.connection.ConnectionModel;
+import ru.akvine.iskra.services.domain.table.TableModel;
 
 import java.util.Collection;
 import java.util.HashMap;

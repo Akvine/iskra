@@ -10,8 +10,8 @@ import ru.akvine.iskra.rest.dto.configuration.table.CreateTableConfigurationRequ
 import ru.akvine.iskra.rest.dto.configuration.table.UpdateTableConfigurationRequest;
 import ru.akvine.iskra.rest.meta.configuration.TableConfigurationControllerMeta;
 import ru.akvine.iskra.rest.validators.TableConfigurationValidator;
-import ru.akvine.iskra.services.configuration.TableConfigurationService;
-import ru.akvine.iskra.services.domain.configuration.TableConfigurationModel;
+import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
+import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
 import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration;
 import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
 

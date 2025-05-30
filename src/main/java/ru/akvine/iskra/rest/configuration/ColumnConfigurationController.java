@@ -11,8 +11,8 @@ import ru.akvine.iskra.rest.converter.configuration.ColumnConfigurationConverter
 import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
 import ru.akvine.iskra.rest.dto.configuration.column.SelectConfigurationRequest;
 import ru.akvine.iskra.rest.meta.configuration.ColumnConfigurationControllerMeta;
-import ru.akvine.iskra.services.configuration.ColumnConfigurationService;
-import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationService;
+import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
 import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
 import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
 

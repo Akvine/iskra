@@ -7,7 +7,7 @@ import ru.akvine.iskra.rest.dto.dictionary.CreateDictionaryRequest;
 import ru.akvine.iskra.rest.dto.dictionary.DictionaryDto;
 import ru.akvine.iskra.rest.dto.dictionary.DictionaryListResponse;
 import ru.akvine.iskra.rest.dto.dictionary.ListDictionariesRequest;
-import ru.akvine.iskra.services.domain.DictionaryModel;
+import ru.akvine.iskra.services.domain.dictionary.DictionaryModel;
 import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
 import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
 import ru.akvine.iskra.utils.FileUtils;

@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl;
+package ru.akvine.iskra.services.domain.plan;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -12,10 +12,8 @@ import ru.akvine.iskra.exceptions.plan.PlanNotFoundException;
 import ru.akvine.iskra.repositories.PlanRepository;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
-import ru.akvine.iskra.services.ConnectionService;
-import ru.akvine.iskra.services.PlanService;
-import ru.akvine.iskra.services.domain.ConnectionModel;
-import ru.akvine.iskra.services.domain.PlanModel;
+import ru.akvine.iskra.services.domain.connection.ConnectionService;
+import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
 import ru.akvine.iskra.services.dto.plan.UpdatePlan;

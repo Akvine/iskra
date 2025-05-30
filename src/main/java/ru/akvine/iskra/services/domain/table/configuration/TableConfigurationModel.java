@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.domain.configuration;
+package ru.akvine.iskra.services.domain.table.configuration;
 
 import jakarta.annotation.Nullable;
 import lombok.Data;

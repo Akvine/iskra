@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl;
+package ru.akvine.iskra.services.domain.table;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,8 +6,6 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.exceptions.table.TableNotFoundException;
 import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.TableEntity;
-import ru.akvine.iskra.services.TableService;
-import ru.akvine.iskra.services.domain.TableModel;
 import ru.akvine.iskra.services.dto.table.ListTables;
 import ru.akvine.iskra.services.dto.table.ToogleSelectedTables;
 

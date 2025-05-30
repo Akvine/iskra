@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl;
+package ru.akvine.iskra.services.domain.connection;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,8 +6,6 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.exceptions.connection.ConnectionNotFoundException;
 import ru.akvine.iskra.repositories.ConnectionRepository;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
-import ru.akvine.iskra.services.ConnectionService;
-import ru.akvine.iskra.services.domain.ConnectionModel;
 import ru.akvine.iskra.services.dto.connection.CreateConnection;
 
 import java.util.List;

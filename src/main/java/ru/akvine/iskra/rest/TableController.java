@@ -8,8 +8,8 @@ import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.rest.converter.TableConverter;
 import ru.akvine.iskra.rest.dto.table.ToggleSelectedRequest;
 import ru.akvine.iskra.rest.meta.TableControllerMeta;
-import ru.akvine.iskra.services.TableService;
-import ru.akvine.iskra.services.domain.TableModel;
+import ru.akvine.iskra.services.domain.table.TableService;
+import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.dto.table.ToogleSelectedTables;
 
 import java.util.List;

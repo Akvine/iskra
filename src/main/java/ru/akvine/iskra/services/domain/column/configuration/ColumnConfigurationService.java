@@ -1,7 +1,6 @@
-package ru.akvine.iskra.services.configuration;
+package ru.akvine.iskra.services.domain.column.configuration;
 
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
-import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
 import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
 import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
 

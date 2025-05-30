@@ -8,7 +8,7 @@ import ru.akvine.iskra.rest.dto.configuration.table.CreateTableConfigurationRequ
 import ru.akvine.iskra.rest.dto.configuration.table.ListTableConfigurationsResponse;
 import ru.akvine.iskra.rest.dto.configuration.table.TableConfigurationDto;
 import ru.akvine.iskra.rest.dto.configuration.table.UpdateTableConfigurationRequest;
-import ru.akvine.iskra.services.domain.configuration.TableConfigurationModel;
+import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
 import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration;
 import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
 

@@ -1,7 +1,6 @@
-package ru.akvine.iskra.services.configuration;
+package ru.akvine.iskra.services.domain.table.configuration;
 
 import ru.akvine.iskra.repositories.entities.config.TableConfigurationEntity;
-import ru.akvine.iskra.services.domain.configuration.TableConfigurationModel;
 import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration;
 import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
 

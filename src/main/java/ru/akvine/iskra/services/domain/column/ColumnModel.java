@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.domain;
+package ru.akvine.iskra.services.domain.column;
 
 import jakarta.annotation.Nullable;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.services.domain.base.Model;
-import ru.akvine.iskra.services.domain.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
 
 import java.util.List;
 

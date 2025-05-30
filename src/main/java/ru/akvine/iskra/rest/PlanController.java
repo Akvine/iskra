@@ -11,8 +11,8 @@ import ru.akvine.iskra.rest.converter.PlanConverter;
 import ru.akvine.iskra.rest.dto.plan.CreatePlanRequest;
 import ru.akvine.iskra.rest.dto.plan.GenerateDataRequest;
 import ru.akvine.iskra.rest.meta.PlanControllerMeta;
-import ru.akvine.iskra.services.PlanService;
-import ru.akvine.iskra.services.domain.PlanModel;
+import ru.akvine.iskra.services.domain.plan.PlanService;
+import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
 

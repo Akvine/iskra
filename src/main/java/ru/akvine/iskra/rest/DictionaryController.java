@@ -11,8 +11,8 @@ import ru.akvine.iskra.rest.dto.dictionary.CreateDictionaryRequest;
 import ru.akvine.iskra.rest.dto.dictionary.ListDictionariesRequest;
 import ru.akvine.iskra.rest.meta.DictionaryControllerMeta;
 import ru.akvine.iskra.rest.validators.DictionaryValidator;
-import ru.akvine.iskra.services.DictionaryService;
-import ru.akvine.iskra.services.domain.DictionaryModel;
+import ru.akvine.iskra.services.domain.dictionary.DictionaryService;
+import ru.akvine.iskra.services.domain.dictionary.DictionaryModel;
 import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
 import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
 

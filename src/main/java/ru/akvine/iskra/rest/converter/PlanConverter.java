@@ -6,7 +6,7 @@ import ru.akvine.iskra.rest.dto.plan.CreatePlanRequest;
 import ru.akvine.iskra.rest.dto.plan.GenerateDataRequest;
 import ru.akvine.iskra.rest.dto.plan.PlanDto;
 import ru.akvine.iskra.rest.dto.plan.PlanListResponse;
-import ru.akvine.iskra.services.domain.PlanModel;
+import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
 

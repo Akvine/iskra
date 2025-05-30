@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.impl;
+package ru.akvine.iskra.services.domain.dictionary;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +12,6 @@ import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.exceptions.dictionary.DictionaryNotFoundException;
 import ru.akvine.iskra.repositories.DictionaryRepository;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
-import ru.akvine.iskra.services.DictionaryService;
-import ru.akvine.iskra.services.domain.DictionaryModel;
 import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
 import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
 
