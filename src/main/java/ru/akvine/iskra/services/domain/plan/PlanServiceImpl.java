@@ -2,19 +2,14 @@ package ru.akvine.iskra.services.domain.plan;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import ru.akvine.compozit.commons.ConnectionDto;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
-import ru.akvine.iskra.events.GenerateDataEvent;
 import ru.akvine.iskra.exceptions.plan.PlanNotFoundException;
 import ru.akvine.iskra.repositories.PlanRepository;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.domain.connection.ConnectionService;
-import ru.akvine.iskra.services.domain.connection.ConnectionModel;
-import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
 import ru.akvine.iskra.services.dto.plan.UpdatePlan;
 
@@ -25,17 +20,6 @@ import java.util.List;
 public class PlanServiceImpl implements PlanService {
     private final PlanRepository planRepository;
     private final ConnectionService connectionService;
-    private final ApplicationEventPublisher eventPublisher;
-
-    @Override
-    public String start(GenerateDataAction action) {
-        Asserts.isNotNull(action);
-        PlanEntity plan = verifyExists(action.getPlanUuid());
-        ConnectionDto connection = buildConnectionDto(new ConnectionModel(plan.getConnection()));
-
-        eventPublisher.publishEvent(new GenerateDataEvent(this, action, connection));
-        return plan.getUuid();
-    }
 
     @Override
     public PlanModel create(CreatePlan createPlan) {
@@ -82,17 +66,5 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return new PlanModel(planRepository.save(planToUpdate));
-    }
-
-    private ConnectionDto buildConnectionDto(ConnectionModel connectionModel) {
-        return new ConnectionDto()
-                .setConnectionName(connectionModel.getConnectionName())
-                .setDatabaseName(connectionModel.getDatabaseName())
-                .setHost(connectionModel.getHost())
-                .setSchema(connectionModel.getSchema())
-                .setPort(connectionModel.getPort())
-                .setUsername(connectionModel.getUsername())
-                .setPassword(connectionModel.getPassword())
-                .setDatabaseType(connectionModel.getDatabaseType().getValue());
     }
 }

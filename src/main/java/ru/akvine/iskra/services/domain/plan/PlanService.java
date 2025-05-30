@@ -8,7 +8,6 @@ import ru.akvine.iskra.services.dto.plan.UpdatePlan;
 import java.util.List;
 
 public interface PlanService {
-    String start(GenerateDataAction action);
 
     PlanModel create(CreatePlan createPlan);
 
