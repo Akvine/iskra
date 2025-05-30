@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.exceptions.IntegrationException;
-import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
 import ru.akvine.iskra.services.GeneratorService;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
@@ -24,7 +23,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SyncGeneratorServiceImpl implements GeneratorService {
+public class RestGeneratorServiceImpl implements GeneratorService {
     private final VisorService visorService;
     private final IstochnikService istochnikService;
     private final TableProcessService tableProcessService;
@@ -33,12 +32,8 @@ public class SyncGeneratorServiceImpl implements GeneratorService {
     private int updateIteration;
 
     @Override
-    public TableProcessModel generate(String processUuid, TableModel table) {
+    public boolean generate(String processUuid, TableModel table) {
         TableConfigurationModel tableConfiguration = table.getConfiguration();
-        if (tableConfiguration == null) {
-            String errorMessage = String.format("Table with name = [%s] has no configuration!", table.getTableName());
-            throw new TableConfigurationNotFoundException(errorMessage);
-        }
 
         if (tableConfiguration.isDeleteDataBeforeStart() &&
                 StringUtils.isNotBlank(tableConfiguration.getClearScript())) {
@@ -57,7 +52,7 @@ public class SyncGeneratorServiceImpl implements GeneratorService {
         TableProcessModel tableProcess = tableProcessService.create(createTableProcessAction);
         String pid = tableProcess.getPid();
         generateDataInternal(pid, table);
-        return tableProcess;
+        return true;
     }
 
     private void generateDataInternal(String pid, TableModel tableModel) {
