@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.converter;
+package ru.akvine.iskra.rest.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -11,7 +11,7 @@ import ru.akvine.iskra.services.dto.plan.CreatePlan;
 import java.util.List;
 
 @Component
-public class PlanConverter {
+public class PlanMapper {
     public PlanListResponse convertToProcessListResponse(List<PlanModel> processes) {
         Asserts.isNotNull(processes);
         return new PlanListResponse()

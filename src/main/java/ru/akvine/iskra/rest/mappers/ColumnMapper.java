@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.converter;
+package ru.akvine.iskra.rest.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -11,7 +11,7 @@ import ru.akvine.iskra.services.dto.column.SelectColumn;
 import java.util.List;
 
 @Component
-public class ColumnConverter {
+public class ColumnMapper {
     public SelectColumn convertToSelectColumn(SelectColumnRequest request) {
         Asserts.isNotNull(request);
         return new SelectColumn()

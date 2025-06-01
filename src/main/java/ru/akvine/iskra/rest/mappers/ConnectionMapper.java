@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.converter;
+package ru.akvine.iskra.rest.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.ConnectionDto;
@@ -12,7 +12,7 @@ import ru.akvine.iskra.services.dto.connection.CreateConnection;
 import java.util.List;
 
 @Component
-public class ConnectionConverter {
+public class ConnectionMapper {
     public CreateConnection convertToCreateConnection(CreateConnectionRequest request) {
         Asserts.isNotNull(request);
         return new CreateConnection()

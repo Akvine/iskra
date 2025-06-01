@@ -24,10 +24,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VisorService {
     private final VisorClient visorClient;
-    private final VisorDtoConverter visorDtoConverter;
+    private final VisorDtoMapper visorDtoMapper;
 
     public void sendFile(TableModel tableModel, byte[] table) {
-        InsertValuesRequest request = visorDtoConverter.convert(tableModel, table);
+        InsertValuesRequest request = visorDtoMapper.convert(tableModel, table);
         try {
             visorClient.insertValues(request);
         } catch (Exception exception) {
@@ -39,7 +39,7 @@ public class VisorService {
     }
 
     public List<TableMetadataDto> loadTables(ConnectionModel connection) {
-        ConnectionRequest request = visorDtoConverter.convertToConnectionRequest(connection);
+        ConnectionRequest request = visorDtoMapper.convertToConnectionRequest(connection);
         try {
            return visorClient.loadTables(request).getTables();
         } catch (Exception exception) {
@@ -51,7 +51,7 @@ public class VisorService {
     }
 
     public List<ColumnMetadataDto> loadColumns(String tableName, ConnectionModel connection) {
-        ConnectionRequest connectionRequest = visorDtoConverter.convertToConnectionRequest(connection);
+        ConnectionRequest connectionRequest = visorDtoMapper.convertToConnectionRequest(connection);
         GetColumnsRequest request = new GetColumnsRequest()
                 .setConnection(connectionRequest)
                 .setTableName(tableName);
@@ -66,7 +66,7 @@ public class VisorService {
     }
 
     public List<ConstraintType> loadConstraints(String tableName, String columnName, ConnectionModel connection) {
-        ConnectionRequest connectionRequest = visorDtoConverter.convertToConnectionRequest(connection);
+        ConnectionRequest connectionRequest = visorDtoMapper.convertToConnectionRequest(connection);
         ListConstraintsRequest request = new ListConstraintsRequest()
                 .setConnectionInfo(connectionRequest)
                 .setColumnName(columnName)
@@ -82,7 +82,7 @@ public class VisorService {
     }
 
     public String executeScripts(Collection<String> scripts, ConnectionModel connection) {
-        ExecuteScriptsRequest request = visorDtoConverter.convertToExecuteScriptsRequest(connection, scripts);
+        ExecuteScriptsRequest request = visorDtoMapper.convertToExecuteScriptsRequest(connection, scripts);
 
         try {
             visorClient.execute(request);
@@ -96,7 +96,7 @@ public class VisorService {
     }
 
     public String generateClearScript(String tableName, DeleteMode deleteMode, ConnectionModel connection) {
-        GenerateClearScriptRequest request = visorDtoConverter.convertToGenerateClearScriptRequest(
+        GenerateClearScriptRequest request = visorDtoMapper.convertToGenerateClearScriptRequest(
                 tableName,
                 deleteMode,
                 connection);

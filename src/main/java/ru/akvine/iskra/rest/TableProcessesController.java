@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
-import ru.akvine.iskra.rest.converter.TableProcessConverter;
+import ru.akvine.iskra.rest.mappers.TableProcessMapper;
 import ru.akvine.iskra.rest.meta.TableProcessControllerMeta;
 import ru.akvine.iskra.services.domain.table.process.TableProcessService;
 import ru.akvine.iskra.services.domain.table.process.TableProcessModel;
@@ -16,13 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TableProcessesController implements TableProcessControllerMeta {
     private final TableProcessService tableProcessService;
-    private final TableProcessConverter tableProcessConverter;
+    private final TableProcessMapper tableProcessMapper;
 
     @Override
     public Response list(@PathVariable("uuid") String planUuid,
                          @PathVariable(value = "processUuid", required = false) String processUuid) {
-        ListTableProcess action = tableProcessConverter.convertToListTableProcess(planUuid, processUuid);
+        ListTableProcess action = tableProcessMapper.convertToListTableProcess(planUuid, processUuid);
         List<TableProcessModel> tableProcesses = tableProcessService.list(action);
-        return tableProcessConverter.convertToTableProcessListResponse(tableProcesses);
+        return tableProcessMapper.convertToTableProcessListResponse(tableProcesses);
     }
 }

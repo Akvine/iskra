@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class VisorDtoConverter {
+public class VisorDtoMapper {
     public InsertValuesRequest convert(TableModel tableModel,
                                        byte[] table) {
         return new InsertValuesRequest()

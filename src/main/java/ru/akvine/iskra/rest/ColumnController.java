@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
-import ru.akvine.iskra.rest.converter.ColumnConverter;
+import ru.akvine.iskra.rest.mappers.ColumnMapper;
 import ru.akvine.iskra.rest.dto.column.SelectColumnRequest;
 import ru.akvine.iskra.rest.meta.ColumnControllerMeta;
 import ru.akvine.iskra.services.domain.column.ColumnService;
@@ -17,13 +17,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ColumnController implements ColumnControllerMeta {
-    private final ColumnConverter columnConverter;
+    private final ColumnMapper columnMapper;
     private final ColumnService columnService;
 
     @Override
     public Response select(@RequestBody @Valid SelectColumnRequest request) {
-        SelectColumn selectColumn = columnConverter.convertToSelectColumn(request);
+        SelectColumn selectColumn = columnMapper.convertToSelectColumn(request);
         List<ColumnModel> selected = columnService.selectAll(selectColumn);
-        return columnConverter.convertToListColumnResponse(selected);
+        return columnMapper.convertToListColumnResponse(selected);
     }
 }

@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.converter.configuration;
+package ru.akvine.iskra.rest.mappers.configuration;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration
 import java.util.List;
 
 @Component
-public class TableConfigurationConverter {
+public class TableConfigurationMapper {
     public CreateTableConfiguration convertToCreateTableConfiguration(CreateTableConfigurationRequest request) {
         Asserts.isNotNull(request);
         return new CreateTableConfiguration()

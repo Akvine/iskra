@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-public class IstochnikDtoConverter {
+public class IstochnikDtoMapper {
     public GenerateTableRequest convertToGenerateTableRequest(int processedRowsCount,
                                                               TableModel table) {
 

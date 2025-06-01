@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
-import ru.akvine.iskra.rest.converter.configuration.ColumnConfigurationConverter;
+import ru.akvine.iskra.rest.mappers.configuration.ColumnConfigurationMapper;
 import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
 import ru.akvine.iskra.rest.dto.configuration.column.SelectConfigurationRequest;
 import ru.akvine.iskra.rest.meta.configuration.ColumnConfigurationControllerMeta;
@@ -23,26 +23,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ColumnConfigurationController implements ColumnConfigurationControllerMeta {
     private final ColumnConfigurationService columnConfigurationService;
-    private final ColumnConfigurationConverter columnConfigurationConverter;
+    private final ColumnConfigurationMapper columnConfigurationMapper;
     private final ColumnConfigurationValidator columnConfigurationValidator;
 
     @Override
     public Response list(@PathVariable("columnUuid") String columnUuid) {
         List<ColumnConfigurationModel> models = columnConfigurationService.list(columnUuid);
-        return columnConfigurationConverter.convertToConfigurationListResponse(models);
+        return columnConfigurationMapper.convertToConfigurationListResponse(models);
     }
 
     @Override
     public Response create(@RequestBody @Valid CreateConfigurationRequest request) {
         columnConfigurationValidator.verifyCreateConfigurationRequest(request);
-        CreateColumnConfiguration action = columnConfigurationConverter.convertToCreateColumnConfiguration(request);
+        CreateColumnConfiguration action = columnConfigurationMapper.convertToCreateColumnConfiguration(request);
         ColumnConfigurationModel createdModel = columnConfigurationService.create(action);
-        return columnConfigurationConverter.convertToConfigurationListResponse(List.of(createdModel));
+        return columnConfigurationMapper.convertToConfigurationListResponse(List.of(createdModel));
     }
 
     @Override
     public Response select(@RequestBody @Valid SelectConfigurationRequest request) {
-        SelectColumnConfiguration selectAction = columnConfigurationConverter.convertToSelectColumnConfiguration(request);
+        SelectColumnConfiguration selectAction = columnConfigurationMapper.convertToSelectColumnConfiguration(request);
         columnConfigurationService.select(selectAction);
         return new SuccessfulResponse();
     }

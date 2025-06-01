@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.converter.configuration;
+package ru.akvine.iskra.rest.mappers.configuration;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfigurati
 import java.util.List;
 
 @Component
-public class ColumnConfigurationConverter {
+public class ColumnConfigurationMapper {
     public CreateColumnConfiguration convertToCreateColumnConfiguration(CreateConfigurationRequest request) {
         Asserts.isNotNull(request);
 

@@ -1,10 +1,10 @@
-package ru.akvine.iskra.rest.converter;
+package ru.akvine.iskra.rest.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.iskra.rest.dto.plan.actions.StartPlanResponse;
 
 @Component
-public class PlanActionsConverter {
+public class PlanActionsMapper {
 
     public StartPlanResponse convertToStartPlanResponse(String processUuid) {
         return new StartPlanResponse().setProcessUuid(processUuid);

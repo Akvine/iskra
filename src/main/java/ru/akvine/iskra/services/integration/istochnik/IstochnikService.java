@@ -10,7 +10,7 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 @RequiredArgsConstructor
 public class IstochnikService {
     private final IstochnikClient client;
-    private final IstochnikDtoConverter converter;
+    private final IstochnikDtoMapper converter;
 
     public byte[] generatedData(int processedRowsCount, TableModel table) {
         GenerateTableRequest request = converter.convertToGenerateTableRequest(processedRowsCount, table);

@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.converter;
+package ru.akvine.iskra.rest.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Component
-public class TableConverter {
+public class TableMapper {
     public ListTablesResponse convertToListTablesResponse(List<TableModel> tables) {
         Asserts.isNotNull(tables);
         return new ListTablesResponse()

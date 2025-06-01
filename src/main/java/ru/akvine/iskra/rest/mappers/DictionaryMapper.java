@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.converter;
+package ru.akvine.iskra.rest.mappers;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Component
-public class DictionaryConverter {
+public class DictionaryMapper {
     public ListDictionaries convertToListDictionaries(ListDictionariesRequest request) {
         Asserts.isNotNull(request);
         return new ListDictionaries()

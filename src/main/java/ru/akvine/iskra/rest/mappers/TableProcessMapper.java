@@ -1,4 +1,4 @@
-package ru.akvine.iskra.rest.converter;
+package ru.akvine.iskra.rest.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -10,7 +10,7 @@ import ru.akvine.iskra.services.dto.process.ListTableProcess;
 import java.util.List;
 
 @Component
-public class TableProcessConverter {
+public class TableProcessMapper {
 
     public ListTableProcess convertToListTableProcess(String planUuid, String processUuid) {
         return new ListTableProcess()

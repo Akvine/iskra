@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
-import ru.akvine.iskra.rest.converter.PlanActionsConverter;
+import ru.akvine.iskra.rest.mappers.PlanActionsMapper;
 import ru.akvine.iskra.rest.meta.plan.PlanActionsControllerMeta;
 import ru.akvine.iskra.services.PlanActionService;
 
@@ -12,12 +12,12 @@ import ru.akvine.iskra.services.PlanActionService;
 @RequiredArgsConstructor
 public class PlanActionsController implements PlanActionsControllerMeta {
     private final PlanActionService planActionService;
-    private final PlanActionsConverter planActionsConverter;
+    private final PlanActionsMapper planActionsMapper;
 
     @Override
     public Response start(String planUuid) {
         String processUuid = planActionService.start(planUuid, false);
-        return planActionsConverter.convertToStartPlanResponse(processUuid);
+        return planActionsMapper.convertToStartPlanResponse(processUuid);
     }
 
     @Override
@@ -29,6 +29,6 @@ public class PlanActionsController implements PlanActionsControllerMeta {
     @Override
     public Response resume(String planUuid) {
         String processUuid = planActionService.resume(planUuid);
-        return planActionsConverter.convertToStartPlanResponse(processUuid);
+        return planActionsMapper.convertToStartPlanResponse(processUuid);
     }
 }
