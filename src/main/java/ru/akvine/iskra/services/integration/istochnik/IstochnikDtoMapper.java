@@ -68,8 +68,8 @@ public class IstochnikDtoMapper {
                 .setRegexps(new HashSet<>(config.getRegexps()));
 
         if (!config.isRepeatable()) {
-            configDto.setStart(String.valueOf(processedRowsCount));
-            configDto.setEnd(String.valueOf(processedRowsCount + batchSize));
+            configDto.setStart(String.valueOf(processedRowsCount + Integer.parseInt(config.getStart())));
+            configDto.setEnd(String.valueOf(processedRowsCount + batchSize + Integer.parseInt(config.getStart())));
         }
 
         if (config.getDictionary() != null) {
