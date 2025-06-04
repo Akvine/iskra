@@ -29,9 +29,9 @@ public class SecurityController implements SecurityControllerMeta {
     public Response registration(RegistrationRequest request, HttpServletRequest httpServletRequest) {
         securityValidator.verifyRegistrationRequest(request);
         CreateUser action = userMapper.mapToCreateUser(request);
-        UserModel clientModel = userService.create(action);
-        securityManager.authenticate(clientModel, httpServletRequest);
-        return new SuccessfulResponse();
+        UserModel user = userService.create(action);
+        securityManager.authenticate(user, httpServletRequest);
+        return userMapper.mapToAuthResponse(user);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SecurityController implements SecurityControllerMeta {
                 request.getUsername(),
                 request.getPassword());
         securityManager.authenticate(user, httpServletRequest);
-        return new SuccessfulResponse();
+        return userMapper.mapToAuthResponse(user);
     }
 
     @Override
