@@ -7,11 +7,14 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.exceptions.dictionary.DictionaryNotFoundException;
 import ru.akvine.iskra.repositories.DictionaryRepository;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
+import ru.akvine.iskra.repositories.entities.UserEntity;
+import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
 import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
 
@@ -26,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @DependsOn("dictionaryLoader")
 public class DictionaryServiceImpl implements DictionaryService {
     private final DictionaryRepository dictionaryRepository;
+    private final UserService userService;
     private static final Map<String, DictionaryModel> DICTIONARIES = new ConcurrentHashMap<>();
 
     @Value("${dictionaries.cache.enabled}")
@@ -57,7 +61,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
             List<DictionaryModel> collectedDictionaries = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(action.getNames())) {
-               action.getNames().forEach(name -> collectedDictionaries.add(DICTIONARIES.get(name)));
+                action.getNames().forEach(name -> collectedDictionaries.add(DICTIONARIES.get(name)));
             } else {
                 return DICTIONARIES.values().stream().toList();
             }
@@ -88,13 +92,16 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    @Transactional
     public DictionaryModel create(CreateDictionary createDictionary) {
         Asserts.isNotNull(createDictionary);
 
+        UserEntity owner = userService.verifyExistsByUuid(createDictionary.getUserUuid());
         DictionaryEntity dictionaryToCreate = new DictionaryEntity()
                 .setName(createDictionary.getName())
                 .setDescription(createDictionary.getDescription())
-                .setValues(String.join(",", createDictionary.getValues()));
+                .setValues(String.join(",", createDictionary.getValues()))
+                .setUser(owner);
         if (createDictionary.getLanguage() != null) {
             dictionaryToCreate.setLanguage(Language.from(createDictionary.getLanguage()));
         }
@@ -103,12 +110,16 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public DictionaryEntity verifyExists(String name) {
-        Asserts.isNotNull(name);
+    public DictionaryEntity verifyExists(String name, String userUuid) {
+        Asserts.isNotBlank(name, "name is blank!");
+        Asserts.isNotBlank(userUuid, "userUuid is blank!");
         return dictionaryRepository
-                .findByName(name)
+                .findByName(name, userUuid)
                 .orElseThrow(() -> {
-                    String errorMessage = "Dictionary with name = [" + name + "] not found!";
+                    String errorMessage = String.format(
+                            "Dictionary with name = [%s] not found for user = [%s]!",
+                            name, userUuid
+                    );
                     return new DictionaryNotFoundException(errorMessage);
                 });
     }

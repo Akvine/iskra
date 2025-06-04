@@ -30,7 +30,8 @@ public interface TableRepository extends JpaRepository<TableEntity, Long> {
             "te.name in :tableNames")
     @EntityGraph(attributePaths = "columns")
     List<TableEntity> findAll(@Param("uuid") String planUuid,
-                              @Param("tableNames") Collection<String> tableNames);
+                              @Param("tableNames") Collection<String> tableNames,
+                              @Param("userUuid") String userUuid);
 
     @Query("from TableEntity te " +
             "where te.name = :name " +

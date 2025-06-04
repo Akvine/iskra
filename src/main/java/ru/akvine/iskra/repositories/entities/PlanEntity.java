@@ -36,4 +36,9 @@ public class PlanEntity extends BaseEntity<Long> implements Identifiable {
     @JoinColumn(name = "CONNECTION_ID", nullable = false)
     @NotNull
     private ConnectionEntity connection;
+
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private UserEntity user;
 }

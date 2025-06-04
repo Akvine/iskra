@@ -7,6 +7,7 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 @Data
 @Accessors(chain = true)
 public class GenerateDataAction {
+    private String userUuid;
     private String processUuid;
     private TableModel table;
     private boolean resume;

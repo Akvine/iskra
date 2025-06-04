@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.DatabaseType;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
 import ru.akvine.iskra.services.domain.base.Model;
+import ru.akvine.iskra.services.domain.user.UserModel;
 
 @Data
 @Accessors(chain = true)
@@ -23,6 +24,7 @@ public class ConnectionModel extends Model<Long> {
     @ToString.Exclude
     private String password;
     private DatabaseType databaseType;
+    private UserModel user;
 
     public ConnectionModel(ConnectionEntity connection) {
         super(connection);
@@ -35,5 +37,6 @@ public class ConnectionModel extends Model<Long> {
         this.username = connection.getUsername();
         this.password = connection.getPassword();
         this.databaseType = connection.getDatabaseType();
+        this.user = new UserModel(connection.getUser());
     }
 }

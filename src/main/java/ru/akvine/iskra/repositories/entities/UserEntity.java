@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
 import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
 
@@ -42,6 +43,11 @@ public class UserEntity extends SoftBaseEntity<Long> implements UserDetails, Ide
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
+
+    @Column(name = "LANGUAGE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Language language;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

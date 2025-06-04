@@ -1,8 +1,10 @@
 package ru.akvine.iskra.rest.mappers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.dto.dictionary.CreateDictionaryRequest;
 import ru.akvine.iskra.rest.dto.dictionary.DictionaryDto;
 import ru.akvine.iskra.rest.dto.dictionary.DictionaryListResponse;
@@ -17,7 +19,10 @@ import java.util.HashSet;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class DictionaryMapper {
+    private final SecurityManager securityManager;
+
     public ListDictionaries convertToListDictionaries(ListDictionariesRequest request) {
         Asserts.isNotNull(request);
         return new ListDictionaries()
@@ -43,6 +48,7 @@ public class DictionaryMapper {
 
     public CreateDictionary convertToCreateDictionary(CreateDictionaryRequest request) {
         return new CreateDictionary()
+                .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setName(request.getName())
                 .setLanguage(request.getLanguage())
                 .setDescription(request.getDescription())

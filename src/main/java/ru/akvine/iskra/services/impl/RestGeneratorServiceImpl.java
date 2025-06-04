@@ -63,6 +63,7 @@ public class RestGeneratorServiceImpl implements GeneratorService {
         } else {
             CreateTableProcess createTableProcessAction = new CreateTableProcess()
                     .setPlanUuid(table.getPlan().getUuid())
+                    .setUserUuid(action.getUserUuid())
                     .setProcessUuid(processUuid)
                     .setTableName(table.getTableName())
                     .setTotalRowsCount(table.getConfiguration().getRowsCount());

@@ -9,6 +9,7 @@ import java.util.Set;
 @Data
 @Accessors(chain = true)
 public class CreateDictionary {
+    private String userUuid;
     private String name;
     private Set<String> values;
     @Nullable

@@ -11,5 +11,5 @@ public interface DictionaryService {
 
     DictionaryModel create(CreateDictionary createDictionary);
 
-    DictionaryEntity verifyExists(String name);
+    DictionaryEntity verifyExists(String name, String userUuid);
 }

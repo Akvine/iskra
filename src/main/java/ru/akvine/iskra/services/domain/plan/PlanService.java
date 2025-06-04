@@ -10,11 +10,11 @@ public interface PlanService {
 
     PlanModel create(CreatePlan createPlan);
 
-    PlanModel get(String uuid);
+    PlanModel get(String uuid, String userUuid);
 
-    List<PlanModel> list();
+    List<PlanModel> list(String userUuid);
 
-    PlanEntity verifyExists(String byUuid);
+    PlanEntity verifyExists(String byUuid, String byUserUuid);
 
     PlanModel update(UpdatePlan action);
 }

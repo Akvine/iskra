@@ -1,8 +1,10 @@
 package ru.akvine.iskra.rest.mappers.configuration;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.dto.configuration.column.ConfigurationDto;
 import ru.akvine.iskra.rest.dto.configuration.column.ConfigurationListResponse;
 import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
@@ -14,7 +16,10 @@ import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfigurati
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class ColumnConfigurationMapper {
+    private final SecurityManager securityManager;
+
     public CreateColumnConfiguration convertToCreateColumnConfiguration(CreateConfigurationRequest request) {
         Asserts.isNotNull(request);
 
@@ -36,7 +41,8 @@ public class ColumnConfigurationMapper {
                 .setEnd(request.getEnd())
                 .setStep(request.getStep())
                 .setFilters(request.getFilters())
-                .setPostFilters(request.getPostFilters());
+                .setPostFilters(request.getPostFilters())
+                .setUserUuid(securityManager.getCurrentUser().getUuid());
     }
 
     public ConfigurationListResponse convertToConfigurationListResponse(List<ColumnConfigurationModel> configs) {

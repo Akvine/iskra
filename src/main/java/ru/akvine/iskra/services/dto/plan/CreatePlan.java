@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class CreatePlan {
+    private String userUuid;
     private String name;
     private String connectionName;
 }

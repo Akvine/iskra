@@ -75,7 +75,10 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
                     .setColumn(column);
 
             if (StringUtils.isNotBlank(action.getDictionaryName())) {
-                DictionaryEntity dictionary = dictionaryService.verifyExists(action.getDictionaryName());
+                DictionaryEntity dictionary = dictionaryService.verifyExists(
+                        action.getDictionaryName(),
+                        action.getUserUuid()
+                );
                 columnConfigurationToCreate.setDictionary(dictionary);
             }
 

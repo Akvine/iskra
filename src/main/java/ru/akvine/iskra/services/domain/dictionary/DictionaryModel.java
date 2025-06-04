@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.services.domain.base.Model;
+import ru.akvine.iskra.services.domain.user.UserModel;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -20,6 +21,7 @@ public class DictionaryModel extends Model<Long> {
     private String description;
     private Language language;
     private Set<String> values;
+    private UserModel user;
 
     public DictionaryModel(DictionaryEntity entity) {
         super(entity);
@@ -30,5 +32,8 @@ public class DictionaryModel extends Model<Long> {
         this.description = entity.getDescription();
         this.values = Arrays.stream(entity.getValues().split(","))
                 .collect(Collectors.toSet());
+        if (!entity.isSystem()) {
+            this.user = new UserModel(entity.getUser());
+        }
     }
 }

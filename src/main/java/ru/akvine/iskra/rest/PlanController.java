@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
+import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.mappers.PlanMapper;
 import ru.akvine.iskra.rest.dto.plan.CreatePlanRequest;
 import ru.akvine.iskra.rest.meta.plan.PlanControllerMeta;
@@ -20,10 +21,11 @@ import java.util.List;
 public class PlanController implements PlanControllerMeta {
     private final PlanService planService;
     private final PlanMapper planMapper;
+    private final SecurityManager securityManager;
 
     @Override
     public Response list() {
-        List<PlanModel> processes = planService.list();
+        List<PlanModel> processes = planService.list(securityManager.getCurrentUser().getUuid());
         return planMapper.convertToProcessListResponse(processes);
     }
 

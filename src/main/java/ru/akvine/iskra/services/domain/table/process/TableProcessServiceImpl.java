@@ -33,7 +33,7 @@ public class TableProcessServiceImpl implements TableProcessService {
     public TableProcessModel create(CreateTableProcess createTableProcess) {
         Asserts.isNotNull(createTableProcess);
 
-        PlanEntity process = planService.verifyExists(createTableProcess.getPlanUuid());
+        PlanEntity process = planService.verifyExists(createTableProcess.getPlanUuid(), createTableProcess.getUserUuid());
 
         TableProcessEntity entityToCreate = new TableProcessEntity()
                 .setTotalRowsCount(createTableProcess.getTotalRowsCount())

@@ -1,5 +1,6 @@
 package ru.akvine.iskra.repositories.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -38,4 +39,9 @@ public class DictionaryEntity extends BaseEntity<Long> {
 
     @Column(name = "VALUES", nullable = false)
     private String values;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    @Nullable
+    private UserEntity user;
 }

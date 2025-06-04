@@ -9,8 +9,8 @@ import ru.akvine.iskra.repositories.TableConfigurationRepository;
 import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.repositories.entities.config.TableConfigurationEntity;
-import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
+import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration;
 import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
 import ru.akvine.iskra.services.integration.visor.VisorService;
@@ -40,9 +40,11 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
         String clearScript;
         Boolean generateClearScript = action.getGenerateClearScript();
         if (generateClearScript != null && generateClearScript.equals(Boolean.TRUE)) {
+            ConnectionModel connection = new ConnectionModel(table.getPlan().getConnection());
             clearScript = visorService.generateClearScript(action.getTableName(),
                     action.getDeleteMode(),
-                    new ConnectionModel(table.getPlan().getConnection()));
+                    connection
+            );
             configurationToSave.setClearScript(clearScript);
         }
 

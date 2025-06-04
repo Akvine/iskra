@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class UpdatePlan {
     private String planUuid;
+    private String userUuid;
 
     @Nullable
     private String lastProcessUuid;

@@ -1,8 +1,10 @@
 package ru.akvine.iskra.rest.mappers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.ConnectionDto;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.enums.DatabaseType;
 import ru.akvine.iskra.rest.dto.connection.ConnectionResponse;
 import ru.akvine.iskra.rest.dto.connection.CreateConnectionRequest;
@@ -12,7 +14,10 @@ import ru.akvine.iskra.services.dto.connection.CreateConnection;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class ConnectionMapper {
+    private final SecurityManager securityManager;
+
     public CreateConnection convertToCreateConnection(CreateConnectionRequest request) {
         Asserts.isNotNull(request);
         return new CreateConnection()
@@ -23,6 +28,7 @@ public class ConnectionMapper {
                 .setSchema(request.getSchema())
                 .setUsername(request.getUsername())
                 .setPassword(request.getPassword())
+                .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setDatabaseType(DatabaseType.from(request.getDatabaseType()));
     }
 

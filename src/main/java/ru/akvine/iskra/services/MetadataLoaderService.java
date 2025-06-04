@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface MetadataLoaderService {
     @Transactional
-    List<TableModel> loadOrList(String planUuid);
+    List<TableModel> loadOrList(String planUuid, String userUuid);
 }

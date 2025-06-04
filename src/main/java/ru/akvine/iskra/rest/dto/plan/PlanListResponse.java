@@ -9,5 +9,5 @@ import java.util.Collection;
 @Data
 @Accessors(chain = true)
 public class PlanListResponse extends SuccessfulResponse {
-    private Collection<PlanDto> processes;
+    private Collection<PlanDto> plans;
 }

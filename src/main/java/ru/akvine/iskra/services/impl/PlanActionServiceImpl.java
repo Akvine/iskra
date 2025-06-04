@@ -15,6 +15,7 @@ import ru.akvine.iskra.services.PlanActionService;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
+import ru.akvine.iskra.services.dto.plan.action.StartAction;
 import ru.akvine.iskra.services.dto.table.ListTables;
 
 import java.util.Map;
@@ -31,9 +32,11 @@ public class PlanActionServiceImpl implements PlanActionService {
     private final GeneratorCacheService generatorCacheService;
 
     @Override
-    public String start(String planUuid, boolean resume) {
-        Asserts.isNotNull(planUuid);
-        planService.verifyExists(planUuid);
+    public String start(StartAction action) {
+        Asserts.isNotNull(action);
+
+        String planUuid = action.getPlanUuid();
+        planService.verifyExists(planUuid, action.getUserUuid());
 
 //        RelationsMatrixDto relationsMatrix = action.getRelationsMatrix();
 
@@ -65,7 +68,7 @@ public class PlanActionServiceImpl implements PlanActionService {
 //                .toList();
 
 
-        return generatorFacade.generate(planUuid, selectedTables, resume);
+        return generatorFacade.generate(planUuid, selectedTables, action.isResume());
     }
 
     @Override
@@ -77,17 +80,5 @@ public class PlanActionServiceImpl implements PlanActionService {
         generatorCacheService.stop(planUuid);
         log.info("Plan with uuid = [{}] was successfully stopped!", planUuid);
         return true;
-    }
-
-    @Override
-    public String resume(String planUuid) {
-        if (StringUtils.isBlank(planUuid)) {
-            throw new IllegalArgumentException("Plan uuid can't be null!");
-        }
-
-        generatorCacheService.remove(planUuid);
-
-        log.info("Plan with uuid = [{}] was resumed!", planUuid);
-        return start(planUuid, true);
     }
 }

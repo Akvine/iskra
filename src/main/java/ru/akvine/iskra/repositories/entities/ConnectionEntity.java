@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.DatabaseType;
-import ru.akvine.iskra.repositories.entities.base.Identifiable;
 import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
 
 @Table(name = "CONNECTION_ENTITY")
@@ -56,4 +55,9 @@ public class ConnectionEntity extends SoftBaseEntity<Long> {
     @Column(name = "DATABASE_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private DatabaseType databaseType;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    @NotNull
+    private UserEntity user;
 }

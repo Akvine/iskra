@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
+import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.configs.async.executors.TaskExecutor;
 import ru.akvine.iskra.services.GeneratorFacade;
 import ru.akvine.iskra.services.GeneratorService;
@@ -25,6 +26,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class GeneratorFacadeImpl implements GeneratorFacade {
     private final GeneratorService generatorService;
     private final PlanService planService;
+    private final SecurityManager securityManager;
     private final TaskExecutor taskExecutor;
 
     @Override
@@ -33,13 +35,15 @@ public class GeneratorFacadeImpl implements GeneratorFacade {
 
         List<TableName> tableNamesHasNoRelations = selectedTables.keySet().stream().toList();
 
+        String userUuid = securityManager.getCurrentUser().getUuid();
         String processUuid;
         if (resume) {
-            processUuid = planService.verifyExists(planUuid).getLastProcessUuid();
+            processUuid = planService.verifyExists(planUuid, userUuid).getLastProcessUuid();
         } else {
             processUuid = UUIDGenerator.uuid();
             UpdatePlan updateAction = new UpdatePlan()
                     .setPlanUuid(planUuid)
+                    .setUserUuid(userUuid)
                     .setLastProcessUuid(processUuid);
             planService.update(updateAction);
         }
@@ -50,6 +54,7 @@ public class GeneratorFacadeImpl implements GeneratorFacade {
                         () -> {
                             GenerateDataAction action = new GenerateDataAction()
                                     .setProcessUuid(processUuid)
+                                    .setUserUuid(userUuid)
                                     .setTable(selectedTables.get(tableName))
                                     .setResume(resume);
                             generatorService.generate(action);

@@ -8,6 +8,7 @@ import ru.akvine.iskra.enums.DatabaseType;
 @Data
 @Accessors(chain = true)
 public class CreateConnection {
+    private String userUuid;
     private DatabaseType databaseType;
     private String databaseName;
     private String connectionName;

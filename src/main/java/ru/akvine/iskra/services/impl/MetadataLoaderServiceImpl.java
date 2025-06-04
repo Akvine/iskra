@@ -32,10 +32,10 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
     private final TableRepository tableRepository;
 
     @Override
-    public List<TableModel> loadOrList(String planUuid) {
+    public List<TableModel> loadOrList(String planUuid, String userUuid) {
         Asserts.isNotNull(planUuid);
 
-        PlanEntity plan = planService.verifyExists(planUuid);
+        PlanEntity plan = planService.verifyExists(planUuid, userUuid);
 
         List<TableModel> tables = tableService.getAll(planUuid);
         if (!tables.isEmpty()) {

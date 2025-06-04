@@ -1,11 +1,10 @@
 package ru.akvine.iskra.services;
 
+import ru.akvine.iskra.services.dto.plan.action.StartAction;
+
 public interface PlanActionService {
 
-    // TODO: по Clean Code передача boolean-параметров - плохая тактика. Придумать что-то по лучше
-    String start(String planUuid, boolean resume);
+    String start(StartAction action);
 
     boolean stop(String planUuid);
-
-    String resume(String planUuid);
 }

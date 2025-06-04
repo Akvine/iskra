@@ -60,7 +60,8 @@ public class TableServiceImpl implements TableService {
         Map<String, Boolean> toggled = action.getToggled();
         Map<String, TableEntity> tablesToUpdate = map(tableRepository.findAll(
                 action.getPlanUuid(),
-                action.getToggled().keySet()
+                action.getToggled().keySet(),
+                action.getUserUuid()
         ));
 
         for (String tableName : tablesToUpdate.keySet()) {

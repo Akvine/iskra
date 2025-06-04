@@ -52,7 +52,7 @@ public class ColumnEntity extends BaseEntity<Long> implements Identifiable {
     @Column(name = "PRIMARY_KEY", nullable = false)
     private boolean primaryKey;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "table_id")
     private TableEntity table;
 

@@ -13,6 +13,7 @@ import java.util.Set;
 @Data
 @Accessors(chain = true)
 public class CreateColumnConfiguration {
+    private String userUuid;
     private String columnUuid;
     private String name;
     @Nullable

@@ -6,11 +6,11 @@ import ru.akvine.iskra.services.dto.connection.CreateConnection;
 import java.util.List;
 
 public interface ConnectionService {
-    List<ConnectionModel> list();
+    List<ConnectionModel> list(String userUuid);
 
     ConnectionModel create(CreateConnection connection);
 
-    ConnectionModel get(String connectionName);
+    ConnectionModel get(String connectionName, String userUuid);
 
-    ConnectionEntity verifyExists(String connectionName);
+    ConnectionEntity verifyExists(String connectionName, String userUuid);
 }

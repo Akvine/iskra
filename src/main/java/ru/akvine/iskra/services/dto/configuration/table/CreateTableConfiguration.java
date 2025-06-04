@@ -8,6 +8,7 @@ import ru.akvine.compozit.commons.enums.DeleteMode;
 @Data
 @Accessors(chain = true)
 public class CreateTableConfiguration {
+    private String userUuid;
     private String planUuid;
     private String tableName;
     private String name;

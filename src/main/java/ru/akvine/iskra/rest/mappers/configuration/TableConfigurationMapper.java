@@ -1,9 +1,11 @@
 package ru.akvine.iskra.rest.mappers.configuration;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.dto.configuration.table.CreateTableConfigurationRequest;
 import ru.akvine.iskra.rest.dto.configuration.table.ListTableConfigurationsResponse;
 import ru.akvine.iskra.rest.dto.configuration.table.TableConfigurationDto;
@@ -15,10 +17,14 @@ import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class TableConfigurationMapper {
+    private final SecurityManager securityManager;
+
     public CreateTableConfiguration convertToCreateTableConfiguration(CreateTableConfigurationRequest request) {
         Asserts.isNotNull(request);
         return new CreateTableConfiguration()
+                .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setPlanUuid(request.getPlanUuid())
                 .setTableName(request.getTableName())
                 .setBatchSize(request.getBatchSize())
@@ -32,6 +38,7 @@ public class TableConfigurationMapper {
     public UpdateTableConfiguration convertToUpdateTableConfiguration(UpdateTableConfigurationRequest request) {
         Asserts.isNotNull(request);
         return new UpdateTableConfiguration()
+                .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setPlanUuid(request.getPlanUuid())
                 .setTableName(request.getTableName())
                 .setBatchSize(request.getBatchSize())
@@ -51,7 +58,7 @@ public class TableConfigurationMapper {
         return new TableConfigurationDto()
                 .setName(config.getName())
                 .setBatchSize(config.getBatchSize())
-                .setName(config.getName())
+                .setRowsCount(config.getRowsCount())
                 .setDeleteDataBeforeStart(config.isDeleteDataBeforeStart())
                 .setDeleteMode(config.getDeleteMode() != null ? config.getDeleteMode().getName() : null)
                 .setClearScript(config.getClearScript());
