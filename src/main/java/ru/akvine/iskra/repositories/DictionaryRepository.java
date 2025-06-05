@@ -14,13 +14,19 @@ public interface DictionaryRepository extends JpaRepository<DictionaryEntity, Lo
     List<DictionaryEntity> findAll(@Param("names") Collection<String> names);
 
     @Query("from DictionaryEntity de " +
-            "where de.name = :name " +
+            "where de.uuid = :uuid " +
             "and " +
             "de.user.uuid = :userUuid " +
             "and " +
             "de.user.deleted = false")
-    Optional<DictionaryEntity> findByName(@Param("name") String name,
+    Optional<DictionaryEntity> findByUuid(@Param("uuid") String uuid,
                                           @Param("userUuid") String userUuid);
+
+    @Query("from DictionaryEntity de " +
+            "where de.uuid = :uuid " +
+            "and " +
+            "de.system = true")
+    Optional<DictionaryEntity> findSystem(@Param("uuid") String uuid);
 
     @Query("from DictionaryEntity de where de.name in :names")
     List<DictionaryEntity> findByNames(@Param("names") Collection<String> names);

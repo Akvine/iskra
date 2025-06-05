@@ -306,3 +306,8 @@ ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD FILTERS TEXT;
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'POST_FILTERS' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
 ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD POST_FILTERS TEXT;
+
+--changeset akvine:ISKRA-28
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'UUID' and upper(table_name) = 'DICTIONARY_ENTITY';
+ALTER TABLE DICTIONARY_ENTITY ADD UUID VARCHAR(64) NOT NULL;

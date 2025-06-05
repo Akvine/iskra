@@ -9,6 +9,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.exceptions.dictionary.DictionaryNotFoundException;
 import ru.akvine.iskra.repositories.DictionaryRepository;
@@ -43,7 +44,7 @@ public class DictionaryServiceImpl implements DictionaryService {
             List<DictionaryEntity> dictionaries = dictionaryRepository.findBy(true);
             for (DictionaryEntity dictionaryToLoad : dictionaries) {
                 log.info("{} --> loading data is complete!", dictionaryToLoad.getName());
-                DICTIONARIES.put(dictionaryToLoad.getName(), new DictionaryModel(dictionaryToLoad));
+                DICTIONARIES.put(dictionaryToLoad.getUuid(), new DictionaryModel(dictionaryToLoad));
             }
 
             log.info("Dictionaries cache loaded successful!");
@@ -98,6 +99,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         UserEntity owner = userService.verifyExistsByUuid(createDictionary.getUserUuid());
         DictionaryEntity dictionaryToCreate = new DictionaryEntity()
+                .setUuid(UUIDGenerator.uuidWithoutDashes())
                 .setName(createDictionary.getName())
                 .setDescription(createDictionary.getDescription())
                 .setValues(String.join(",", createDictionary.getValues()))
@@ -110,15 +112,30 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public DictionaryEntity verifyExists(String name, String userUuid) {
-        Asserts.isNotBlank(name, "name is blank!");
-        Asserts.isNotBlank(userUuid, "userUuid is blank!");
+    public DictionaryEntity verifySystemExists(String uuid) {
+        Asserts.isNotBlank(uuid, "uuid is blank");
+
         return dictionaryRepository
-                .findByName(name, userUuid)
+                .findSystem(uuid)
                 .orElseThrow(() -> {
                     String errorMessage = String.format(
-                            "Dictionary with name = [%s] not found for user = [%s]!",
-                            name, userUuid
+                            "System dictionary with uuid = [%s] not found!",
+                            uuid
+                    );
+                    return new DictionaryNotFoundException(errorMessage);
+                });
+    }
+
+    @Override
+    public DictionaryEntity verifyUserExists(String uuid, String userUuid) {
+        Asserts.isNotBlank(uuid, "uuid is blank!");
+        Asserts.isNotBlank(userUuid, "userUuid is blank!");
+        return dictionaryRepository
+                .findByUuid(uuid, userUuid)
+                .orElseThrow(() -> {
+                    String errorMessage = String.format(
+                            "Dictionary with uuid = [%s] not found for user = [%s]!",
+                            uuid, userUuid
                     );
                     return new DictionaryNotFoundException(errorMessage);
                 });

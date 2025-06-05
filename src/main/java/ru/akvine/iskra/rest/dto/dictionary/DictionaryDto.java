@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class DictionaryDto {
+    private String uuid;
     private String name;
     private String language;
     private String description;

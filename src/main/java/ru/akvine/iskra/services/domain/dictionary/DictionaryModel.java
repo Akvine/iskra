@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Data
 @Accessors(chain = true)
 public class DictionaryModel extends Model<Long> {
+    private String uuid;
     private String name;
     private boolean system;
     @Nullable
@@ -26,6 +27,7 @@ public class DictionaryModel extends Model<Long> {
     public DictionaryModel(DictionaryEntity entity) {
         super(entity);
 
+        this.uuid = entity.getUuid();
         this.name = entity.getName();
         this.language = entity.getLanguage();
         this.system = entity.isSystem();

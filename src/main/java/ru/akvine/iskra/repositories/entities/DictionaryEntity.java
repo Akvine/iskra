@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
+import ru.akvine.iskra.repositories.entities.base.Identifiable;
 
 @Getter
 @Setter
@@ -16,13 +17,17 @@ import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 @NoArgsConstructor
 @Table(name = "DICTIONARY_ENTITY")
 @Entity
-public class DictionaryEntity extends BaseEntity<Long> {
+public class DictionaryEntity extends BaseEntity<Long> implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dictionaryEntitySeq")
     @SequenceGenerator(name = "dictionaryEntitySeq", sequenceName = "SEQ_DICTIONARY_ENTITY", allocationSize = 1000)
     @NotNull
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;
+
+    @Column(name = "UUID", nullable = false, updatable = false)
+    @NotNull
+    private String uuid;
 
     @Column(name = "NAME", nullable = false)
     private String name;

@@ -37,6 +37,7 @@ public class DictionaryMapper {
 
     private DictionaryDto buildDictionaryDto(DictionaryModel dictionary) {
         return new DictionaryDto()
+                .setUuid(dictionary.getUuid())
                 .setName(dictionary.getName())
                 .setLanguage(dictionary.getLanguage().toString())
                 .setDescription(dictionary.getDescription())

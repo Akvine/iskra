@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.repositories.DictionaryRepository;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.services.dto.SystemDictionary;
@@ -58,6 +59,7 @@ public class DictionaryLoader {
             );
 
             DictionaryEntity dictionaryToSave = new DictionaryEntity()
+                    .setUuid(UUIDGenerator.uuidWithoutDashes())
                     .setName(dictionaryName)
                     .setDescription(systemDictionary.getDescription())
                     .setValues(String.join(",", systemDictionary.getValues()))

@@ -19,7 +19,7 @@ public class CreateConfigurationRequest {
     @NotBlank
     private String name;
 
-    private String dictionaryName;
+    private String dictionaryUuid;
 
     private boolean selected;
 

@@ -8,6 +8,7 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationAlreadyExistsException;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationMaxCountException;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotFoundException;
+import ru.akvine.iskra.exceptions.dictionary.DictionaryNotFoundException;
 import ru.akvine.iskra.repositories.ColumnConfigurationRepository;
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
@@ -74,11 +75,16 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
                     .setRegexps(String.join(";", action.getRegexps()))
                     .setColumn(column);
 
-            if (StringUtils.isNotBlank(action.getDictionaryName())) {
-                DictionaryEntity dictionary = dictionaryService.verifyExists(
-                        action.getDictionaryName(),
-                        action.getUserUuid()
-                );
+            String dictionaryUuid = action.getDictionaryUuid();
+            if (StringUtils.isNotBlank(dictionaryUuid)) {
+
+                DictionaryEntity dictionary;
+                try {
+                    dictionary = dictionaryService.verifySystemExists(dictionaryUuid);
+                } catch (DictionaryNotFoundException dictionaryNotFoundException) {
+                    dictionary = dictionaryService.verifyUserExists(dictionaryUuid, action.getUserUuid());
+                }
+
                 columnConfigurationToCreate.setDictionary(dictionary);
             }
 

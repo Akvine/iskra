@@ -32,7 +32,7 @@ public class ColumnConfigurationMapper {
                 .setSelected(request.isSelected())
                 .setConvertToString(request.isConvertToString())
                 .setRepeatable(request.isRepeatable())
-                .setDictionaryName(request.getDictionaryName())
+                .setDictionaryUuid(request.getDictionaryUuid())
                 .setUnique(request.isUnique())
                 .setNotNull(request.isNotNull())
                 .setValid(request.getValid())

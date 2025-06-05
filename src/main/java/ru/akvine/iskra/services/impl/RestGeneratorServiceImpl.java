@@ -128,7 +128,7 @@ public class RestGeneratorServiceImpl implements GeneratorService {
             updateTableProcessAction.setCompletedDate(new Date());
             updateTableProcessAction.setState(ProcessState.SUCCESS);
             updateTableProcessAction.setAddSuccessRowsCount(null);
-        } catch (IntegrationException exception) {
+        } catch (Exception exception) {
             updateTableProcessAction
                     .setAddSuccessRowsCount(null)
                     .setErrorMessage(exception.getMessage())
