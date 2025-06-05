@@ -43,15 +43,6 @@ public class RestGeneratorServiceImpl implements GeneratorService {
         TableModel table = action.getTable();
         TableConfigurationModel tableConfiguration = table.getConfiguration();
 
-        if (tableConfiguration.isDeleteDataBeforeStart() &&
-                StringUtils.isNotBlank(tableConfiguration.getClearScript()) && !action.isResume()) {
-            log.info("Execute clear script for table = [{}]", table.getTableName());
-            visorService.executeScripts(
-                    Set.of(tableConfiguration.getClearScript()),
-                    table.getPlan().getConnection()
-            );
-        }
-
         TableProcessModel tableProcess;
         if (action.isResume()) {
             tableProcess = tableProcessService.get(processUuid, table.getTableName());
@@ -68,6 +59,25 @@ public class RestGeneratorServiceImpl implements GeneratorService {
                     .setTableName(table.getTableName())
                     .setTotalRowsCount(table.getConfiguration().getRowsCount());
             tableProcess = tableProcessService.create(createTableProcessAction);
+        }
+
+        if (tableConfiguration.isDeleteDataBeforeStart() &&
+                StringUtils.isNotBlank(tableConfiguration.getClearScript()) &&
+                !action.isResume()) {
+            log.info("Execute clear script for table = [{}]", table.getTableName());
+            try {
+                visorService.executeScripts(
+                        Set.of(tableConfiguration.getClearScript()),
+                        table.getPlan().getConnection());
+            } catch (Exception exception) {
+                UpdateTableProcess updateTableProcessAction = new UpdateTableProcess()
+                        .setPid(tableProcess.getPid())
+                        .setAddSuccessRowsCount(null)
+                        .setErrorMessage(exception.getMessage())
+                        .setState(ProcessState.FAILED);
+                tableProcessService.update(updateTableProcessAction);
+                return false;
+            }
         }
 
         String pid = tableProcess.getPid();
