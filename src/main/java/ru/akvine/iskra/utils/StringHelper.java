@@ -1,5 +1,6 @@
 package ru.akvine.iskra.utils;
 
+import jakarta.annotation.Nullable;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -31,5 +32,22 @@ public class StringHelper {
         result.append("]");
 
         return result.toString();
+    }
+
+    @Nullable
+    public static String trim(String value, Integer maxLength) {
+        return trim(value, maxLength, false);
+    }
+
+    @Nullable
+    public static String trim(String value, Integer maxLength, boolean before) {
+        if (value == null) {
+            return null;
+        }
+        if (before) {
+            return value.length() > maxLength ? value.substring(0, maxLength) : value;
+        }
+
+        return value.length() > maxLength ? value.substring(value.length() - maxLength) : value;
     }
 }

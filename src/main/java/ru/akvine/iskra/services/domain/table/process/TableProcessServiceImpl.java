@@ -15,6 +15,7 @@ import ru.akvine.iskra.services.dto.process.CreateTableProcess;
 import ru.akvine.iskra.services.dto.process.ListTableProcess;
 import ru.akvine.iskra.services.dto.process.UpdateTableProcess;
 import ru.akvine.iskra.utils.PIDGenerator;
+import ru.akvine.iskra.utils.StringHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -67,7 +68,7 @@ public class TableProcessServiceImpl implements TableProcessService {
         }
 
         if (StringUtils.isNotBlank(errorMessage)) {
-            tableProcessToUpdate.setErrorMessage(errorMessage);
+            tableProcessToUpdate.setErrorMessage(StringHelper.trim(errorMessage, 512, true));
         }
 
         if (completedDate != null) {
