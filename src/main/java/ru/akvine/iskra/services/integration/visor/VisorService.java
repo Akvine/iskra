@@ -2,9 +2,7 @@ package ru.akvine.iskra.services.integration.visor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.akvine.compozit.commons.ConnectionRequest;
-import ru.akvine.compozit.commons.GenerateClearScriptRequest;
-import ru.akvine.compozit.commons.GenerateClearScriptResponse;
+import ru.akvine.compozit.commons.*;
 import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.compozit.commons.scripts.ExecuteScriptsRequest;
@@ -22,6 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+// TODO: вынести методы в интерфейс
 public class VisorService {
     private final VisorClient visorClient;
     private final VisorDtoMapper visorDtoMapper;
@@ -104,6 +103,20 @@ public class VisorService {
         try {
             GenerateClearScriptResponse response = visorClient.generateClearScript(request);
             return response.getResult();
+        } catch (Exception exception) {
+            String message = String.format(
+                    "Error while send request to Visor. Message = [%s]",
+                    exception.getMessage());
+            throw new IntegrationException(message);
+        }
+    }
+
+    public List<String> getRelatedTables(String tableName, ConnectionModel connection) {
+        GetRelatedTablesRequest request = visorDtoMapper.convertToGetRelatedTablesRequest(tableName, connection);
+
+        try {
+            GetRelatedTablesResponse response = visorClient.getRelatedTables(request);
+            return response.getRelatedTablesNames();
         } catch (Exception exception) {
             String message = String.format(
                     "Error while send request to Visor. Message = [%s]",

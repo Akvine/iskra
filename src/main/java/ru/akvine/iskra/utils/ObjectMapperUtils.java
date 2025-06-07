@@ -20,7 +20,7 @@ public class ObjectMapperUtils {
         }
     }
 
-    public <T> T readValue(String content, Class<T> valueType, ObjectMapper instance) {
+    public <T> T safeReadValue(String content, Class<T> valueType, ObjectMapper instance) {
         Asserts.isNotNull(instance);
         Asserts.isNotNull(valueType);
 

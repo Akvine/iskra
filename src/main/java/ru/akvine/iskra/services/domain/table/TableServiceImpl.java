@@ -20,9 +20,10 @@ public class TableServiceImpl implements TableService {
     private final TableRepository tableRepository;
 
     @Override
-    public List<TableModel> getAll(String planUuid) {
-        Asserts.isNotNull(planUuid);
-        return tableRepository.findAll(planUuid).stream()
+    public List<TableModel> getAll(String planUuid, String userUuid) {
+        Asserts.isNotBlank(planUuid, "planUuid is null");
+        Asserts.isNotBlank(userUuid, "userUuid is null");
+        return tableRepository.findAll(planUuid, userUuid).stream()
                 .map(TableModel::new)
                 .toList();
     }

@@ -8,6 +8,9 @@ import ru.akvine.compozit.commons.dto.Response;
 @RequestMapping(value = "/loader")
 public interface MetadataLoaderMeta {
 
-    @GetMapping("/start")
+    @GetMapping(value = "/tables-columns/start")
     Response loadOrList(@RequestParam("planUuid") String planUuid);
+
+    @GetMapping(value = "/relations-matrix/generate")
+    Response generate(@RequestParam("planUuid") String planUuid);
 }

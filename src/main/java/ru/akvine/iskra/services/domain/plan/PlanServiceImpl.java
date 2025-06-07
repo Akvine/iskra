@@ -74,6 +74,11 @@ public class PlanServiceImpl implements PlanService {
             planToUpdate.setLastProcessUuid(action.getLastProcessUuid());
         }
 
+        if (action.getRelationsMatrix() != null &&
+                !action.getRelationsMatrix().equals(planToUpdate.getRelationsMatrix())) {
+            planToUpdate.setRelationsMatrix(action.getRelationsMatrix());
+        }
+
         return new PlanModel(planRepository.save(planToUpdate));
     }
 }

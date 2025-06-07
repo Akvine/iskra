@@ -17,6 +17,6 @@ public class FiltersToStringConverter implements AttributeConverter<List<FilterD
 
     @Override
     public List<FilterDto> convertToEntityAttribute(String filters) {
-        return ObjectMapperUtils.readValue(filters, List.class, new ObjectMapper());
+        return ObjectMapperUtils.safeReadValue(filters, List.class, new ObjectMapper());
     }
 }

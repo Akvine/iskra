@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import ru.akvine.iskra.repositories.converters.FiltersToStringConverter;
+import ru.akvine.iskra.repositories.converters.RelationsMatrixToStringConverter;
+import ru.akvine.iskra.repositories.dto.RelationsMatrix;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
 
@@ -41,4 +44,9 @@ public class PlanEntity extends BaseEntity<Long> implements Identifiable {
     @NotNull
     @JoinColumn(name = "USER_ID", nullable = false)
     private UserEntity user;
+
+    @Column(name = "RELATIONS_MATRIX_JSON")
+    @Nullable
+    @Convert(converter = RelationsMatrixToStringConverter.class)
+    private RelationsMatrix relationsMatrix;
 }

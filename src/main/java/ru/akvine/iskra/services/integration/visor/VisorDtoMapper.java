@@ -1,13 +1,11 @@
 package ru.akvine.iskra.services.integration.visor;
 
 import org.springframework.stereotype.Service;
-import ru.akvine.compozit.commons.ColumnMetaInfoDto;
-import ru.akvine.compozit.commons.ConnectionDto;
-import ru.akvine.compozit.commons.ConnectionRequest;
-import ru.akvine.compozit.commons.GenerateClearScriptRequest;
+import ru.akvine.compozit.commons.*;
 import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.compozit.commons.scripts.ExecuteScriptsRequest;
+import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
@@ -53,6 +51,15 @@ public class VisorDtoMapper {
                 .setConnection(convertToConnectionRequest(connectionModel))
                 .setTableName(tableName)
                 .setDeleteMode(deleteMode.getName());
+    }
+
+    public GetRelatedTablesRequest convertToGetRelatedTablesRequest(String tableName, ConnectionModel connection) {
+        Asserts.isNotBlank(tableName, "tableName is null");
+        Asserts.isNotNull(connection);
+
+        return new GetRelatedTablesRequest()
+                .setTableName(tableName)
+                .setConnection(convertToConnectionRequest(connection));
     }
 
     private ConnectionDto convertToConnectionDto(ConnectionModel connection) {

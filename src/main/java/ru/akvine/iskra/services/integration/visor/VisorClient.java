@@ -4,9 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import ru.akvine.compozit.commons.ConnectionRequest;
-import ru.akvine.compozit.commons.GenerateClearScriptRequest;
-import ru.akvine.compozit.commons.GenerateClearScriptResponse;
+import ru.akvine.compozit.commons.*;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.compozit.commons.scripts.ExecuteScriptsRequest;
@@ -32,4 +30,7 @@ public interface VisorClient {
 
     @PostMapping(value = "/scripts/generate/clear")
     GenerateClearScriptResponse generateClearScript(@RequestBody @Valid GenerateClearScriptRequest request);
+
+    @PostMapping(value = "/databases/tables/related")
+    GetRelatedTablesResponse getRelatedTables(@RequestBody @Valid GetRelatedTablesRequest request);
 }

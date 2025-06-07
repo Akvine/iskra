@@ -12,9 +12,14 @@ import java.util.Optional;
 
 public interface TableRepository extends JpaRepository<TableEntity, Long> {
     @Query("from TableEntity te " +
-            "where te.plan.uuid = :uuid")
+            "where te.plan.uuid = :uuid " +
+            "and " +
+            "te.plan.user.uuid = :userUuid " +
+            "and " +
+            "te.plan.user.deleted = false")
     @EntityGraph(attributePaths = "columns")
-    List<TableEntity> findAll(@Param("uuid") String planUuid);
+    List<TableEntity> findAll(@Param("uuid") String planUuid,
+                              @Param("userUuid") String userUuid);
 
     @Query("from TableEntity te " +
             "where te.plan.uuid = :uuid " +

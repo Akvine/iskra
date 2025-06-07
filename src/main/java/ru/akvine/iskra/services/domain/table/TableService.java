@@ -9,7 +9,8 @@ import ru.akvine.iskra.services.dto.table.ListTables;
 import java.util.List;
 
 public interface TableService {
-    List<TableModel> getAll(String planUuid);
+    @Transactional
+    List<TableModel> getAll(String planUuid, String userUuid);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     TableEntity save(TableEntity tableToSave);
