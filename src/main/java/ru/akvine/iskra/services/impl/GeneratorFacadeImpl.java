@@ -11,8 +11,8 @@ import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.enums.GenerationStrategy;
 import ru.akvine.iskra.exceptions.plan.RelationsMatrixNotGeneratedException;
 import ru.akvine.iskra.providers.GenerationStrategyHandlersProvider;
+import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorFacade;
-import ru.akvine.iskra.services.GeneratorService;
 import ru.akvine.iskra.services.MatrixService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
@@ -27,11 +27,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class GeneratorFacadeImpl implements GeneratorFacade {
-    private final GeneratorService generatorService;
     private final PlanService planService;
     private final SecurityManager securityManager;
     private final GenerationStrategyHandlersProvider provider;
     private final MatrixService matrixService;
+    private final GeneratorCacheService generatorCacheService;
 
     @Override
     public String generate(String planUuid, Map<TableName, TableModel> selectedTables, boolean resume) {
@@ -43,6 +43,7 @@ public class GeneratorFacadeImpl implements GeneratorFacade {
         if (resume) {
             plan = new PlanModel(planService.verifyExists(planUuid, userUuid));
             processUuid = plan.getLastProcessUuid();
+            generatorCacheService.remove(planUuid);
         } else {
             processUuid = UUIDGenerator.uuid();
             UpdatePlan updateAction = new UpdatePlan()

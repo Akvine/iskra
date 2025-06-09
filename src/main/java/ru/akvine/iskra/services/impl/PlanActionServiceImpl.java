@@ -38,8 +38,6 @@ public class PlanActionServiceImpl implements PlanActionService {
         String planUuid = action.getPlanUuid();
         planService.verifyExists(planUuid, action.getUserUuid());
 
-//        RelationsMatrixDto relationsMatrix = action.getRelationsMatrix();
-
         ListTables listTables = new ListTables()
                 .setPlanUuid(planUuid)
                 .setSelected(true);
@@ -61,12 +59,6 @@ public class PlanActionServiceImpl implements PlanActionService {
                 throw new TableConfigurationNotFoundException(errorMessage);
             }
         });
-
-//        List<TableName> tableNamesHasNoRelations = relationsMatrix.getRows().stream()
-//                .filter(row -> !row.hasRelations())
-//                .map(row -> new TableName(row.getTableName()))
-//                .toList();
-
 
         return generatorFacade.generate(planUuid, selectedTables, action.isResume());
     }
