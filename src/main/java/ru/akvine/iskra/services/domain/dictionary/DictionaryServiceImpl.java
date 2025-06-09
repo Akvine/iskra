@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.enums.Language;
+import ru.akvine.iskra.exceptions.dictionary.DictionaryMaxCountException;
 import ru.akvine.iskra.exceptions.dictionary.DictionaryNotFoundException;
 import ru.akvine.iskra.repositories.DictionaryRepository;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
@@ -35,6 +36,8 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     @Value("${dictionaries.cache.enabled}")
     private boolean cacheEnabled;
+    @Value("${max.dictionaries.per.user}")
+    private int maxCountPerUser;
 
     @PostConstruct
     public void init() {
@@ -98,6 +101,14 @@ public class DictionaryServiceImpl implements DictionaryService {
         Asserts.isNotNull(createDictionary);
 
         UserEntity owner = userService.verifyExistsByUuid(createDictionary.getUserUuid());
+
+        if (maxCountPerUser == dictionaryRepository.count(owner.getUuid())) {
+            String errorMessage = String.format(
+                    "Max count dictionaries = [%s] per user was exceeded! Remove unused dictionaries",
+                    maxCountPerUser
+            );
+            throw new DictionaryMaxCountException(errorMessage);
+        }
         DictionaryEntity dictionaryToCreate = new DictionaryEntity()
                 .setUuid(UUIDGenerator.uuidWithoutDashes())
                 .setName(createDictionary.getName())

@@ -33,4 +33,7 @@ public interface DictionaryRepository extends JpaRepository<DictionaryEntity, Lo
 
     @Query("from DictionaryEntity de where de.system = :system")
     List<DictionaryEntity> findBy(@Param("system") boolean system);
+
+    @Query("select count(de) from DictionaryEntity de where de.user.uuid = :uuid")
+    long count(@Param("uuid") String userUuid);
 }
