@@ -2,10 +2,13 @@ package ru.akvine.iskra.services.domain.plan;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
+import ru.akvine.iskra.components.PlanNameGenerator;
+import ru.akvine.iskra.events.LoadMetadataEvent;
 import ru.akvine.iskra.exceptions.plan.PlanNotFoundException;
 import ru.akvine.iskra.repositories.PlanRepository;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
@@ -14,6 +17,7 @@ import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.domain.connection.ConnectionService;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
+import ru.akvine.iskra.services.dto.plan.DuplicatePlan;
 import ru.akvine.iskra.services.dto.plan.UpdatePlan;
 
 import java.util.List;
@@ -24,6 +28,9 @@ public class PlanServiceImpl implements PlanService {
     private final PlanRepository planRepository;
     private final ConnectionService connectionService;
     private final UserService userService;
+
+    private final PlanNameGenerator nameGenerator;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     @Transactional
@@ -38,6 +45,32 @@ public class PlanServiceImpl implements PlanService {
                 .setConnection(connection)
                 .setUser(owner);
         return new PlanModel(planRepository.save(plan));
+    }
+
+    @Override
+    public PlanModel duplicate(DuplicatePlan duplicatePlan) {
+        Asserts.isNotNull(duplicatePlan);
+
+        String planUuid = duplicatePlan.getUuid();
+        String userUuid = duplicatePlan.getUserUuid();
+        UserEntity user = userService.verifyExistsByUuid(userUuid);
+
+        PlanEntity from = verifyExists(planUuid, userUuid);
+        PlanEntity target = new PlanEntity()
+                .setUuid(UUIDGenerator.uuidWithoutDashes())
+                .setName(nameGenerator.tryGetIncrementedNames(from.getName(), 1).getFirst())
+                .setUser(user)
+                .setConnection(from.getConnection());
+
+        if (duplicatePlan.isCopyResults()) {
+            target.setRelationsMatrix(from.getRelationsMatrix());
+            PlanModel savedPlan = new PlanModel(planRepository.save(target));
+            // TODO: сделано для того, чтобы избежать циклической зависимости между PlanService <-> MetadataLoaderService
+            publisher.publishEvent(new LoadMetadataEvent(this, savedPlan.getUuid(), userUuid));
+            return savedPlan;
+        }
+
+        return new PlanModel(planRepository.save(target));
     }
 
     @Override

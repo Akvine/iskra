@@ -2,6 +2,7 @@ package ru.akvine.iskra.services.domain.plan;
 
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
+import ru.akvine.iskra.services.dto.plan.DuplicatePlan;
 import ru.akvine.iskra.services.dto.plan.UpdatePlan;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 public interface PlanService {
 
     PlanModel create(CreatePlan createPlan);
+
+    PlanModel duplicate(DuplicatePlan duplicatePlan);
 
     PlanModel get(String uuid, String userUuid);
 

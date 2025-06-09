@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.dto.plan.CreatePlanRequest;
+import ru.akvine.iskra.rest.dto.plan.DuplicatePlanRequest;
 import ru.akvine.iskra.rest.dto.plan.PlanDto;
 import ru.akvine.iskra.rest.dto.plan.PlanListResponse;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
+import ru.akvine.iskra.services.dto.plan.DuplicatePlan;
 
 import java.util.List;
 
@@ -29,6 +31,14 @@ public class PlanMapper {
                 .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setName(request.getName())
                 .setConnectionName(request.getConnectionName());
+    }
+
+    public DuplicatePlan convertToDuplicatePlan(DuplicatePlanRequest request) {
+        Asserts.isNotNull(request);
+        return new DuplicatePlan()
+                .setUuid(request.getUuid())
+                .setCopyResults(request.isCopyResults())
+                .setUserUuid(securityManager.getCurrentUser().getUuid());
     }
 
     private PlanDto buildPlanDto(PlanModel plan) {

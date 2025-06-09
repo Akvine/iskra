@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface MetadataLoaderService {
     @Transactional
+    // TODO: обращение к внешнему сервису под Transactional может привести к исчерпанию коннектов к БД
     List<TableModel> loadOrList(String planUuid, String userUuid);
 
     RelationsMatrix generate(String planUuid, String userUuid);
