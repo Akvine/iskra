@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.rest.dto.connection.CreateConnectionRequest;
+import ru.akvine.iskra.rest.dto.connection.DuplicateConnectionRequest;
 
 @RequestMapping(value = "/connections")
 public interface ConnectionControllerMeta {
@@ -15,4 +16,7 @@ public interface ConnectionControllerMeta {
 
     @PostMapping
     Response create(@RequestBody @Valid CreateConnectionRequest request);
+
+    @PostMapping(value = "/duplicate")
+    Response duplicate(@RequestBody @Valid DuplicateConnectionRequest request);
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-public class PlanNameGenerator {
+public class NameGenerator {
     public List<String> tryGetIncrementedNames(String name, int count) {
         Objects.requireNonNull(name, "No name specified");
         if (count < 1) {

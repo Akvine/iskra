@@ -10,5 +10,7 @@ public class DuplicatePlanRequest {
     @NotBlank
     private String uuid;
 
+    private String name;
+
     private boolean copyResults;
 }

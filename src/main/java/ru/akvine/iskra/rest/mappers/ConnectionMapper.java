@@ -8,8 +8,10 @@ import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.enums.DatabaseType;
 import ru.akvine.iskra.rest.dto.connection.ConnectionResponse;
 import ru.akvine.iskra.rest.dto.connection.CreateConnectionRequest;
+import ru.akvine.iskra.rest.dto.connection.DuplicateConnectionRequest;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.dto.connection.CreateConnection;
+import ru.akvine.iskra.services.dto.connection.DuplicateConnection;
 
 import java.util.List;
 
@@ -30,6 +32,13 @@ public class ConnectionMapper {
                 .setPassword(request.getPassword())
                 .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setDatabaseType(DatabaseType.from(request.getDatabaseType()));
+    }
+
+    public DuplicateConnection convertToDuplicateConnection(DuplicateConnectionRequest request) {
+        return new DuplicateConnection()
+                .setUserUuid(securityManager.getCurrentUser().getUuid())
+                .setConnectionName(request.getConnectionName())
+                .setNewConnectionName(request.getNewConnectionName());
     }
 
     public ConnectionResponse convertToConnectionResponse(List<ConnectionModel> connections) {

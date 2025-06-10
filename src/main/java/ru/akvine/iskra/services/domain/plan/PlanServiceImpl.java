@@ -1,13 +1,14 @@
 package ru.akvine.iskra.services.domain.plan;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
-import ru.akvine.iskra.components.PlanNameGenerator;
+import ru.akvine.iskra.components.NameGenerator;
 import ru.akvine.iskra.events.LoadMetadataEvent;
 import ru.akvine.iskra.exceptions.plan.PlanNotFoundException;
 import ru.akvine.iskra.repositories.PlanRepository;
@@ -29,7 +30,7 @@ public class PlanServiceImpl implements PlanService {
     private final ConnectionService connectionService;
     private final UserService userService;
 
-    private final PlanNameGenerator nameGenerator;
+    private final NameGenerator nameGenerator;
     private final ApplicationEventPublisher publisher;
 
     @Override
@@ -58,9 +59,20 @@ public class PlanServiceImpl implements PlanService {
         PlanEntity from = verifyExists(planUuid, userUuid);
         PlanEntity target = new PlanEntity()
                 .setUuid(UUIDGenerator.uuidWithoutDashes())
-                .setName(nameGenerator.tryGetIncrementedNames(from.getName(), 1).getFirst())
                 .setUser(user)
                 .setConnection(from.getConnection());
+
+        if (StringUtils.isNotBlank(duplicatePlan.getName()) &&
+                !duplicatePlan.getName().equals(from.getName())) {
+            target.setName(duplicatePlan.getName());
+        } else {
+            List<String> generatedNames = nameGenerator.tryGetIncrementedNames(from.getName(), 1);
+            if (CollectionUtils.isEmpty(generatedNames)) {
+                target.setName(from.getName() + "_1");
+            } else {
+                target.setName(generatedNames.getFirst());
+            }
+        }
 
         if (duplicatePlan.isCopyResults()) {
             target.setRelationsMatrix(from.getRelationsMatrix());

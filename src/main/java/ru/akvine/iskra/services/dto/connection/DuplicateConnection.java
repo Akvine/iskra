@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.dto.plan;
+package ru.akvine.iskra.services.dto.connection;
 
 import jakarta.annotation.Nullable;
 import lombok.Data;
@@ -6,10 +6,9 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class DuplicatePlan {
+public class DuplicateConnection {
     private String userUuid;
-    private String uuid;
+    private String connectionName;
     @Nullable
-    private String name;
-    private boolean copyResults;
+    private String newConnectionName;
 }

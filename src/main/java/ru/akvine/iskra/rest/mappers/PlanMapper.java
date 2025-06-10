@@ -37,6 +37,7 @@ public class PlanMapper {
         Asserts.isNotNull(request);
         return new DuplicatePlan()
                 .setUuid(request.getUuid())
+                .setName(request.getName())
                 .setCopyResults(request.isCopyResults())
                 .setUserUuid(securityManager.getCurrentUser().getUuid());
     }

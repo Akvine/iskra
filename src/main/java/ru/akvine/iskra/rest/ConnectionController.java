@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.components.SecurityManager;
+import ru.akvine.iskra.rest.dto.connection.DuplicateConnectionRequest;
 import ru.akvine.iskra.rest.mappers.ConnectionMapper;
 import ru.akvine.iskra.rest.dto.connection.CreateConnectionRequest;
 import ru.akvine.iskra.rest.meta.ConnectionControllerMeta;
 import ru.akvine.iskra.services.domain.connection.ConnectionService;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.dto.connection.CreateConnection;
+import ru.akvine.iskra.services.dto.connection.DuplicateConnection;
 
 import java.util.List;
 
@@ -33,5 +35,12 @@ public class ConnectionController implements ConnectionControllerMeta {
         CreateConnection createConnection = connectionMapper.convertToCreateConnection(request);
         ConnectionModel createdConnection = connectionService.create(createConnection);
         return connectionMapper.convertToConnectionResponse(List.of(createdConnection));
+    }
+
+    @Override
+    public Response duplicate(DuplicateConnectionRequest request) {
+        DuplicateConnection action = connectionMapper.convertToDuplicateConnection(request);
+        ConnectionModel duplicatedConnection = connectionService.duplicate(action);
+        return connectionMapper.convertToConnectionResponse(List.of(duplicatedConnection));
     }
 }
