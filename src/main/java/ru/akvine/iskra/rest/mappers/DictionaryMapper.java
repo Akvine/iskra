@@ -3,6 +3,7 @@ package ru.akvine.iskra.rest.mappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import ru.akvine.compozit.commons.PageInfo;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.dto.dictionary.CreateDictionaryRequest;
@@ -26,6 +27,9 @@ public class DictionaryMapper {
     public ListDictionaries convertToListDictionaries(ListDictionariesRequest request) {
         Asserts.isNotNull(request);
         return new ListDictionaries()
+                .setPageInfo(new PageInfo()
+                        .setPage(request.getNextPage().getPage())
+                        .setCount(request.getNextPage().getCount()))
                 .setNames(request.getNames())
                 .setSystem(request.isSystem());
     }

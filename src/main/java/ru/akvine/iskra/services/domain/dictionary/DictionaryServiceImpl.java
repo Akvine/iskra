@@ -4,9 +4,11 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -15,8 +17,10 @@ import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.exceptions.dictionary.DictionaryMaxCountException;
 import ru.akvine.iskra.exceptions.dictionary.DictionaryNotFoundException;
 import ru.akvine.iskra.repositories.DictionaryRepository;
+import ru.akvine.iskra.repositories.dto.DictionariesFilter;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.repositories.entities.UserEntity;
+import ru.akvine.iskra.repositories.specifications.DictionarySpecification;
 import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
 import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
@@ -33,12 +37,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DictionaryServiceImpl implements DictionaryService {
     private final DictionaryRepository dictionaryRepository;
     private final UserService userService;
+    private final DictionarySpecification dictionarySpecification;
     private static final Map<String, DictionaryModel> DICTIONARIES = new ConcurrentHashMap<>();
 
     @Value("${dictionaries.cache.enabled}")
     private boolean cacheEnabled;
-    @Value("${dictionaries.cache.max.size}")
-    private int cacheMaxSize;
     @Value("${max.dictionaries.per.user}")
     private int maxCountPerUser;
 
@@ -47,8 +50,7 @@ public class DictionaryServiceImpl implements DictionaryService {
         if (cacheEnabled) {
             log.info("Dictionaries cache enabled. Start loading...");
 
-            List<DictionaryEntity> dictionaries = dictionaryRepository.findBy(
-                    true, PageRequest.of(0, cacheMaxSize));
+            List<DictionaryEntity> dictionaries = dictionaryRepository.findBy(true);
             for (DictionaryEntity dictionaryToLoad : dictionaries) {
                 log.info("{} --> loading data is complete!", dictionaryToLoad.getName());
                 DICTIONARIES.put(dictionaryToLoad.getUuid(), new DictionaryModel(dictionaryToLoad));
@@ -64,39 +66,32 @@ public class DictionaryServiceImpl implements DictionaryService {
     public List<DictionaryModel> list(ListDictionaries action) {
         Asserts.isNotNull(action);
 
-        // TODO: сделать через Query DSL или Criteria API, а не фильтрацию в памяти, да и кода слишком много
-        if (cacheEnabled && action.isSystem()) {
-
-            List<DictionaryModel> collectedDictionaries = new ArrayList<>();
-            if (CollectionUtils.isNotEmpty(action.getNames())) {
-                action.getNames().forEach(name -> collectedDictionaries.add(DICTIONARIES.get(name)));
-            } else {
-                return DICTIONARIES.values().stream().toList();
-            }
-
-            return collectedDictionaries;
-        }
-
-        List<DictionaryModel> dictionaries = List.of();
-        if (CollectionUtils.isNotEmpty(action.getNames())) {
-            dictionaries = dictionaryRepository.findAll(action.getNames()).stream()
-                    .map(DictionaryModel::new)
-                    .toList();
-
-            if (action.isSystem()) {
-                dictionaries = dictionaries.stream()
-                        .filter(DictionaryModel::isSystem)
-                        .toList();
-            }
-        }
-
+        List<DictionaryModel> systemDictionaries = List.of();
         if (action.isSystem()) {
-            dictionaries = dictionaryRepository.findBy(true, PageRequest.of(0, 20)).stream()
+            if (cacheEnabled) {
+                systemDictionaries = new ArrayList<>(DICTIONARIES.values());
+            } else {
+                systemDictionaries = dictionaryRepository.findBy(true).stream()
+                        .map(DictionaryModel::new).toList();
+            }
+        }
+
+        List<DictionaryModel> userDictionaries = List.of();
+        if (CollectionUtils.isNotEmpty(action.getNames())) {
+            DictionariesFilter filter = new DictionariesFilter()
+                    .setNames(action.getNames())
+                    .setUserUuid(action.getUserUuid());
+
+            Specification<DictionaryEntity> specification = dictionarySpecification.build(filter);
+
+            PageRequest pageRequest = PageRequest.of(action.getPageInfo().getPage(), action.getPageInfo().getCount());
+            userDictionaries = dictionaryRepository
+                    .findAll(specification, pageRequest).stream()
                     .map(DictionaryModel::new)
                     .toList();
         }
 
-        return dictionaries;
+        return ListUtils.union(userDictionaries, systemDictionaries);
     }
 
     @Override
@@ -128,7 +123,6 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     @Override
     public DictionaryEntity verifySystemExists(String uuid) {
-        Asserts.isNotBlank(uuid, "uuid is blank");
 
         return dictionaryRepository
                 .findSystem(uuid)
