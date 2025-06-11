@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -36,6 +37,8 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     @Value("${dictionaries.cache.enabled}")
     private boolean cacheEnabled;
+    @Value("${dictionaries.cache.max.size}")
+    private int cacheMaxSize;
     @Value("${max.dictionaries.per.user}")
     private int maxCountPerUser;
 
@@ -44,7 +47,8 @@ public class DictionaryServiceImpl implements DictionaryService {
         if (cacheEnabled) {
             log.info("Dictionaries cache enabled. Start loading...");
 
-            List<DictionaryEntity> dictionaries = dictionaryRepository.findBy(true);
+            List<DictionaryEntity> dictionaries = dictionaryRepository.findBy(
+                    true, PageRequest.of(0, cacheMaxSize));
             for (DictionaryEntity dictionaryToLoad : dictionaries) {
                 log.info("{} --> loading data is complete!", dictionaryToLoad.getName());
                 DICTIONARIES.put(dictionaryToLoad.getUuid(), new DictionaryModel(dictionaryToLoad));
@@ -87,7 +91,7 @@ public class DictionaryServiceImpl implements DictionaryService {
         }
 
         if (action.isSystem()) {
-            dictionaries = dictionaryRepository.findBy(true).stream()
+            dictionaries = dictionaryRepository.findBy(true, PageRequest.of(0, 20)).stream()
                     .map(DictionaryModel::new)
                     .toList();
         }

@@ -1,5 +1,6 @@
 package ru.akvine.iskra.repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,8 +32,8 @@ public interface DictionaryRepository extends JpaRepository<DictionaryEntity, Lo
     @Query("from DictionaryEntity de where de.name in :names")
     List<DictionaryEntity> findByNames(@Param("names") Collection<String> names);
 
-    @Query("from DictionaryEntity de where de.system = :system")
-    List<DictionaryEntity> findBy(@Param("system") boolean system);
+    @Query("from DictionaryEntity de where de.system = :system ")
+    List<DictionaryEntity> findBy(@Param("system") boolean system, Pageable pageable);
 
     @Query("select count(de) from DictionaryEntity de where de.user.uuid = :uuid")
     long count(@Param("uuid") String userUuid);
