@@ -3,7 +3,7 @@ package ru.akvine.iskra.rest.dto.configuration.column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import ru.akvine.compozit.commons.istochnik.FilterDto;
+import ru.akvine.compozit.commons.istochnik.ConverterDto;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ public class CreateConfigurationRequest {
     @NotBlank
     private String name;
 
-    private String dictionaryUuid;
+    private Set<String> dictionariesUuids = new HashSet<>();
 
     private boolean selected;
 
@@ -52,7 +52,7 @@ public class CreateConfigurationRequest {
     // TODO: нужно вместо Set сделать List, т.к. пользователь может захотеть генерировать данные по списку выражений
     private Set<String> regexps = new HashSet<>();
 
-    private List<FilterDto> filters = new ArrayList<>();
+    private List<ConverterDto> converters = new ArrayList<>();
 
-    private List<FilterDto> postFilters = new ArrayList<>();
+    private List<ConverterDto> postConverters = new ArrayList<>();
 }

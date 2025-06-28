@@ -3,7 +3,7 @@ package ru.akvine.iskra.rest.dto.configuration.column;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import ru.akvine.compozit.commons.istochnik.FilterDto;
+import ru.akvine.compozit.commons.istochnik.ConverterDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class ConfigurationDto {
     private String name;
     @Nullable
-    private String dictionaryName;
+    private List<String> dictionariesNames;
     private boolean selected;
     private boolean repeatable;
     private boolean convertToString;
@@ -27,6 +27,6 @@ public class ConfigurationDto {
     private String step;
     private Boolean valid;
     private List<String> regexps = new ArrayList<>();
-    private List<FilterDto> filters = List.of();
-    private List<FilterDto> postFilters = List.of();
+    private List<ConverterDto> converters = List.of();
+    private List<ConverterDto> postConverters = List.of();
 }

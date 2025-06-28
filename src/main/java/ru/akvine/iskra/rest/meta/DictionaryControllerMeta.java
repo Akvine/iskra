@@ -16,6 +16,9 @@ public interface DictionaryControllerMeta {
     @PostMapping
     Response create(@RequestBody @Valid CreateDictionaryRequest request);
 
+    @DeleteMapping(value = "/{uuid}")
+    Response delete(@PathVariable("uuid") String uuid);
+
     @PostMapping(value = "/import")
     Response importFile(@RequestParam("file") MultipartFile file,
                         @RequestParam("name") String name,

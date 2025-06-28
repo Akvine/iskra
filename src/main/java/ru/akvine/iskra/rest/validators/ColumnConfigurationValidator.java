@@ -20,10 +20,10 @@ public class ColumnConfigurationValidator {
     public void verifyCreateConfigurationRequest(CreateConfigurationRequest request) {
         Asserts.isNotNull(request);
 
-        if (CollectionUtils.isNotEmpty(request.getFilters()) && request.getFilters().size() > maxFilters) {
+        if (CollectionUtils.isNotEmpty(request.getConverters()) && request.getConverters().size() > maxFilters) {
             String errorMessage = String.format(
                     "Filters count = [%s] can't be more than max = [%s]",
-                    request.getFilters().size(),
+                    request.getConverters().size(),
                     maxFilters
             );
             throw new ValidationException(
@@ -32,10 +32,10 @@ public class ColumnConfigurationValidator {
             );
         }
 
-        if (CollectionUtils.isNotEmpty(request.getPostFilters()) && request.getPostFilters().size() > maxPostFilters) {
+        if (CollectionUtils.isNotEmpty(request.getPostConverters()) && request.getPostConverters().size() > maxPostFilters) {
             String errorMessage = String.format(
                     "Post filters count = [%s] can't be more than max = [%s]",
-                    request.getFilters().size(),
+                    request.getConverters().size(),
                     maxFilters
             );
             throw new ValidationException(

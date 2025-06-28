@@ -1,24 +1,26 @@
 package ru.akvine.iskra.services.domain.column.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationAlreadyExistsException;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationMaxCountException;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotFoundException;
-import ru.akvine.iskra.exceptions.dictionary.DictionaryNotFoundException;
 import ru.akvine.iskra.repositories.ColumnConfigurationRepository;
-import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
+import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.services.domain.column.ColumnService;
+import ru.akvine.iskra.services.domain.column.configuration.dictionary.ColumnConfigurationDictionaryService;
 import ru.akvine.iskra.services.domain.dictionary.DictionaryService;
 import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
 import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
 
     private final ColumnService columnService;
     private final DictionaryService dictionaryService;
+    private final ColumnConfigurationDictionaryService columnConfigurationDictionaryService;
 
     @Override
     public List<ColumnConfigurationModel> list(String columnUuid) {
@@ -70,25 +73,26 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
                     .setStep(action.getStep())
                     .setValid(action.getValid())
                     .setConvertToString(action.isConvertToString())
-                    .setFilters(action.getFilters())
-                    .setPostFilters(action.getPostFilters())
+                    .setConverters(action.getConverters())
+                    .setPostConverters(action.getPostConverters())
                     .setRegexps(String.join(";", action.getRegexps()))
                     .setColumn(column);
 
-            String dictionaryUuid = action.getDictionaryUuid();
-            if (StringUtils.isNotBlank(dictionaryUuid)) {
+            Set<String> dictionaryUuids = action.getDictionariesUuids();
+            if (CollectionUtils.isNotEmpty(dictionaryUuids)) {
+                List<DictionaryEntity> userDictionaries;
+                List<DictionaryEntity> systemDictionaries;
 
-                DictionaryEntity dictionary;
-                try {
-                    dictionary = dictionaryService.verifySystemExists(dictionaryUuid);
-                } catch (DictionaryNotFoundException dictionaryNotFoundException) {
-                    dictionary = dictionaryService.verifyUserExists(dictionaryUuid, action.getUserUuid());
-                }
+                systemDictionaries = dictionaryService.verifySystemExists(dictionaryUuids);
+                userDictionaries = dictionaryService.verifyUserExists(dictionaryUuids, action.getUserUuid());
 
-                columnConfigurationToCreate.setDictionary(dictionary);
+                ColumnConfigurationEntity createdColumnConfigurationEntity = columnConfigurationRepository.save(columnConfigurationToCreate);
+                columnConfigurationDictionaryService.create(createdColumnConfigurationEntity, ListUtils.union(userDictionaries, systemDictionaries));
+
+                return new ColumnConfigurationModel(createdColumnConfigurationEntity);
+            } else {
+                return new ColumnConfigurationModel(columnConfigurationRepository.save(columnConfigurationToCreate));
             }
-
-            return new ColumnConfigurationModel(columnConfigurationRepository.save(columnConfigurationToCreate));
         }
     }
 

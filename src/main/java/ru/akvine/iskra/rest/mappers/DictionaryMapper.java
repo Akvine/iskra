@@ -27,9 +27,7 @@ public class DictionaryMapper {
     public ListDictionaries convertToListDictionaries(ListDictionariesRequest request) {
         Asserts.isNotNull(request);
         return new ListDictionaries()
-                .setPageInfo(new PageInfo()
-                        .setPage(request.getNextPage().getPage())
-                        .setCount(request.getNextPage().getCount()))
+                .setPageInfo(new PageInfo(request.getNextPage().getPage(), request.getNextPage().getCount()))
                 .setNames(request.getNames())
                 .setSystem(request.isSystem());
     }

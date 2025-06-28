@@ -1,17 +1,19 @@
 package ru.akvine.iskra.services.integration.istochnik;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.istochnik.ColumnDto;
 import ru.akvine.compozit.commons.istochnik.ConfigDto;
 import ru.akvine.compozit.commons.istochnik.GenerateTableRequest;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotSelectedException;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
-import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.domain.table.TableModel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class IstochnikDtoMapper {
@@ -51,8 +53,8 @@ public class IstochnikDtoMapper {
                 .setType(config.getType())
                 .setGenerationStrategy(config.getGenerationStrategy())
                 .setConvertToString(config.isConvertToString())
-                .setFilters(config.getFilters())
-                .setPostFilters(config.getPostFilters())
+                .setConverters(config.getConverters())
+                .setPostConverters(config.getPostConverters())
                 .setConfig(buildConfigDto(batchSize, processedRowsCount, config));
     }
 
@@ -72,8 +74,10 @@ public class IstochnikDtoMapper {
             configDto.setEnd(String.valueOf(processedRowsCount + batchSize + Integer.parseInt(config.getStart())));
         }
 
-        if (config.getDictionary() != null) {
-            configDto.setDictionary(config.getDictionary().getValues());
+        if (CollectionUtils.isNotEmpty(config.getDictionaries())) {
+            Set<Set<String>> dictionaries = new HashSet<>();
+            config.getDictionaries().forEach(dictionary -> dictionaries.add(dictionary.getDictionaryValues()));
+            configDto.setDictionaries(dictionaries);
         }
 
         return configDto;

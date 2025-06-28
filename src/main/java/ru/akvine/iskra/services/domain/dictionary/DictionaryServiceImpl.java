@@ -26,6 +26,7 @@ import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
 import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -122,6 +123,15 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    public void delete(String uuid, String userUuid) {
+        Asserts.isNotBlank(uuid, "uuid is blank!");
+        Asserts.isNotBlank(userUuid, "userUuid is blank!");
+
+        DictionaryEntity dictionary = verifyUserExists(uuid, userUuid);
+        dictionaryRepository.delete(dictionary);
+    }
+
+    @Override
     public DictionaryEntity verifySystemExists(String uuid) {
 
         return dictionaryRepository
@@ -133,6 +143,12 @@ public class DictionaryServiceImpl implements DictionaryService {
                     );
                     return new DictionaryNotFoundException(errorMessage);
                 });
+    }
+
+    @Override
+    public List<DictionaryEntity> verifySystemExists(Collection<String> uuids) {
+        Asserts.isNotNull(uuids);
+        return dictionaryRepository.findSystemByUuids(uuids);
     }
 
     @Override
@@ -148,5 +164,12 @@ public class DictionaryServiceImpl implements DictionaryService {
                     );
                     return new DictionaryNotFoundException(errorMessage);
                 });
+    }
+
+    @Override
+    public List<DictionaryEntity> verifyUserExists(Collection<String> uuids, String userUuid) {
+        Asserts.isNotNull(uuids);
+        Asserts.isNotBlank(userUuid, "userUuid is null");
+        return dictionaryRepository.findUserByUuids(uuids, userUuid);
     }
 }

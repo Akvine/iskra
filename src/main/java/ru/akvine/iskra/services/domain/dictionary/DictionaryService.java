@@ -4,6 +4,7 @@ import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
 import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface DictionaryService {
@@ -11,7 +12,13 @@ public interface DictionaryService {
 
     DictionaryModel create(CreateDictionary createDictionary);
 
+    void delete(String uuid, String userUuid);
+
     DictionaryEntity verifySystemExists(String uuid);
 
+    List<DictionaryEntity> verifySystemExists(Collection<String> uuids);
+
     DictionaryEntity verifyUserExists(String uuid, String userUuid);
+
+    List<DictionaryEntity> verifyUserExists(Collection<String> uuids, String userUuid);
 }

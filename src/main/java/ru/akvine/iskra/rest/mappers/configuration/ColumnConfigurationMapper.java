@@ -10,6 +10,7 @@ import ru.akvine.iskra.rest.dto.configuration.column.ConfigurationListResponse;
 import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
 import ru.akvine.iskra.rest.dto.configuration.column.SelectConfigurationRequest;
 import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
+import ru.akvine.iskra.services.domain.column.configuration.dictionary.ColumnConfigurationDictionaryModel;
 import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
 import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
 
@@ -32,7 +33,7 @@ public class ColumnConfigurationMapper {
                 .setSelected(request.isSelected())
                 .setConvertToString(request.isConvertToString())
                 .setRepeatable(request.isRepeatable())
-                .setDictionaryUuid(request.getDictionaryUuid())
+                .setDictionariesUuids(request.getDictionariesUuids())
                 .setUnique(request.isUnique())
                 .setNotNull(request.isNotNull())
                 .setValid(request.getValid())
@@ -40,8 +41,8 @@ public class ColumnConfigurationMapper {
                 .setStart(request.getStart())
                 .setEnd(request.getEnd())
                 .setStep(request.getStep())
-                .setFilters(request.getFilters())
-                .setPostFilters(request.getPostFilters())
+                .setConverters(request.getConverters())
+                .setPostConverters(request.getPostConverters())
                 .setUserUuid(securityManager.getCurrentUser().getUuid());
     }
 
@@ -76,15 +77,16 @@ public class ColumnConfigurationMapper {
                 .setValid(model.getValid())
                 .setRegexps(model.getRegexps());
 
-        if (model.getDictionary() != null) {
-            config.setDictionaryName(model.getDictionary().getName());
+        if (CollectionUtils.isNotEmpty(model.getDictionaries())) {
+            config.setDictionariesNames(model.getDictionaries().stream()
+                    .map(ColumnConfigurationDictionaryModel::getDictionaryName).toList());
         }
 
-        if (CollectionUtils.isNotEmpty(model.getFilters())) {
-            config.setFilters(model.getFilters());
+        if (CollectionUtils.isNotEmpty(model.getConverters())) {
+            config.setConverters(model.getConverters());
         }
-        if (CollectionUtils.isNotEmpty(model.getPostFilters())) {
-            config.setPostFilters(model.getPostFilters());
+        if (CollectionUtils.isNotEmpty(model.getPostConverters())) {
+            config.setPostConverters(model.getPostConverters());
         }
 
         return config;

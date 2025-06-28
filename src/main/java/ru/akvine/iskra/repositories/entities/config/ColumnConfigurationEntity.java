@@ -7,10 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import ru.akvine.compozit.commons.istochnik.FilterDto;
-import ru.akvine.iskra.repositories.converters.FiltersToStringConverter;
+import ru.akvine.compozit.commons.istochnik.ConverterDto;
+import ru.akvine.iskra.repositories.converters.ConvertersToStringConverter;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
-import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 
 import java.util.ArrayList;
@@ -67,10 +66,9 @@ public class ColumnConfigurationEntity extends BaseEntity<Long> {
     @Column(name = "REGEXPS")
     private String regexps;
 
-    @OneToOne
-    @JoinColumn(name = "DICTIONARY_ID")
+    @OneToMany(mappedBy = "columnConfiguration")
     @Nullable
-    private DictionaryEntity dictionary;
+    private List<ColumnConfigurationDictionaryEntity> columnConfigurationDictionaries;
 
     @ManyToOne
     @JoinColumn(name = "COLUMN_ID", nullable = false)
@@ -83,11 +81,11 @@ public class ColumnConfigurationEntity extends BaseEntity<Long> {
     @Column(name = "IS_CONVERT_TO_STRING", nullable = false)
     private boolean convertToString;
 
-    @Column(name = "FILTERS")
-    @Convert(converter = FiltersToStringConverter.class)
-    private List<FilterDto> filters = new ArrayList<>();
+    @Column(name = "CONVERTERS")
+    @Convert(converter = ConvertersToStringConverter.class)
+    private List<ConverterDto> converters = new ArrayList<>();
 
-    @Column(name = "POST_FILTERS")
-    @Convert(converter = FiltersToStringConverter.class)
-    private List<FilterDto> postFilters = new ArrayList<>();
+    @Column(name = "POST_CONVERTERS")
+    @Convert(converter = ConvertersToStringConverter.class)
+    private List<ConverterDto> postConverters = new ArrayList<>();
 }

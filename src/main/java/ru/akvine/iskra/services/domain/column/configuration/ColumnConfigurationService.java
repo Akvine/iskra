@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.domain.column.configuration;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
 import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
@@ -7,6 +8,7 @@ import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfigurati
 import java.util.List;
 
 public interface ColumnConfigurationService {
+    @Transactional
     List<ColumnConfigurationModel> list(String columnUuid);
 
     ColumnConfigurationModel create(CreateColumnConfiguration action);

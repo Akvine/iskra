@@ -6,10 +6,10 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import ru.akvine.compozit.commons.istochnik.FilterDto;
+import ru.akvine.compozit.commons.istochnik.ConverterDto;
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.services.domain.base.Model;
-import ru.akvine.iskra.services.domain.dictionary.DictionaryModel;
+import ru.akvine.iskra.services.domain.column.configuration.dictionary.ColumnConfigurationDictionaryModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,11 +37,11 @@ public class ColumnConfigurationModel extends Model<Long> {
     private Boolean valid;
     private List<String> regexps = new ArrayList<>();
     @Nullable
-    private DictionaryModel dictionary;
+    private List<ColumnConfigurationDictionaryModel> dictionaries;
     private Long columnId;
     private boolean repeatable;
-    private List<FilterDto> filters = List.of();
-    private List<FilterDto> postFilters = List.of();
+    private List<ConverterDto> converters = List.of();
+    private List<ConverterDto> postConverters = List.of();
 
     public ColumnConfigurationModel(ColumnConfigurationEntity entity) {
         super(entity);
@@ -64,14 +64,16 @@ public class ColumnConfigurationModel extends Model<Long> {
         if (StringUtils.isNotBlank(entity.getRegexps())) {
             this.regexps = Arrays.stream(entity.getRegexps().split(";")).toList();
         }
-        if (entity.getDictionary() != null) {
-            this.dictionary = new DictionaryModel(entity.getDictionary());
+        if (CollectionUtils.isNotEmpty(entity.getConverters())) {
+            this.converters = entity.getConverters();
         }
-        if (CollectionUtils.isNotEmpty(entity.getFilters())) {
-            this.filters = entity.getFilters();
+        if (CollectionUtils.isNotEmpty(entity.getColumnConfigurationDictionaries())) {
+            this.dictionaries = entity.getColumnConfigurationDictionaries().stream()
+                    .map(ColumnConfigurationDictionaryModel::new)
+                    .toList();
         }
-        if (CollectionUtils.isNotEmpty(entity.getPostFilters())) {
-            this.postFilters = entity.getPostFilters();
+        if (CollectionUtils.isNotEmpty(entity.getPostConverters())) {
+            this.postConverters = entity.getPostConverters();
         }
     }
 }
