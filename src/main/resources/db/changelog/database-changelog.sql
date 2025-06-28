@@ -333,3 +333,25 @@ ALTER TABLE DICTIONARY_ENTITY ADD UUID VARCHAR(64) NOT NULL;
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'RELATIONS_MATRIX_JSON' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD RELATIONS_MATRIX_JSON TEXT;
+
+--changeset akvine:ISKRA-31
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'REGEX_ENTITY';
+CREATE TABLE REGEX_ENTITY (
+    ID                  BIGINT                  PRIMARY KEY NOT NULL,
+    UUID                VARCHAR(255)            NOT NULL,
+    NAME                VARCHAR(255)            NOT NULL,
+    PATTERN             TEXT                    NOT NULL,
+    IS_SYSTEM           BOOLEAN                 NOT NULL,
+    DESCRIPTION         VARCHAR(255),
+    CREATED_DATE        TIMESTAMP               NOT NULL,
+    UPDATED_DATE        TIMESTAMP,
+    IS_DELETED          BOOLEAN                 NOT NULL,
+    DELETED_DATE        TIMESTAMP,
+    USER_ID             BIGINT,
+    FOREIGN KEY (USER_ID) REFERENCES USER_ENTITY(ID)
+);
+CREATE SEQUENCE SEQ_REGEX_ENTITY START WITH 1 INCREMENT BY 1000;
+CREATE INDEX DICTIONARY_ENTITY_USER_ID_NAME_IS_DELETED_INDX ON REGEX_ENTITY (USER_ID, NAME, IS_DELETED);
+CREATE UNIQUE INDEX REGEX_ENTITY_ID_INDX ON REGEX_ENTITY (ID);
+--rollback not required
