@@ -20,6 +20,13 @@ public class PlanModel extends Model<Long> {
     private UserModel user;
     @Nullable
     private RelationsMatrix relationsMatrix;
+    private boolean generateScriptsForNotNull;
+    private boolean generateScriptsForIndex;
+    private boolean generateScriptsForPrimaryKey;
+    private boolean generateScriptsForTrigger;
+    private boolean generateScriptsForUnique;
+    private boolean generateScriptsForCheck;
+    private boolean generateScriptsForDefault;
 
     public PlanModel(PlanEntity entity) {
         super(entity);
@@ -30,5 +37,13 @@ public class PlanModel extends Model<Long> {
         this.connection = new ConnectionModel(entity.getConnection());
         this.user = new UserModel(entity.getUser());
         this.relationsMatrix = entity.getRelationsMatrix();
+
+        this.generateScriptsForNotNull = entity.isGenerateScriptsForNotNull();
+        this.generateScriptsForIndex = entity.isGenerateScriptsForIndex();
+        this.generateScriptsForPrimaryKey = entity.isGenerateScriptsForPrimaryKey();
+        this.generateScriptsForTrigger = entity.isGenerateScriptsForTrigger();
+        this.generateScriptsForUnique = entity.isGenerateScriptsForUnique();
+        this.generateScriptsForCheck = entity.isGenerateScriptsForCheck();
+        this.generateScriptsForDefault = entity.isGenerateScriptsForDefault();
     }
 }

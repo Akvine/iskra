@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.components.SecurityManager;
-import ru.akvine.iskra.rest.dto.plan.CreatePlanRequest;
-import ru.akvine.iskra.rest.dto.plan.DuplicatePlanRequest;
-import ru.akvine.iskra.rest.dto.plan.PlanDto;
-import ru.akvine.iskra.rest.dto.plan.PlanListResponse;
+import ru.akvine.iskra.rest.dto.plan.*;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.dto.plan.CreatePlan;
 import ru.akvine.iskra.services.dto.plan.DuplicatePlan;
@@ -46,6 +43,18 @@ public class PlanMapper {
         return new PlanDto()
                 .setLastProcessUuid(plan.getLastProcessUuid())
                 .setUuid(plan.getUuid())
-                .setName(plan.getName());
+                .setName(plan.getName())
+                .setConstraintsSettingsInfo(buildConstraintsSettingsInfo(plan));
+    }
+
+    private ConstraintsSettingsInfo buildConstraintsSettingsInfo(PlanModel plan) {
+        return new ConstraintsSettingsInfo()
+                .setGenerateScriptsForNotNull(plan.isGenerateScriptsForNotNull())
+                .setGenerateScriptsForIndex(plan.isGenerateScriptsForIndex())
+                .setGenerateScriptsForPrimaryKey(plan.isGenerateScriptsForPrimaryKey())
+                .setGenerateScriptsForTrigger(plan.isGenerateScriptsForTrigger())
+                .setGenerateScriptsForUnique(plan.isGenerateScriptsForUnique())
+                .setGenerateScriptsForCheck(plan.isGenerateScriptsForCheck())
+                .setGenerateScriptsForDefault(plan.isGenerateScriptsForDefault());
     }
 }

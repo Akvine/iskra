@@ -48,4 +48,25 @@ public class PlanEntity extends BaseEntity<Long> implements Identifiable {
     @Nullable
     @Convert(converter = RelationsMatrixToStringConverter.class)
     private RelationsMatrix relationsMatrix;
+
+    @Column(name = "IS_GENERATE_SCRIPTS_FOR_NOT_NULL", nullable = false)
+    private boolean generateScriptsForNotNull;
+
+    @Column(name = "IS_GENERATE_SCRIPTS_FOR_INDEX", nullable = false)
+    private boolean generateScriptsForIndex = true;
+
+    @Column(name = "IS_GENERATE_SCRIPTS_FOR_PRIMARY_KEY", nullable = false)
+    private boolean generateScriptsForPrimaryKey = true;
+
+    @Column(name = "IS_GENERATE_SCRIPTS_FOR_TRIGGER", nullable = false)
+    private boolean generateScriptsForTrigger = true;
+
+    @Column(name = "IS_GENERATE_SCRIPTS_FOR_UNIQUE", nullable = false)
+    private boolean generateScriptsForUnique;
+
+    @Column(name = "IS_GENERATE_SCRIPTS_FOR_CHECK", nullable = false)
+    private boolean generateScriptsForCheck;
+
+    @Column(name = "IS_GENERATE_SCRIPTS_FOR_DEFAULT", nullable = false)
+    private boolean generateScriptsForDefault = true;
 }

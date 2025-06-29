@@ -355,3 +355,38 @@ CREATE SEQUENCE SEQ_REGEX_ENTITY START WITH 1 INCREMENT BY 1000;
 CREATE INDEX DICTIONARY_ENTITY_USER_ID_NAME_IS_DELETED_INDX ON REGEX_ENTITY (USER_ID, NAME, IS_DELETED);
 CREATE UNIQUE INDEX REGEX_ENTITY_ID_INDX ON REGEX_ENTITY (ID);
 --rollback not required
+
+--changeset akvine:ISKRA-32
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_NOT_NULL' and upper(table_name) = 'PLAN_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_NOT_NULL BOOLEAN DEFAULT FALSE;
+
+--changeset akvine:ISKRA-33
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_INDEX' and upper(table_name) = 'PLAN_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_INDEX BOOLEAN DEFAULT TRUE;
+
+--changeset akvine:ISKRA-34
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_PRIMARY_KEY' and upper(table_name) = 'PLAN_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_PRIMARY_KEY BOOLEAN DEFAULT TRUE;
+
+--changeset akvine:ISKRA-35
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_TRIGGER' and upper(table_name) = 'PLAN_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_TRIGGER BOOLEAN DEFAULT TRUE;
+
+--changeset akvine:ISKRA-36
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_UNIQUE' and upper(table_name) = 'PLAN_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_UNIQUE BOOLEAN DEFAULT FALSE;
+
+--changeset akvine:ISKRA-37
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_DEFAULT' and upper(table_name) = 'PLAN_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_DEFAULT BOOLEAN DEFAULT TRUE;
+
+--changeset akvine:ISKRA-38
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_CHECK' and upper(table_name) = 'PLAN_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_CHECK BOOLEAN DEFAULT FALSE;

@@ -60,7 +60,14 @@ public class PlanServiceImpl implements PlanService {
         PlanEntity target = new PlanEntity()
                 .setUuid(UUIDGenerator.uuidWithoutDashes())
                 .setUser(user)
-                .setConnection(from.getConnection());
+                .setConnection(from.getConnection())
+                .setGenerateScriptsForNotNull(from.isGenerateScriptsForNotNull())
+                .setGenerateScriptsForIndex(from.isGenerateScriptsForIndex())
+                .setGenerateScriptsForPrimaryKey(from.isGenerateScriptsForPrimaryKey())
+                .setGenerateScriptsForTrigger(from.isGenerateScriptsForTrigger())
+                .setGenerateScriptsForUnique(from.isGenerateScriptsForUnique())
+                .setGenerateScriptsForCheck(from.isGenerateScriptsForCheck())
+                .setGenerateScriptsForDefault(from.isGenerateScriptsForDefault());
 
         if (StringUtils.isNotBlank(duplicatePlan.getName()) &&
                 !duplicatePlan.getName().equals(from.getName())) {

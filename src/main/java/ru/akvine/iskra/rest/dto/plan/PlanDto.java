@@ -9,4 +9,5 @@ public class PlanDto {
     private String uuid;
     private String name;
     private String lastProcessUuid;
+    private ConstraintsSettingsInfo constraintsSettingsInfo;
 }
