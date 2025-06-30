@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.compozit.commons.enums.DeleteMode;
 
+import java.util.List;
+
 @Data
 @Accessors(chain = true)
 public class UpdateTableConfiguration {
@@ -23,4 +25,6 @@ public class UpdateTableConfiguration {
     private Boolean deleteDataBeforeStart;
     @Nullable
     private DeleteMode deleteMode;
+    private List<String> createScripts = List.of();
+    private List<String> dropScripts = List.of();
 }

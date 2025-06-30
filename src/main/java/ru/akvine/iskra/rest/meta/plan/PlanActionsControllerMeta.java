@@ -15,4 +15,7 @@ public interface PlanActionsControllerMeta {
 
     @PostMapping(value = "/stop/{uuid}")
     Response stop(@PathVariable("uuid") String planUuid);
+
+    @PostMapping(value = "/scripts/generate/{uuid}")
+    Response generateScripts(@PathVariable("uuid") String planUuid);
 }

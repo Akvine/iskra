@@ -12,8 +12,6 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.dto.GenerateData;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;

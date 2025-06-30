@@ -1,6 +1,7 @@
 package ru.akvine.iskra.services.domain.table.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -15,6 +16,9 @@ import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration
 import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 
+import java.util.Collection;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TableConfigurationServiceImpl implements TableConfigurationService {
@@ -23,6 +27,15 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
 
     private final TableService tableService;
     private final VisorService visorService;
+
+    @Override
+    public List<TableConfigurationModel> list(String planUuid, Collection<String> tableNames) {
+        Asserts.isNotBlank(planUuid);
+        Asserts.isNotEmpty(tableNames);
+        return tableConfigurationRepository.findBy(planUuid, tableNames).stream()
+                .map(TableConfigurationModel::new)
+                .toList();
+    }
 
     @Override
     public TableConfigurationModel create(CreateTableConfiguration action) {
@@ -45,7 +58,7 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
                     action.getDeleteMode(),
                     connection
             );
-            configurationToSave.setClearScript(clearScript);
+            configurationToSave.setClearScripts(clearScript);
         }
 
 
@@ -93,7 +106,15 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
             String clearScript = visorService.generateClearScript(action.getTableName(),
                     action.getDeleteMode(),
                     new ConnectionModel(table.getPlan().getConnection()));
-            configurationToUpdate.setClearScript(clearScript);
+            configurationToUpdate.setClearScripts(clearScript);
+        }
+
+        if (CollectionUtils.isNotEmpty(action.getDropScripts())) {
+            configurationToUpdate.setDropScripts(String.join(";", action.getDropScripts()));
+        }
+
+        if (CollectionUtils.isNotEmpty(action.getCreateScripts())) {
+            configurationToUpdate.setCreateScripts(String.join(";", action.getCreateScripts()));
         }
 
         return new TableConfigurationModel(tableConfigurationRepository.save(configurationToUpdate));

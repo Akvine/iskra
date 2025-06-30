@@ -9,12 +9,15 @@ import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.exceptions.table.AnyTablesNotSelectedException;
 import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
+import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorFacade;
 import ru.akvine.iskra.services.PlanActionService;
+import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
+import ru.akvine.iskra.services.dto.plan.action.GenerateScriptsResult;
 import ru.akvine.iskra.services.dto.plan.action.StartAction;
 import ru.akvine.iskra.services.dto.table.ListTables;
 
@@ -60,7 +63,7 @@ public class PlanActionServiceImpl implements PlanActionService {
             }
         });
 
-        return generatorFacade.generate(planUuid, selectedTables, action.isResume());
+        return generatorFacade.generateData(planUuid, selectedTables, action.isResume());
     }
 
     @Override
@@ -72,5 +75,30 @@ public class PlanActionServiceImpl implements PlanActionService {
         generatorCacheService.stop(planUuid);
         log.info("Plan with uuid = [{}] was successfully stopped!", planUuid);
         return true;
+    }
+
+    @Override
+    public GenerateScriptsResult generateScripts(String planUuid, String userUuid) {
+        Asserts.isNotBlank(planUuid);
+        Asserts.isNotBlank(userUuid);
+
+        PlanEntity plan = planService.verifyExists(planUuid, userUuid);
+
+        ListTables listTables = new ListTables()
+                .setPlanUuid(planUuid)
+                .setSelected(true);
+        Map<TableName, TableModel> selectedTables = tableService
+                .list(listTables)
+                .stream().collect(Collectors.toMap(
+                        table -> new TableName(table.getTableName()),
+                        Function.identity()
+                ));
+
+        if (CollectionUtils.isEmpty(selectedTables)) {
+            String message = "For plan = [" + plan.getName() + "] not selected any tables to generate scripts!";
+            throw new AnyTablesNotSelectedException(message);
+        }
+
+        return generatorFacade.generateScripts(new PlanModel(plan), selectedTables);
     }
 }

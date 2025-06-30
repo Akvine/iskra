@@ -6,6 +6,8 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.dto.plan.actions.StartPlanRequest;
 import ru.akvine.iskra.rest.dto.plan.actions.StartPlanResponse;
+import ru.akvine.iskra.rest.dto.plan.actions.scripts.GenerateScriptsResponse;
+import ru.akvine.iskra.services.dto.plan.action.GenerateScriptsResult;
 import ru.akvine.iskra.services.dto.plan.action.StartAction;
 
 @Component
@@ -23,5 +25,13 @@ public class PlanActionsMapper {
 
     public StartPlanResponse convertToStartPlanResponse(String processUuid) {
         return new StartPlanResponse().setProcessUuid(processUuid);
+    }
+
+    public GenerateScriptsResponse mapToGenerateScriptsResponse(GenerateScriptsResult result) {
+        Asserts.isNotNull(result);
+        return new GenerateScriptsResponse()
+                .setDropScripts(result.getDropScripts())
+                .setCreateScripts(result.getCreateScripts())
+                .setClearScripts(result.getClearScripts());
     }
 }

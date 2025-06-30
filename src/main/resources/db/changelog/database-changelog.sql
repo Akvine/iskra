@@ -390,3 +390,13 @@ ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_DEFAULT BOOLEAN DEFAULT TRUE
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_CHECK' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_CHECK BOOLEAN DEFAULT FALSE;
+
+--changeset akvine:ISKRA-39
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'DROP_SCRIPTS' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
+ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD DROP_SCRIPTS TEXT;
+
+--changeset akvine:ISKRA-40
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CREATE_SCRIPTS' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
+ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD CREATE_SCRIPTS TEXT;

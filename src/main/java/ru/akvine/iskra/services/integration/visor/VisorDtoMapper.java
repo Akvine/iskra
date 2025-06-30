@@ -6,6 +6,7 @@ import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.compozit.commons.scripts.ExecuteScriptsRequest;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.compozit.commons.visor.GenerateScriptsRequest;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
@@ -59,6 +60,15 @@ public class VisorDtoMapper {
 
         return new GetRelatedTablesRequest()
                 .setTableName(tableName)
+                .setConnection(convertToConnectionRequest(connection));
+    }
+
+    public GenerateScriptsRequest convertToGenerateScriptsRequest(Collection<String> tableNames,
+                                                                  List<String> constraints,
+                                                                  ConnectionModel connection) {
+        return new GenerateScriptsRequest()
+                .setConstraints(constraints)
+                .setTableNames(tableNames)
                 .setConnection(convertToConnectionRequest(connection));
     }
 

@@ -9,6 +9,7 @@ import ru.akvine.iskra.configs.async.executors.TaskExecutor;
 import ru.akvine.iskra.configs.properties.ParallelExecutorProperties;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorService;
+import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
 import ru.akvine.iskra.services.domain.table.process.TableProcessService;
 import ru.akvine.iskra.services.impl.RestGeneratorServiceImpl;
 import ru.akvine.iskra.services.integration.istochnik.IstochnikService;
@@ -43,11 +44,13 @@ public class AsyncConfig {
     public GeneratorService generatorService(final VisorService visorService,
                                              final IstochnikService istochnikService,
                                              final TableProcessService tableProcessService,
-                                             final GeneratorCacheService generatorCacheService) {
+                                             final GeneratorCacheService generatorCacheService,
+                                             final TableConfigurationService tableConfigurationService) {
         return new RestGeneratorServiceImpl(
                 visorService,
                 istochnikService,
                 tableProcessService,
-                generatorCacheService);
+                generatorCacheService,
+                tableConfigurationService);
     }
 }

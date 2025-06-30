@@ -43,9 +43,15 @@ public class TableConfigurationEntity extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private DeleteMode deleteMode;
 
+    @Column(name = "DROP_SCRIPTS", nullable = false)
+    private String dropScripts = StringUtils.EMPTY;
+
+    @Column(name = "CREATE_SCRIPTS", nullable = false)
+    private String createScripts = StringUtils.EMPTY;
+
     @Column(name = "CLEAR_SCRIPT")
     @Nullable
-    private String clearScript = StringUtils.EMPTY;
+    private String clearScripts = StringUtils.EMPTY;
 
     @OneToOne
     @JoinColumn(name = "TABLE_ID")

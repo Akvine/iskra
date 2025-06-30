@@ -6,6 +6,10 @@ import ru.akvine.compozit.commons.*;
 import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.compozit.commons.scripts.ExecuteScriptsRequest;
+import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.compozit.commons.visor.GenerateScriptsRequest;
+import ru.akvine.compozit.commons.visor.GenerateScriptsResponse;
+import ru.akvine.compozit.commons.visor.ScriptResultDto;
 import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.exceptions.IntegrationException;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
@@ -17,6 +21,7 @@ import ru.akvine.iskra.services.integration.visor.dto.TableMetadataDto;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -117,6 +122,25 @@ public class VisorService {
         try {
             GetRelatedTablesResponse response = visorClient.getRelatedTables(request);
             return response.getRelatedTablesNames();
+        } catch (Exception exception) {
+            String message = String.format(
+                    "Error while send request to Visor. Message = [%s]",
+                    exception.getMessage());
+            throw new IntegrationException(message);
+        }
+    }
+
+    public Map<String, ScriptResultDto> generateScriptsForTables(Collection<String> tableNames,
+                                                                 List<String> constraints,
+                                                                 ConnectionModel connection) {
+        Asserts.isNotEmpty(tableNames);
+        Asserts.isNotEmpty(constraints);
+
+        GenerateScriptsRequest request = visorDtoMapper.convertToGenerateScriptsRequest(tableNames, constraints, connection);
+        
+        try {
+            GenerateScriptsResponse response = visorClient.generateScripts(request);
+            return response.getTableNameWithScripts();
         } catch (Exception exception) {
             String message = String.format(
                     "Error while send request to Visor. Message = [%s]",

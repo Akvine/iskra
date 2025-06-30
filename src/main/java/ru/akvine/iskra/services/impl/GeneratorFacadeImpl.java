@@ -13,12 +13,16 @@ import ru.akvine.iskra.exceptions.plan.RelationsMatrixNotGeneratedException;
 import ru.akvine.iskra.providers.GenerationStrategyHandlersProvider;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorFacade;
+import ru.akvine.iskra.services.GeneratorService;
 import ru.akvine.iskra.services.MatrixService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
+import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
+import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
 import ru.akvine.iskra.services.dto.GenerateData;
 import ru.akvine.iskra.services.dto.plan.UpdatePlan;
+import ru.akvine.iskra.services.dto.plan.action.GenerateScriptsResult;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,14 +33,18 @@ import java.util.stream.Collectors;
 public class GeneratorFacadeImpl implements GeneratorFacade {
     private final PlanService planService;
     private final SecurityManager securityManager;
+    // TODO: убрать лишнюю прослойку в виде GenerationStrategyHandlersProvider
     private final GenerationStrategyHandlersProvider provider;
     private final MatrixService matrixService;
     private final GeneratorCacheService generatorCacheService;
+    private final GeneratorService generatorService;
+    private final TableConfigurationService tableConfigurationService;
 
     @Override
-    public String generate(String planUuid, Map<TableName, TableModel> selectedTables, boolean resume) {
+    public String generateData(String planUuid, Map<TableName, TableModel> selectedTables, boolean resume) {
         Asserts.isNotNull(selectedTables);
 
+        // TODO: передавать userUuid извне, а не инжектить доп. зависимость в лице SecurityManager
         String userUuid = securityManager.getCurrentUser().getUuid();
         PlanModel plan;
         String processUuid;
@@ -75,6 +83,26 @@ public class GeneratorFacadeImpl implements GeneratorFacade {
         }
 
         return processUuid;
+    }
+
+    @Override
+    public GenerateScriptsResult generateScripts(PlanModel plan,
+                                                 Map<TableName, TableModel> selectedTables) {
+        Asserts.isNotNull(plan);
+        Asserts.isNotEmpty(selectedTables);
+
+        generatorService.generateScripts(plan, selectedTables);
+        GenerateScriptsResult result = new GenerateScriptsResult();
+        List<TableConfigurationModel> configs = tableConfigurationService.list(
+                plan.getUuid(), selectedTables.keySet().stream().map(TableName::getName).toList()
+        );
+        configs.forEach(config -> {
+            result.getDropScripts().addAll(config.getDropScripts());
+            result.getCreateScripts().addAll(config.getCreateScripts());
+            result.getClearScripts().add(config.getClearScript());
+        });
+
+        return result;
     }
 
     private Map<TableName, TableModel> extractIndependentTables(Set<String> detectedIndependentTables,

@@ -8,6 +8,8 @@ import ru.akvine.compozit.commons.*;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
 import ru.akvine.compozit.commons.iskra.InsertValuesRequest;
 import ru.akvine.compozit.commons.scripts.ExecuteScriptsRequest;
+import ru.akvine.compozit.commons.visor.GenerateScriptsRequest;
+import ru.akvine.compozit.commons.visor.GenerateScriptsResponse;
 import ru.akvine.iskra.constants.ServiceTypeConstants;
 import ru.akvine.iskra.services.integration.visor.dto.*;
 
@@ -33,4 +35,7 @@ public interface VisorClient {
 
     @PostMapping(value = "/databases/tables/related")
     GetRelatedTablesResponse getRelatedTables(@RequestBody @Valid GetRelatedTablesRequest request);
+
+    @PostMapping(value = "/scripts/generate")
+    GenerateScriptsResponse generateScripts(@RequestBody @Valid GenerateScriptsRequest request);
 }

@@ -3,9 +3,13 @@ package ru.akvine.iskra.services.domain.table.configuration;
 import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 import ru.akvine.compozit.commons.enums.DeleteMode;
 import ru.akvine.iskra.repositories.entities.config.TableConfigurationEntity;
 import ru.akvine.iskra.services.domain.base.Model;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -15,11 +19,14 @@ public class TableConfigurationModel extends Model<Long> {
     private int batchSize;
     @Nullable
     private Long tableId;
-
     private boolean deleteDataBeforeStart;
     @Nullable
     private String clearScript;
     private DeleteMode deleteMode;
+
+    private List<String> dropScripts = List.of();
+    private List<String> createScripts = List.of();
+
 
     public TableConfigurationModel(TableConfigurationEntity entity) {
         super(entity);
@@ -28,10 +35,18 @@ public class TableConfigurationModel extends Model<Long> {
         this.rowsCount = entity.getRowsCount();
         this.batchSize = entity.getBatchSize();
         this.deleteDataBeforeStart = entity.isDeleteDataBeforeStart();
-        this.clearScript = entity.getClearScript();
+        this.clearScript = entity.getClearScripts();
         this.deleteMode = entity.getDeleteMode();
         if (entity.getTable() != null) {
             this.tableId = entity.getTable().getId();
+        }
+
+        // TODO: заменить на конвертеры
+        if (StringUtils.isNotBlank(entity.getDropScripts())) {
+            this.dropScripts = Arrays.stream(entity.getDropScripts().split(";")).toList();
+        }
+        if (StringUtils.isNotBlank(entity.getCreateScripts())) {
+            this.createScripts = Arrays.stream(entity.getCreateScripts().split(";")).toList();
         }
 
     }
