@@ -12,8 +12,8 @@ import ru.akvine.iskra.rest.meta.configuration.TableConfigurationControllerMeta;
 import ru.akvine.iskra.rest.validators.TableConfigurationValidator;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
-import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration;
-import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
+import ru.akvine.iskra.services.domain.table.configuration.dto.CreateTableConfiguration;
+import ru.akvine.iskra.services.domain.table.configuration.dto.UpdateTableConfiguration;
 
 import java.util.List;
 

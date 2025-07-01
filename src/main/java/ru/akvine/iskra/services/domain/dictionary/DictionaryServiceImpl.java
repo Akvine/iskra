@@ -22,8 +22,8 @@ import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.repositories.specifications.DictionarySpecification;
 import ru.akvine.iskra.services.UserService;
-import ru.akvine.iskra.services.dto.dictionary.CreateDictionary;
-import ru.akvine.iskra.services.dto.dictionary.ListDictionaries;
+import ru.akvine.iskra.services.domain.dictionary.dto.CreateDictionary;
+import ru.akvine.iskra.services.domain.dictionary.dto.ListDictionaries;
 
 import java.util.ArrayList;
 import java.util.Collection;

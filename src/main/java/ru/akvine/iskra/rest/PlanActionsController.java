@@ -9,8 +9,8 @@ import ru.akvine.iskra.rest.dto.plan.actions.StartPlanRequest;
 import ru.akvine.iskra.rest.mappers.PlanActionsMapper;
 import ru.akvine.iskra.rest.meta.plan.PlanActionsControllerMeta;
 import ru.akvine.iskra.services.PlanActionService;
-import ru.akvine.iskra.services.dto.plan.action.GenerateScriptsResult;
-import ru.akvine.iskra.services.dto.plan.action.StartAction;
+import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
+import ru.akvine.iskra.services.domain.plan.dto.action.StartAction;
 
 @RestController
 @RequiredArgsConstructor

@@ -10,8 +10,8 @@ import ru.akvine.iskra.rest.dto.connection.ConnectionResponse;
 import ru.akvine.iskra.rest.dto.connection.CreateConnectionRequest;
 import ru.akvine.iskra.rest.dto.connection.DuplicateConnectionRequest;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
-import ru.akvine.iskra.services.dto.connection.CreateConnection;
-import ru.akvine.iskra.services.dto.connection.DuplicateConnection;
+import ru.akvine.iskra.services.domain.connection.dto.CreateConnection;
+import ru.akvine.iskra.services.domain.connection.dto.DuplicateConnection;
 
 import java.util.List;
 

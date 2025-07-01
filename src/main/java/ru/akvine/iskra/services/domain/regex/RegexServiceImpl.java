@@ -10,7 +10,7 @@ import ru.akvine.iskra.repositories.RegexRepository;
 import ru.akvine.iskra.repositories.entities.RegexEntity;
 import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.services.UserService;
-import ru.akvine.iskra.services.dto.regex.CreateRegex;
+import ru.akvine.iskra.services.domain.regex.dto.CreateRegex;
 
 import java.util.List;
 

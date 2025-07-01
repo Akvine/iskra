@@ -1,8 +1,8 @@
 package ru.akvine.iskra.services;
 
 import org.springframework.transaction.annotation.Transactional;
-import ru.akvine.iskra.services.dto.plan.action.GenerateScriptsResult;
-import ru.akvine.iskra.services.dto.plan.action.StartAction;
+import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
+import ru.akvine.iskra.services.domain.plan.dto.action.StartAction;
 
 public interface PlanActionService {
 

@@ -19,7 +19,7 @@ import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
-import ru.akvine.iskra.services.dto.plan.UpdatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 import ru.akvine.iskra.services.integration.visor.dto.ColumnMetadataDto;
 import ru.akvine.iskra.services.integration.visor.dto.TableMetadataDto;

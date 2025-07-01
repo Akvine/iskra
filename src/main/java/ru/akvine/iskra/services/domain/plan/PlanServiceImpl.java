@@ -17,9 +17,9 @@ import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.domain.connection.ConnectionService;
-import ru.akvine.iskra.services.dto.plan.CreatePlan;
-import ru.akvine.iskra.services.dto.plan.DuplicatePlan;
-import ru.akvine.iskra.services.dto.plan.UpdatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.CreatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.DuplicatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 
 import java.util.List;
 

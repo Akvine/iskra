@@ -17,9 +17,9 @@ import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
-import ru.akvine.iskra.services.dto.plan.action.GenerateScriptsResult;
-import ru.akvine.iskra.services.dto.plan.action.StartAction;
-import ru.akvine.iskra.services.dto.table.ListTables;
+import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
+import ru.akvine.iskra.services.domain.plan.dto.action.StartAction;
+import ru.akvine.iskra.services.domain.table.dto.ListTables;
 
 import java.util.Map;
 import java.util.function.Function;

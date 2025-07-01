@@ -6,8 +6,8 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.exceptions.table.TableNotFoundException;
 import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.TableEntity;
-import ru.akvine.iskra.services.dto.table.ListTables;
-import ru.akvine.iskra.services.dto.table.ToogleSelectedTables;
+import ru.akvine.iskra.services.domain.table.dto.ListTables;
+import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
 
 import java.util.List;
 import java.util.Map;

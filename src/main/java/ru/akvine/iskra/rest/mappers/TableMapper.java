@@ -8,7 +8,7 @@ import ru.akvine.iskra.rest.dto.table.ToggleSelectedRequest;
 import ru.akvine.iskra.rest.dto.table.TableDto;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
-import ru.akvine.iskra.services.dto.table.ToogleSelectedTables;
+import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
 
 import java.util.List;
 

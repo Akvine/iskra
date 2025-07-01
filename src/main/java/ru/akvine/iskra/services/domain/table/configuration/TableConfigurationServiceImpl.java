@@ -12,8 +12,8 @@ import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.repositories.entities.config.TableConfigurationEntity;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.table.TableService;
-import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration;
-import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
+import ru.akvine.iskra.services.domain.table.configuration.dto.CreateTableConfiguration;
+import ru.akvine.iskra.services.domain.table.configuration.dto.UpdateTableConfiguration;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 
 import java.util.Collection;

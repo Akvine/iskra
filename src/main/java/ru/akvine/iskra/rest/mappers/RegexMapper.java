@@ -8,7 +8,7 @@ import ru.akvine.iskra.rest.dto.regex.CreateRegexRequest;
 import ru.akvine.iskra.rest.dto.regex.ListRegexResponse;
 import ru.akvine.iskra.rest.dto.regex.RegexDto;
 import ru.akvine.iskra.services.domain.regex.RegexModel;
-import ru.akvine.iskra.services.dto.regex.CreateRegex;
+import ru.akvine.iskra.services.domain.regex.dto.CreateRegex;
 
 import java.util.List;
 

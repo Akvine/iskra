@@ -21,8 +21,8 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
 import ru.akvine.iskra.services.dto.GenerateData;
-import ru.akvine.iskra.services.dto.plan.UpdatePlan;
-import ru.akvine.iskra.services.dto.plan.action.GenerateScriptsResult;
+import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
 
 import java.util.*;
 import java.util.stream.Collectors;

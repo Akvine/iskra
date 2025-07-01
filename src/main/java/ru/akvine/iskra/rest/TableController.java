@@ -10,7 +10,7 @@ import ru.akvine.iskra.rest.dto.table.ToggleSelectedRequest;
 import ru.akvine.iskra.rest.meta.TableControllerMeta;
 import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.table.TableModel;
-import ru.akvine.iskra.services.dto.table.ToogleSelectedTables;
+import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.rest.dto.security.RegistrationRequest;
 import ru.akvine.iskra.services.domain.user.UserModel;
-import ru.akvine.iskra.services.dto.user.CreateUser;
+import ru.akvine.iskra.services.domain.user.dto.CreateUser;
 
 @Component
 public class UserMapper {

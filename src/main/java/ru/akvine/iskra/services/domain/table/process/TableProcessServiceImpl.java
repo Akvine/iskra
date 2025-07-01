@@ -11,9 +11,9 @@ import ru.akvine.iskra.repositories.TableProcessRepository;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
 import ru.akvine.iskra.services.domain.plan.PlanService;
-import ru.akvine.iskra.services.dto.process.CreateTableProcess;
-import ru.akvine.iskra.services.dto.process.ListTableProcess;
-import ru.akvine.iskra.services.dto.process.UpdateTableProcess;
+import ru.akvine.iskra.services.domain.table.process.dto.CreateTableProcess;
+import ru.akvine.iskra.services.domain.table.process.dto.ListTableProcess;
+import ru.akvine.iskra.services.domain.table.process.dto.UpdateTableProcess;
 import ru.akvine.iskra.utils.PIDGenerator;
 import ru.akvine.iskra.utils.StringHelper;
 

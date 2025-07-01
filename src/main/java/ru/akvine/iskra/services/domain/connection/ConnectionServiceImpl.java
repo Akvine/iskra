@@ -12,8 +12,8 @@ import ru.akvine.iskra.repositories.ConnectionRepository;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
 import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.services.UserService;
-import ru.akvine.iskra.services.dto.connection.CreateConnection;
-import ru.akvine.iskra.services.dto.connection.DuplicateConnection;
+import ru.akvine.iskra.services.domain.connection.dto.CreateConnection;
+import ru.akvine.iskra.services.domain.connection.dto.DuplicateConnection;
 
 import java.util.List;
 

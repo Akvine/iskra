@@ -10,7 +10,7 @@ import ru.akvine.iskra.rest.dto.column.SelectColumnRequest;
 import ru.akvine.iskra.rest.meta.ColumnControllerMeta;
 import ru.akvine.iskra.services.domain.column.ColumnService;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
-import ru.akvine.iskra.services.dto.column.SelectColumn;
+import ru.akvine.iskra.services.domain.column.dto.SelectColumn;
 
 import java.util.List;
 

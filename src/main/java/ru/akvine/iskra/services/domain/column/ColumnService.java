@@ -3,7 +3,7 @@ package ru.akvine.iskra.services.domain.column;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
-import ru.akvine.iskra.services.dto.column.SelectColumn;
+import ru.akvine.iskra.services.domain.column.dto.SelectColumn;
 
 import java.util.Collection;
 import java.util.List;

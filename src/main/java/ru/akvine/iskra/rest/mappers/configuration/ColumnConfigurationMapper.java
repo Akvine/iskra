@@ -11,8 +11,8 @@ import ru.akvine.iskra.rest.dto.configuration.column.CreateConfigurationRequest;
 import ru.akvine.iskra.rest.dto.configuration.column.SelectConfigurationRequest;
 import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
 import ru.akvine.iskra.services.domain.column.configuration.dictionary.ColumnConfigurationDictionaryModel;
-import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
-import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
+import ru.akvine.iskra.services.domain.column.configuration.dto.CreateColumnConfiguration;
+import ru.akvine.iskra.services.domain.column.configuration.dto.SelectColumnConfiguration;
 
 import java.util.List;
 

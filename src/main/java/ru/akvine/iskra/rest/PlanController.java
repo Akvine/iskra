@@ -12,8 +12,8 @@ import ru.akvine.iskra.rest.dto.plan.CreatePlanRequest;
 import ru.akvine.iskra.rest.meta.plan.PlanControllerMeta;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
-import ru.akvine.iskra.services.dto.plan.CreatePlan;
-import ru.akvine.iskra.services.dto.plan.DuplicatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.CreatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.DuplicatePlan;
 
 import java.util.List;
 

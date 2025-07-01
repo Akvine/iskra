@@ -2,8 +2,8 @@ package ru.akvine.iskra.services.domain.column.configuration;
 
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
-import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
-import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
+import ru.akvine.iskra.services.domain.column.configuration.dto.CreateColumnConfiguration;
+import ru.akvine.iskra.services.domain.column.configuration.dto.SelectColumnConfiguration;
 
 import java.util.List;
 

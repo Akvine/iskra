@@ -11,8 +11,8 @@ import ru.akvine.iskra.rest.dto.configuration.table.ListTableConfigurationsRespo
 import ru.akvine.iskra.rest.dto.configuration.table.TableConfigurationDto;
 import ru.akvine.iskra.rest.dto.configuration.table.UpdateTableConfigurationRequest;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
-import ru.akvine.iskra.services.dto.configuration.table.CreateTableConfiguration;
-import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
+import ru.akvine.iskra.services.domain.table.configuration.dto.CreateTableConfiguration;
+import ru.akvine.iskra.services.domain.table.configuration.dto.UpdateTableConfiguration;
 
 import java.util.List;
 

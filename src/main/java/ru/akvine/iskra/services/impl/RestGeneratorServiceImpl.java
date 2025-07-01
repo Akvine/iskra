@@ -19,9 +19,9 @@ import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationSer
 import ru.akvine.iskra.services.domain.table.process.TableProcessModel;
 import ru.akvine.iskra.services.domain.table.process.TableProcessService;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
-import ru.akvine.iskra.services.dto.configuration.table.UpdateTableConfiguration;
-import ru.akvine.iskra.services.dto.process.CreateTableProcess;
-import ru.akvine.iskra.services.dto.process.UpdateTableProcess;
+import ru.akvine.iskra.services.domain.table.configuration.dto.UpdateTableConfiguration;
+import ru.akvine.iskra.services.domain.table.process.dto.CreateTableProcess;
+import ru.akvine.iskra.services.domain.table.process.dto.UpdateTableProcess;
 import ru.akvine.iskra.services.integration.istochnik.IstochnikService;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 

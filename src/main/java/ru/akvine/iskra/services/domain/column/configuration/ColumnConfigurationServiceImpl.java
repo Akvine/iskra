@@ -16,8 +16,8 @@ import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.services.domain.column.ColumnService;
 import ru.akvine.iskra.services.domain.column.configuration.dictionary.ColumnConfigurationDictionaryService;
 import ru.akvine.iskra.services.domain.dictionary.DictionaryService;
-import ru.akvine.iskra.services.dto.configuration.column.CreateColumnConfiguration;
-import ru.akvine.iskra.services.dto.configuration.column.SelectColumnConfiguration;
+import ru.akvine.iskra.services.domain.column.configuration.dto.CreateColumnConfiguration;
+import ru.akvine.iskra.services.domain.column.configuration.dto.SelectColumnConfiguration;
 
 import java.util.List;
 import java.util.Set;

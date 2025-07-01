@@ -7,8 +7,8 @@ import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.dto.plan.actions.StartPlanRequest;
 import ru.akvine.iskra.rest.dto.plan.actions.StartPlanResponse;
 import ru.akvine.iskra.rest.dto.plan.actions.scripts.GenerateScriptsResponse;
-import ru.akvine.iskra.services.dto.plan.action.GenerateScriptsResult;
-import ru.akvine.iskra.services.dto.plan.action.StartAction;
+import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
+import ru.akvine.iskra.services.domain.plan.dto.action.StartAction;
 
 @Component
 @RequiredArgsConstructor

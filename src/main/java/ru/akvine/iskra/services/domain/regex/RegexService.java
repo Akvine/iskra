@@ -2,7 +2,7 @@ package ru.akvine.iskra.services.domain.regex;
 
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.RegexEntity;
-import ru.akvine.iskra.services.dto.regex.CreateRegex;
+import ru.akvine.iskra.services.domain.regex.dto.CreateRegex;
 
 import java.util.List;
 

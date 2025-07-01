@@ -14,7 +14,7 @@ import ru.akvine.iskra.rest.validators.CredentialsValidator;
 import ru.akvine.iskra.rest.validators.SecurityValidator;
 import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.domain.user.UserModel;
-import ru.akvine.iskra.services.dto.user.CreateUser;
+import ru.akvine.iskra.services.domain.user.dto.CreateUser;
 
 @RestController
 @RequiredArgsConstructor

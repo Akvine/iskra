@@ -5,14 +5,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
-import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.exceptions.user.UserAlreadyExistsException;
 import ru.akvine.iskra.exceptions.user.UserNotFoundException;
 import ru.akvine.iskra.repositories.UserRepository;
 import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.domain.user.UserModel;
-import ru.akvine.iskra.services.dto.user.CreateUser;
+import ru.akvine.iskra.services.domain.user.dto.CreateUser;
 
 @Service
 @RequiredArgsConstructor

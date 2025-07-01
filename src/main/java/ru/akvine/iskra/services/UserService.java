@@ -2,7 +2,7 @@ package ru.akvine.iskra.services;
 
 import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.services.domain.user.UserModel;
-import ru.akvine.iskra.services.dto.user.CreateUser;
+import ru.akvine.iskra.services.domain.user.dto.CreateUser;
 
 public interface UserService {
     UserModel create(CreateUser action);
