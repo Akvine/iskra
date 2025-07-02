@@ -9,8 +9,11 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import ru.akvine.compozit.commons.enums.DeleteMode;
+import ru.akvine.iskra.repositories.converters.ScriptsListToStringConverter;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,10 +47,12 @@ public class TableConfigurationEntity extends BaseEntity<Long> {
     private DeleteMode deleteMode;
 
     @Column(name = "DROP_SCRIPTS", nullable = false)
-    private String dropScripts = StringUtils.EMPTY;
+    @Convert(converter = ScriptsListToStringConverter.class)
+    private List<String> dropScripts = List.of();
 
     @Column(name = "CREATE_SCRIPTS", nullable = false)
-    private String createScripts = StringUtils.EMPTY;
+    @Convert(converter = ScriptsListToStringConverter.class)
+    private List<String> createScripts = List.of();
 
     @Column(name = "CLEAR_SCRIPT")
     @Nullable

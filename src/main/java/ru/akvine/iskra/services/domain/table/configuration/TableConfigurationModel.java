@@ -24,8 +24,8 @@ public class TableConfigurationModel extends Model<Long> {
     private String clearScript;
     private DeleteMode deleteMode;
 
-    private List<String> dropScripts = List.of();
-    private List<String> createScripts = List.of();
+    private List<String> dropScripts;
+    private List<String> createScripts;
 
 
     public TableConfigurationModel(TableConfigurationEntity entity) {
@@ -37,17 +37,10 @@ public class TableConfigurationModel extends Model<Long> {
         this.deleteDataBeforeStart = entity.isDeleteDataBeforeStart();
         this.clearScript = entity.getClearScripts();
         this.deleteMode = entity.getDeleteMode();
+        this.dropScripts = entity.getDropScripts();
+        this.createScripts = entity.getCreateScripts();
         if (entity.getTable() != null) {
             this.tableId = entity.getTable().getId();
         }
-
-        // TODO: заменить на конвертеры
-        if (StringUtils.isNotBlank(entity.getDropScripts())) {
-            this.dropScripts = Arrays.stream(entity.getDropScripts().split(";")).toList();
-        }
-        if (StringUtils.isNotBlank(entity.getCreateScripts())) {
-            this.createScripts = Arrays.stream(entity.getCreateScripts().split(";")).toList();
-        }
-
     }
 }

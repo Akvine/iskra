@@ -110,11 +110,11 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
         }
 
         if (CollectionUtils.isNotEmpty(action.getDropScripts())) {
-            configurationToUpdate.setDropScripts(String.join(";", action.getDropScripts()));
+            configurationToUpdate.setDropScripts(action.getDropScripts());
         }
 
         if (CollectionUtils.isNotEmpty(action.getCreateScripts())) {
-            configurationToUpdate.setCreateScripts(String.join(";", action.getCreateScripts()));
+            configurationToUpdate.setCreateScripts(action.getCreateScripts());
         }
 
         return new TableConfigurationModel(tableConfigurationRepository.save(configurationToUpdate));
