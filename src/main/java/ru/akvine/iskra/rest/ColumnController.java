@@ -22,8 +22,8 @@ public class ColumnController implements ColumnControllerMeta {
 
     @Override
     public Response select(@RequestBody @Valid SelectColumnRequest request) {
-        SelectColumn selectColumn = columnMapper.convertToSelectColumn(request);
+        SelectColumn selectColumn = columnMapper.mapToSelectColumn(request);
         List<ColumnModel> selected = columnService.selectAll(selectColumn);
-        return columnMapper.convertToListColumnResponse(selected);
+        return columnMapper.mapToListColumnResponse(selected);
     }
 }

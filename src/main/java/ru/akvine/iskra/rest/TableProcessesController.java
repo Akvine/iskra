@@ -21,8 +21,8 @@ public class TableProcessesController implements TableProcessControllerMeta {
     @Override
     public Response list(@PathVariable("uuid") String planUuid,
                          @PathVariable(value = "processUuid", required = false) String processUuid) {
-        ListTableProcess action = tableProcessMapper.convertToListTableProcess(planUuid, processUuid);
+        ListTableProcess action = tableProcessMapper.mapToListTableProcess(planUuid, processUuid);
         List<TableProcessModel> tableProcesses = tableProcessService.list(action);
-        return tableProcessMapper.convertToTableProcessListResponse(tableProcesses);
+        return tableProcessMapper.mapToTableProcessListResponse(tableProcesses);
     }
 }

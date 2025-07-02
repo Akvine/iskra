@@ -27,20 +27,20 @@ public class ConnectionController implements ConnectionControllerMeta {
     @Override
     public Response list() {
         List<ConnectionModel> connections = connectionService.list(securityManager.getCurrentUser().getUuid());
-        return connectionMapper.convertToConnectionResponse(connections);
+        return connectionMapper.mapToConnectionResponse(connections);
     }
 
     @Override
     public Response create(@RequestBody @Valid CreateConnectionRequest request) {
-        CreateConnection createConnection = connectionMapper.convertToCreateConnection(request);
+        CreateConnection createConnection = connectionMapper.mapToCreateConnection(request);
         ConnectionModel createdConnection = connectionService.create(createConnection);
-        return connectionMapper.convertToConnectionResponse(List.of(createdConnection));
+        return connectionMapper.mapToConnectionResponse(List.of(createdConnection));
     }
 
     @Override
     public Response duplicate(DuplicateConnectionRequest request) {
-        DuplicateConnection action = connectionMapper.convertToDuplicateConnection(request);
+        DuplicateConnection action = connectionMapper.mapToDuplicateConnection(request);
         ConnectionModel duplicatedConnection = connectionService.duplicate(action);
-        return connectionMapper.convertToConnectionResponse(List.of(duplicatedConnection));
+        return connectionMapper.mapToConnectionResponse(List.of(duplicatedConnection));
     }
 }

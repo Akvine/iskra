@@ -20,7 +20,7 @@ import java.util.List;
 public class ConnectionMapper {
     private final SecurityManager securityManager;
 
-    public CreateConnection convertToCreateConnection(CreateConnectionRequest request) {
+    public CreateConnection mapToCreateConnection(CreateConnectionRequest request) {
         Asserts.isNotNull(request);
         return new CreateConnection()
                 .setConnectionName(request.getConnectionName())
@@ -34,14 +34,14 @@ public class ConnectionMapper {
                 .setDatabaseType(DatabaseType.from(request.getDatabaseType()));
     }
 
-    public DuplicateConnection convertToDuplicateConnection(DuplicateConnectionRequest request) {
+    public DuplicateConnection mapToDuplicateConnection(DuplicateConnectionRequest request) {
         return new DuplicateConnection()
                 .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setConnectionName(request.getConnectionName())
                 .setNewConnectionName(request.getNewConnectionName());
     }
 
-    public ConnectionResponse convertToConnectionResponse(List<ConnectionModel> connections) {
+    public ConnectionResponse mapToConnectionResponse(List<ConnectionModel> connections) {
         return new ConnectionResponse().setConnections(connections.stream().map(this::buildConnectionDto).toList());
     }
 

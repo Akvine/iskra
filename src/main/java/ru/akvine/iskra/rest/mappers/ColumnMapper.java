@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 public class ColumnMapper {
-    public SelectColumn convertToSelectColumn(SelectColumnRequest request) {
+    public SelectColumn mapToSelectColumn(SelectColumnRequest request) {
         Asserts.isNotNull(request);
         return new SelectColumn()
                 .setPlanUuid(request.getPlanUuid())
@@ -20,7 +20,7 @@ public class ColumnMapper {
                 .setSelected(request.getSelected());
     }
 
-    public ListColumnResponse convertToListColumnResponse(List<ColumnModel> columns) {
+    public ListColumnResponse mapToListColumnResponse(List<ColumnModel> columns) {
         return new ListColumnResponse().setColumns(columns.stream().map(this::buildColumnDto).toList());
     }
 

@@ -23,7 +23,7 @@ public class PlanActionsController implements PlanActionsControllerMeta {
     public Response start(StartPlanRequest request) {
         StartAction action = planActionsMapper.mapToStartAction(request);
         String processUuid = planActionService.start(action);
-        return planActionsMapper.convertToStartPlanResponse(processUuid);
+        return planActionsMapper.mapToStartPlanResponse(processUuid);
     }
 
     @Override

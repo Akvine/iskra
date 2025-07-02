@@ -31,16 +31,16 @@ public class DictionaryController implements DictionaryControllerMeta {
 
     @Override
     public Response list(@RequestBody @Valid ListDictionariesRequest request) {
-        ListDictionaries action = dictionaryMapper.convertToListDictionaries(request);
+        ListDictionaries action = dictionaryMapper.mapToListDictionaries(request);
         List<DictionaryModel> dictionaries = dictionaryService.list(action);
-        return dictionaryMapper.convertToDictionaryListResponse(dictionaries);
+        return dictionaryMapper.mapToDictionaryListResponse(dictionaries);
     }
 
     @Override
     public Response create(@RequestBody @Valid CreateDictionaryRequest request) {
-        CreateDictionary createDictionaryAction = dictionaryMapper.convertToCreateDictionary(request);
+        CreateDictionary createDictionaryAction = dictionaryMapper.mapToCreateDictionary(request);
         DictionaryModel createdDictionary = dictionaryService.create(createDictionaryAction);
-        return dictionaryMapper.convertToDictionaryListResponse(List.of(createdDictionary));
+        return dictionaryMapper.mapToDictionaryListResponse(List.of(createdDictionary));
     }
 
     @Override
@@ -52,10 +52,10 @@ public class DictionaryController implements DictionaryControllerMeta {
     @Override
     public Response importFile(MultipartFile file, String name, String lang, String description) {
         dictionaryValidator.verifyCreateDictionaryRequest(file);
-        CreateDictionary createDictionaryAction = dictionaryMapper.convertToCreateDictionary(
+        CreateDictionary createDictionaryAction = dictionaryMapper.mapToCreateDictionary(
                 file, name, lang, description
         );
         DictionaryModel createdDictionary = dictionaryService.create(createDictionaryAction);
-        return dictionaryMapper.convertToDictionaryListResponse(List.of(createdDictionary));
+        return dictionaryMapper.mapToDictionaryListResponse(List.of(createdDictionary));
     }
 }

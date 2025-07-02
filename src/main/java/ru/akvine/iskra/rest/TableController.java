@@ -26,13 +26,13 @@ public class TableController implements TableControllerMeta {
     public Response list(ListTablesRequest request) {
         ListTables listTables = tableMapper.mapToListTables(request);
         List<TableModel> tables = tableService.list(listTables);
-        return tableMapper.convertToListTablesResponse(tables);
+        return tableMapper.mapToListTablesResponse(tables);
     }
 
     @Override
     public Response toggleSelected(@RequestBody @Valid ToggleSelectedRequest request) {
-        ToogleSelectedTables action = tableMapper.convertToToggleSelectedTables(request);
+        ToogleSelectedTables action = tableMapper.mapToToggleSelectedTables(request);
         List<TableModel> toggled = tableService.toggleSelected(action);
-        return tableMapper.convertToListTablesResponse(toggled);
+        return tableMapper.mapToListTablesResponse(toggled);
     }
 }

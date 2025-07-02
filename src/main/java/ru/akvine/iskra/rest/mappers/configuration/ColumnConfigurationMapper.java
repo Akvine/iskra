@@ -21,7 +21,7 @@ import java.util.List;
 public class ColumnConfigurationMapper {
     private final SecurityManager securityManager;
 
-    public CreateColumnConfiguration convertToCreateColumnConfiguration(CreateConfigurationRequest request) {
+    public CreateColumnConfiguration mapToCreateColumnConfiguration(CreateConfigurationRequest request) {
         Asserts.isNotNull(request);
 
         return new CreateColumnConfiguration()
@@ -46,14 +46,14 @@ public class ColumnConfigurationMapper {
                 .setUserUuid(securityManager.getCurrentUser().getUuid());
     }
 
-    public ConfigurationListResponse convertToConfigurationListResponse(List<ColumnConfigurationModel> configs) {
+    public ConfigurationListResponse mapToConfigurationListResponse(List<ColumnConfigurationModel> configs) {
         Asserts.isNotNull(configs);
         return new ConfigurationListResponse()
                 .setCount(configs.size())
                 .setConfigurations(configs.stream().map(this::buildConfigurationDto).toList());
     }
 
-    public SelectColumnConfiguration convertToSelectColumnConfiguration(SelectConfigurationRequest request) {
+    public SelectColumnConfiguration mapToSelectColumnConfiguration(SelectConfigurationRequest request) {
         Asserts.isNotNull(request);
         return new SelectColumnConfiguration()
                 .setColumnUuid(request.getColumnUuid())

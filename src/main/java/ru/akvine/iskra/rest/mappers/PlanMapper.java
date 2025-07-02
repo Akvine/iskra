@@ -16,13 +16,13 @@ import java.util.List;
 public class PlanMapper {
     private final SecurityManager securityManager;
 
-    public PlanListResponse convertToProcessListResponse(List<PlanModel> processes) {
+    public PlanListResponse mapToProcessListResponse(List<PlanModel> processes) {
         Asserts.isNotNull(processes);
         return new PlanListResponse()
                 .setPlans(processes.stream().map(this::buildPlanDto).toList());
     }
 
-    public CreatePlan convertToCreatePlan(CreatePlanRequest request) {
+    public CreatePlan mapToCreatePlan(CreatePlanRequest request) {
         Asserts.isNotNull(request);
         return new CreatePlan()
                 .setUserUuid(securityManager.getCurrentUser().getUuid())
@@ -30,7 +30,7 @@ public class PlanMapper {
                 .setConnectionName(request.getConnectionName());
     }
 
-    public DuplicatePlan convertToDuplicatePlan(DuplicatePlanRequest request) {
+    public DuplicatePlan mapToDuplicatePlan(DuplicatePlanRequest request) {
         Asserts.isNotNull(request);
         return new DuplicatePlan()
                 .setUuid(request.getUuid())

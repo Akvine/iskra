@@ -24,7 +24,7 @@ import java.util.List;
 public class DictionaryMapper {
     private final SecurityManager securityManager;
 
-    public ListDictionaries convertToListDictionaries(ListDictionariesRequest request) {
+    public ListDictionaries mapToListDictionaries(ListDictionariesRequest request) {
         Asserts.isNotNull(request);
         return new ListDictionaries()
                 .setPageInfo(new PageInfo(request.getNextPage().getPage(), request.getNextPage().getCount()))
@@ -32,7 +32,7 @@ public class DictionaryMapper {
                 .setSystem(request.isSystem());
     }
 
-    public DictionaryListResponse convertToDictionaryListResponse(List<DictionaryModel> dictionaries) {
+    public DictionaryListResponse mapToDictionaryListResponse(List<DictionaryModel> dictionaries) {
         return new DictionaryListResponse()
                 .setDictionaries(dictionaries.stream().map(this::buildDictionaryDto).toList());
     }
@@ -49,7 +49,7 @@ public class DictionaryMapper {
                         dictionary.getValues().stream().toList(), 3));
     }
 
-    public CreateDictionary convertToCreateDictionary(CreateDictionaryRequest request) {
+    public CreateDictionary mapToCreateDictionary(CreateDictionaryRequest request) {
         return new CreateDictionary()
                 .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setName(request.getName())
@@ -58,10 +58,10 @@ public class DictionaryMapper {
                 .setValues(request.getValues());
     }
 
-    public CreateDictionary convertToCreateDictionary(MultipartFile file,
-                                                      String name,
-                                                      String locale,
-                                                      String description) {
+    public CreateDictionary mapToCreateDictionary(MultipartFile file,
+                                                  String name,
+                                                  String locale,
+                                                  String description) {
         return new CreateDictionary()
                 .setName(name)
                 .setValues(new HashSet<>(FileUtils.parseValues(FileUtils.extractInputStream(file))))

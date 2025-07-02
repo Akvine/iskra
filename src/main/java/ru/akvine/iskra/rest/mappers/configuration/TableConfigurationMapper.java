@@ -21,7 +21,7 @@ import java.util.List;
 public class TableConfigurationMapper {
     private final SecurityManager securityManager;
 
-    public CreateTableConfiguration convertToCreateTableConfiguration(CreateTableConfigurationRequest request) {
+    public CreateTableConfiguration mapToCreateTableConfiguration(CreateTableConfigurationRequest request) {
         Asserts.isNotNull(request);
         return new CreateTableConfiguration()
                 .setUserUuid(securityManager.getCurrentUser().getUuid())
@@ -35,7 +35,7 @@ public class TableConfigurationMapper {
                 .setGenerateClearScript(request.getGenerateClearScript());
     }
 
-    public UpdateTableConfiguration convertToUpdateTableConfiguration(UpdateTableConfigurationRequest request) {
+    public UpdateTableConfiguration mapToUpdateTableConfiguration(UpdateTableConfigurationRequest request) {
         Asserts.isNotNull(request);
         return new UpdateTableConfiguration()
                 .setUserUuid(securityManager.getCurrentUser().getUuid())
@@ -49,7 +49,7 @@ public class TableConfigurationMapper {
                 .setGenerateClearScript(request.getGenerateClearScript());
     }
 
-    public ListTableConfigurationsResponse convertToListTableConfigurationsResponse(List<TableConfigurationModel> configurations) {
+    public ListTableConfigurationsResponse mapToListTableConfigurationsResponse(List<TableConfigurationModel> configurations) {
         return new ListTableConfigurationsResponse()
                 .setConfigurations(configurations.stream().map(this::buildTableConfigurationDto).toList());
     }

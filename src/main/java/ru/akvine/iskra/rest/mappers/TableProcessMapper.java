@@ -12,13 +12,13 @@ import java.util.List;
 @Component
 public class TableProcessMapper {
 
-    public ListTableProcess convertToListTableProcess(String planUuid, String processUuid) {
+    public ListTableProcess mapToListTableProcess(String planUuid, String processUuid) {
         return new ListTableProcess()
                 .setPlanUuid(planUuid)
                 .setProcessUuid(processUuid);
     }
 
-    public TableProcessListResponse convertToTableProcessListResponse(List<TableProcessModel> tableProcesses) {
+    public TableProcessListResponse mapToTableProcessListResponse(List<TableProcessModel> tableProcesses) {
         Asserts.isNotNull(tableProcesses);
         return new TableProcessListResponse()
                 .setTableProcesses(tableProcesses.stream().map(this::buildTableProcessDto).toList());

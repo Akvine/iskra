@@ -18,13 +18,13 @@ import java.util.List;
 public class TableMapper {
     private final SecurityManager securityManager;
 
-    public ListTablesResponse convertToListTablesResponse(List<TableModel> tables) {
+    public ListTablesResponse mapToListTablesResponse(List<TableModel> tables) {
         Asserts.isNotNull(tables);
         return new ListTablesResponse()
                 .setTables(tables.stream().map(this::buildTableDto).toList());
     }
 
-    public ToogleSelectedTables convertToToggleSelectedTables(ToggleSelectedRequest request) {
+    public ToogleSelectedTables mapToToggleSelectedTables(ToggleSelectedRequest request) {
         Asserts.isNotNull(request);
         return new ToogleSelectedTables()
                 .setPlanUuid(request.getPlanUuid())

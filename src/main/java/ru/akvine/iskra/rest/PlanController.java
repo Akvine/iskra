@@ -28,20 +28,20 @@ public class PlanController implements PlanControllerMeta {
     @Override
     public Response list() {
         List<PlanModel> processes = planService.list(securityManager.getCurrentUser().getUuid());
-        return planMapper.convertToProcessListResponse(processes);
+        return planMapper.mapToProcessListResponse(processes);
     }
 
     @Override
     public Response create(@RequestBody @Valid CreatePlanRequest request) {
-        CreatePlan createPlan = planMapper.convertToCreatePlan(request);
+        CreatePlan createPlan = planMapper.mapToCreatePlan(request);
         PlanModel createdPlan = planService.create(createPlan);
-        return planMapper.convertToProcessListResponse(List.of(createdPlan));
+        return planMapper.mapToProcessListResponse(List.of(createdPlan));
     }
 
     @Override
     public Response duplicate(DuplicatePlanRequest request) {
-        DuplicatePlan action = planMapper.convertToDuplicatePlan(request);
+        DuplicatePlan action = planMapper.mapToDuplicatePlan(request);
         PlanModel plan = planService.duplicate(action);
-        return planMapper.convertToProcessListResponse(List.of(plan));
+        return planMapper.mapToProcessListResponse(List.of(plan));
     }
 }

@@ -23,7 +23,7 @@ public class PlanActionsMapper {
                 .setResume(false);
     }
 
-    public StartPlanResponse convertToStartPlanResponse(String processUuid) {
+    public StartPlanResponse mapToStartPlanResponse(String processUuid) {
         return new StartPlanResponse().setProcessUuid(processUuid);
     }
 

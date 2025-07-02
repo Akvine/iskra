@@ -27,16 +27,16 @@ public class TableConfigurationController implements TableConfigurationControlle
     @Override
     public Response create(@RequestBody @Valid CreateTableConfigurationRequest request) {
         tableConfigurationValidator.verifyCreateTableConfigurationRequest(request);
-        CreateTableConfiguration action = tableConfigurationMapper.convertToCreateTableConfiguration(request);
+        CreateTableConfiguration action = tableConfigurationMapper.mapToCreateTableConfiguration(request);
         TableConfigurationModel createdConfig = tableConfigurationService.create(action);
-        return tableConfigurationMapper.convertToListTableConfigurationsResponse(List.of(createdConfig));
+        return tableConfigurationMapper.mapToListTableConfigurationsResponse(List.of(createdConfig));
     }
 
     @Override
     public Response update(UpdateTableConfigurationRequest request) {
         tableConfigurationValidator.verifyUpdateTableConfigurationRequest(request);
-        UpdateTableConfiguration action = tableConfigurationMapper.convertToUpdateTableConfiguration(request);
+        UpdateTableConfiguration action = tableConfigurationMapper.mapToUpdateTableConfiguration(request);
         TableConfigurationModel config = tableConfigurationService.update(action);
-        return tableConfigurationMapper.convertToListTableConfigurationsResponse(List.of(config));
+        return tableConfigurationMapper.mapToListTableConfigurationsResponse(List.of(config));
     }
 }

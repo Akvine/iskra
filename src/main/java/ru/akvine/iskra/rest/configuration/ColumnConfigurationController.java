@@ -29,20 +29,20 @@ public class ColumnConfigurationController implements ColumnConfigurationControl
     @Override
     public Response list(@PathVariable("columnUuid") String columnUuid) {
         List<ColumnConfigurationModel> models = columnConfigurationService.list(columnUuid);
-        return columnConfigurationMapper.convertToConfigurationListResponse(models);
+        return columnConfigurationMapper.mapToConfigurationListResponse(models);
     }
 
     @Override
     public Response create(@RequestBody @Valid CreateConfigurationRequest request) {
         columnConfigurationValidator.verifyCreateConfigurationRequest(request);
-        CreateColumnConfiguration action = columnConfigurationMapper.convertToCreateColumnConfiguration(request);
+        CreateColumnConfiguration action = columnConfigurationMapper.mapToCreateColumnConfiguration(request);
         ColumnConfigurationModel createdModel = columnConfigurationService.create(action);
-        return columnConfigurationMapper.convertToConfigurationListResponse(List.of(createdModel));
+        return columnConfigurationMapper.mapToConfigurationListResponse(List.of(createdModel));
     }
 
     @Override
     public Response select(@RequestBody @Valid SelectConfigurationRequest request) {
-        SelectColumnConfiguration selectAction = columnConfigurationMapper.convertToSelectColumnConfiguration(request);
+        SelectColumnConfiguration selectAction = columnConfigurationMapper.mapToSelectColumnConfiguration(request);
         columnConfigurationService.select(selectAction);
         return new SuccessfulResponse();
     }

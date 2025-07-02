@@ -14,11 +14,11 @@ import java.util.List;
 public class MetadataLoaderMapper {
     private final TableMapper tableMapper;
 
-    public ListTablesResponse convertToListTablesResponse(List<TableModel> models) {
-        return tableMapper.convertToListTablesResponse(models);
+    public ListTablesResponse mapToListTablesResponse(List<TableModel> models) {
+        return tableMapper.mapToListTablesResponse(models);
     }
 
-    public GenerateRelationsMatrixResponse convertToGenerateRelationsMatrixResponse(RelationsMatrix matrix) {
+    public GenerateRelationsMatrixResponse mapToGenerateRelationsMatrixResponse(RelationsMatrix matrix) {
         return new GenerateRelationsMatrixResponse()
                 .setInfo(matrix);
     }

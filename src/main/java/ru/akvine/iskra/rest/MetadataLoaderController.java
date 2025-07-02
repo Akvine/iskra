@@ -26,12 +26,12 @@ public class MetadataLoaderController implements MetadataLoaderMeta {
                 planUuid,
                 securityManager.getCurrentUser().getUuid()
         );
-        return metadataLoaderMapper.convertToListTablesResponse(tables);
+        return metadataLoaderMapper.mapToListTablesResponse(tables);
     }
 
     @Override
     public Response generate(String planUuid) {
         RelationsMatrix matrix = metadataLoaderService.generate(planUuid, securityManager.getCurrentUser().getUuid());
-        return metadataLoaderMapper.convertToGenerateRelationsMatrixResponse(matrix);
+        return metadataLoaderMapper.mapToGenerateRelationsMatrixResponse(matrix);
     }
 }
