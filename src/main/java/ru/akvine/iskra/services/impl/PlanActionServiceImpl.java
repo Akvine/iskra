@@ -43,6 +43,7 @@ public class PlanActionServiceImpl implements PlanActionService {
 
         ListTables listTables = new ListTables()
                 .setPlanUuid(planUuid)
+                .setUserUuid(action.getUserUuid())
                 .setSelected(true);
         Map<TableName, TableModel> selectedTables = tableService
                 .list(listTables)

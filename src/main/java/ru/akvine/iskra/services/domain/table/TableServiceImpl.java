@@ -48,7 +48,18 @@ public class TableServiceImpl implements TableService {
     @Override
     public List<TableModel> list(ListTables listTables) {
         Asserts.isNotNull(listTables);
-        return tableRepository.findAll(listTables.getPlanUuid(), listTables.isSelected())
+        // TODO: сделать поиск через спецификацию
+        if (listTables.getSelected() == null) {
+            return tableRepository.findAll(listTables.getPlanUuid(), listTables.getUserUuid())
+                    .stream()
+                    .map(TableModel::new)
+                    .toList();
+        }
+
+        return tableRepository.findAll(
+                        listTables.getUserUuid(),
+                        listTables.getPlanUuid(),
+                        listTables.getSelected())
                 .stream()
                 .map(TableModel::new)
                 .toList();

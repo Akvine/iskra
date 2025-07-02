@@ -1,20 +1,23 @@
 package ru.akvine.iskra.rest.mappers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
-import ru.akvine.iskra.rest.dto.table.ColumnDto;
-import ru.akvine.iskra.rest.dto.table.ListTablesResponse;
-import ru.akvine.iskra.rest.dto.table.ToggleSelectedRequest;
-import ru.akvine.iskra.rest.dto.table.TableDto;
+import ru.akvine.iskra.components.SecurityManager;
+import ru.akvine.iskra.rest.dto.table.*;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
+import ru.akvine.iskra.services.domain.table.dto.ListTables;
 import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
 
 import java.util.List;
 
 
 @Component
+@RequiredArgsConstructor
 public class TableMapper {
+    private final SecurityManager securityManager;
+
     public ListTablesResponse convertToListTablesResponse(List<TableModel> tables) {
         Asserts.isNotNull(tables);
         return new ListTablesResponse()
@@ -26,6 +29,14 @@ public class TableMapper {
         return new ToogleSelectedTables()
                 .setPlanUuid(request.getPlanUuid())
                 .setToggled(request.getToggled());
+    }
+
+    public ListTables mapToListTables(ListTablesRequest request) {
+        Asserts.isNotNull(request);
+        return new ListTables()
+                .setSelected(request.getSelected())
+                .setUserUuid(securityManager.getCurrentUser().getUuid())
+                .setPlanUuid(request.getPlanUuid());
     }
 
     private TableDto buildTableDto(TableModel table) {
