@@ -27,7 +27,6 @@ public class AsyncConfig {
 
     private static final String PARALLEL_EXECUTOR_BASE_NAME = "parallel-generation-data-executor";
 
-    // TODO: сделать бин необязательным, если настройка выключена parallel.execution.enabled=false
     @Bean
     public TaskExecutor parallelGenerationExecutor() {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
