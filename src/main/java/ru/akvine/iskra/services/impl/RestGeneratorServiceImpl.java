@@ -9,7 +9,9 @@ import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.visor.ConstraintType;
 import ru.akvine.compozit.commons.visor.ScriptResultDto;
+import ru.akvine.iskra.enums.NotificationServiceType;
 import ru.akvine.iskra.enums.ProcessState;
+import ru.akvine.iskra.providers.NotificationServicesProvider;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
@@ -22,6 +24,7 @@ import ru.akvine.iskra.services.dto.GenerateDataAction;
 import ru.akvine.iskra.services.domain.table.configuration.dto.UpdateTableConfiguration;
 import ru.akvine.iskra.services.domain.table.process.dto.CreateTableProcess;
 import ru.akvine.iskra.services.domain.table.process.dto.UpdateTableProcess;
+import ru.akvine.iskra.services.impl.notifications.dto.NotificationPayload;
 import ru.akvine.iskra.services.integration.istochnik.IstochnikService;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 
@@ -36,6 +39,7 @@ public class RestGeneratorServiceImpl implements GeneratorService {
     private final TableProcessService tableProcessService;
     private final GeneratorCacheService generatorCacheService;
     private final TableConfigurationService tableConfigurationService;
+    private final NotificationServicesProvider notificationServicesProvider;
 
     @Value("${update.table.process.on.iteration}")
     private int updateIteration;
@@ -187,6 +191,10 @@ public class RestGeneratorServiceImpl implements GeneratorService {
             updateTableProcessAction.setCompletedDate(new Date());
             updateTableProcessAction.setState(ProcessState.SUCCESS);
             updateTableProcessAction.setAddSuccessRowsCount(null);
+
+            NotificationPayload payload = new NotificationPayload(tableModel.getPlan().getUser().getUsername());
+            notificationServicesProvider.getByType(NotificationServiceType.DUMMY)
+                    .notify(payload);
         } catch (Exception exception) {
             updateTableProcessAction
                     .setAddSuccessRowsCount(null)
