@@ -61,14 +61,6 @@ public class GeneratorFacadeImpl implements GeneratorFacade {
             plan = planService.update(updateAction);
         }
 
-        if (plan.getRelationsMatrix() == null) {
-            String errorMessage = String.format(
-                    "Relations matrix for plan with uuid = [%s] not formed!",
-                    planUuid
-            );
-            throw new RelationsMatrixNotGeneratedException(errorMessage);
-        }
-
         List<String> independentTables = matrixService.detectIndependent(plan);
         if (CollectionUtils.isNotEmpty(independentTables)) {
             GenerateData action = new GenerateData()

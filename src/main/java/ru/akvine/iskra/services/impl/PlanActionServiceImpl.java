@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.exceptions.plan.RelationsMatrixNotGeneratedException;
 import ru.akvine.iskra.exceptions.table.AnyTablesNotSelectedException;
 import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
@@ -39,7 +40,7 @@ public class PlanActionServiceImpl implements PlanActionService {
         Asserts.isNotNull(action);
 
         String planUuid = action.getPlanUuid();
-        planService.verifyExists(planUuid, action.getUserUuid());
+        PlanEntity plan = planService.verifyExists(planUuid, action.getUserUuid());
 
         ListTables listTables = new ListTables()
                 .setPlanUuid(planUuid)
@@ -63,6 +64,14 @@ public class PlanActionServiceImpl implements PlanActionService {
                 throw new TableConfigurationNotFoundException(errorMessage);
             }
         });
+
+        if (plan.getRelationsMatrix() == null) {
+            String errorMessage = String.format(
+                    "Relations matrix for plan with uuid = [%s] not formed!",
+                    planUuid
+            );
+            throw new RelationsMatrixNotGeneratedException(errorMessage);
+        }
 
         return generatorFacade.generateData(planUuid, selectedTables, action.isResume());
     }
