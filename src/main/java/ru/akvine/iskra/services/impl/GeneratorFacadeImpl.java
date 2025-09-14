@@ -2,76 +2,59 @@ package ru.akvine.iskra.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
-import ru.akvine.compozit.commons.utils.UUIDGenerator;
-import ru.akvine.iskra.components.SecurityManager;
-import ru.akvine.iskra.enums.GenerationStrategy;
-import ru.akvine.iskra.exceptions.plan.RelationsMatrixNotGeneratedException;
-import ru.akvine.iskra.providers.GenerationStrategyHandlersProvider;
-import ru.akvine.iskra.services.GeneratorCacheService;
+import ru.akvine.iskra.configs.async.executors.TaskExecutor;
 import ru.akvine.iskra.services.GeneratorFacade;
 import ru.akvine.iskra.services.GeneratorService;
-import ru.akvine.iskra.services.MatrixService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
-import ru.akvine.iskra.services.domain.plan.PlanService;
+import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
-import ru.akvine.iskra.services.dto.GenerateData;
-import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
-import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
+import ru.akvine.iskra.services.dto.GenerateDataAction;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class GeneratorFacadeImpl implements GeneratorFacade {
-    private final PlanService planService;
-    private final SecurityManager securityManager;
-    // TODO: убрать лишнюю прослойку в виде GenerationStrategyHandlersProvider
-    private final GenerationStrategyHandlersProvider provider;
-    private final MatrixService matrixService;
-    private final GeneratorCacheService generatorCacheService;
+    private final TaskExecutor taskExecutor;
     private final GeneratorService generatorService;
     private final TableConfigurationService tableConfigurationService;
 
     @Override
-    public String generateData(String planUuid, Map<TableName, TableModel> selectedTables, boolean resume) {
+    public String generateData(String processUuid,
+                               String userUuid,
+                               Map<TableName, TableModel> selectedTables,
+                               boolean resume) {
         Asserts.isNotNull(selectedTables);
 
-        // TODO: передавать userUuid извне, а не инжектить доп. зависимость в лице SecurityManager
-        String userUuid = securityManager.getCurrentUser().getUuid();
-        PlanModel plan;
-        String processUuid;
-        if (resume) {
-            plan = new PlanModel(planService.verifyExists(planUuid, userUuid));
-            processUuid = plan.getLastProcessUuid();
-            generatorCacheService.remove(planUuid);
-        } else {
-            processUuid = UUIDGenerator.uuid();
-            UpdatePlan updateAction = new UpdatePlan()
-                    .setPlanUuid(planUuid)
-                    .setUserUuid(userUuid)
-                    .setLastProcessUuid(processUuid);
-            plan = planService.update(updateAction);
-        }
-
-        List<String> independentTables = matrixService.detectIndependent(plan);
-        if (CollectionUtils.isNotEmpty(independentTables)) {
-            GenerateData action = new GenerateData()
-                    .setPlan(plan)
-                    .setProcessUuid(processUuid)
-                    .setResume(resume)
-                    .setUserUuid(userUuid)
-                    .setSelectedTables(extractIndependentTables(
-                            new HashSet<>(independentTables), selectedTables)
-                    );
-            provider.getByStrategy(GenerationStrategy.INDEPENDENT).generate(action);
+        Set<TableName> tableNames = selectedTables.keySet();
+        for (TableName tableName : tableNames) {
+            try {
+                CompletableFuture.runAsync(
+                        () -> {
+                            GenerateDataAction generateDataAction = new GenerateDataAction()
+                                    .setProcessUuid(processUuid)
+                                    .setUserUuid(userUuid)
+                                    .setTable(selectedTables.get(tableName))
+                                    .setResume(resume);
+                            generatorService.generate(generateDataAction);
+                        },
+                        taskExecutor.executor()
+                );
+            } catch (RejectedExecutionException exception) {
+                log.info("Executor is full. Task was rejected");
+            }
         }
 
         return processUuid;

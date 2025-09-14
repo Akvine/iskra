@@ -8,7 +8,9 @@ import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
 import java.util.Map;
 
 public interface GeneratorFacade {
-    String generateData(String planUuid,
+    // TODO: 4 аргумента нужно засунуть в DTO
+    String generateData(String processUuid,
+                        String userUuid,
                         Map<TableName, TableModel> selectedTables,
                         boolean resume);
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.exceptions.plan.RelationsMatrixNotGeneratedException;
 import ru.akvine.iskra.exceptions.table.AnyTablesNotSelectedException;
 import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
@@ -16,10 +17,11 @@ import ru.akvine.iskra.services.GeneratorFacade;
 import ru.akvine.iskra.services.PlanActionService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
-import ru.akvine.iskra.services.domain.table.TableModel;
-import ru.akvine.iskra.services.domain.table.TableService;
+import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
 import ru.akvine.iskra.services.domain.plan.dto.action.StartAction;
+import ru.akvine.iskra.services.domain.table.TableModel;
+import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
 
 import java.util.Map;
@@ -41,7 +43,6 @@ public class PlanActionServiceImpl implements PlanActionService {
 
         String planUuid = action.getPlanUuid();
         PlanEntity plan = planService.verifyExists(planUuid, action.getUserUuid());
-
         ListTables listTables = new ListTables()
                 .setPlanUuid(planUuid)
                 .setUserUuid(action.getUserUuid())
@@ -52,28 +53,25 @@ public class PlanActionServiceImpl implements PlanActionService {
                         table -> new TableName(table.getTableName()),
                         Function.identity()
                 ));
+        validate(plan, selectedTables);
 
-        if (CollectionUtils.isEmpty(selectedTables)) {
-            String message = "For plan = [" + planUuid + "] not selected any tables to generate data!";
-            throw new AnyTablesNotSelectedException(message);
+
+        String processUuid;
+        String userUuid = action.getUserUuid();
+        boolean isResume = action.isResume();
+        if (isResume) {
+            processUuid = plan.getLastProcessUuid();
+            generatorCacheService.remove(planUuid);
+        } else {
+            processUuid = UUIDGenerator.uuid();
+            UpdatePlan updateAction = new UpdatePlan()
+                    .setPlanUuid(planUuid)
+                    .setUserUuid(userUuid)
+                    .setLastProcessUuid(processUuid);
+            planService.update(updateAction);
         }
 
-        selectedTables.values().forEach(table -> {
-            if (table.getConfiguration() == null) {
-                String errorMessage = String.format("Table with name = [%s] has no configuration!", table.getTableName());
-                throw new TableConfigurationNotFoundException(errorMessage);
-            }
-        });
-
-        if (plan.getRelationsMatrix() == null) {
-            String errorMessage = String.format(
-                    "Relations matrix for plan with uuid = [%s] not formed!",
-                    planUuid
-            );
-            throw new RelationsMatrixNotGeneratedException(errorMessage);
-        }
-
-        return generatorFacade.generateData(planUuid, selectedTables, action.isResume());
+        return generatorFacade.generateData(processUuid, userUuid, selectedTables, action.isResume());
     }
 
     @Override
@@ -110,5 +108,27 @@ public class PlanActionServiceImpl implements PlanActionService {
         }
 
         return generatorFacade.generateScripts(new PlanModel(plan), selectedTables);
+    }
+
+    private void validate(PlanEntity plan, Map<TableName, TableModel> selectedTables) {
+        if (CollectionUtils.isEmpty(selectedTables)) {
+            String message = "For plan = [" + plan.getName() + "] not selected any tables to generate data!";
+            throw new AnyTablesNotSelectedException(message);
+        }
+
+        selectedTables.values().forEach(table -> {
+            if (table.getConfiguration() == null) {
+                String errorMessage = String.format("Table with name = [%s] has no configuration!", table.getTableName());
+                throw new TableConfigurationNotFoundException(errorMessage);
+            }
+        });
+
+        if (plan.getRelationsMatrix() == null) {
+            String errorMessage = String.format(
+                    "Relations matrix for plan = [%s] not formed!",
+                    plan.getName()
+            );
+            throw new RelationsMatrixNotGeneratedException(errorMessage);
+        }
     }
 }
