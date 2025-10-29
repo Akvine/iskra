@@ -2,6 +2,7 @@ package ru.akvine.iskra.rest.mappers;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.rest.dto.column.ListColumnResponse;
 import ru.akvine.iskra.rest.dto.column.SelectColumnRequest;
 import ru.akvine.iskra.rest.dto.table.ColumnDto;
@@ -35,6 +36,9 @@ public class ColumnMapper {
                 .setGeneratedAlways(column.isGeneratedAlways())
                 .setOrderIndex(column.getOrderIndex())
                 .setSchemaName(column.getSchemaName())
-                .setRawDataType(column.getRawDataType());
+                .setRawDataType(column.getRawDataType())
+                .setTargetTableNameForForeignKey(column.getTargetTableNameForForeignKey())
+                .setTargetColumnNameForForeignKey(column.getTargetColumnNameForForeignKey())
+                .setConstraints(column.getConstraints().stream().map(ConstraintType::getName).toList());
     }
 }

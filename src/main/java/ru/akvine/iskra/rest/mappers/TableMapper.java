@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.components.SecurityManager;
+import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.rest.dto.table.*;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
@@ -57,6 +58,9 @@ public class TableMapper {
                 .setGeneratedAlways(column.isGeneratedAlways())
                 .setOrderIndex(column.getOrderIndex())
                 .setSchemaName(column.getSchemaName())
-                .setRawDataType(column.getRawDataType());
+                .setRawDataType(column.getRawDataType())
+                .setTargetColumnNameForForeignKey(column.getTargetColumnNameForForeignKey())
+                .setTargetTableNameForForeignKey(column.getTargetTableNameForForeignKey())
+                .setConstraints(column.getConstraints().stream().map(ConstraintType::getName).toList());
     }
 }

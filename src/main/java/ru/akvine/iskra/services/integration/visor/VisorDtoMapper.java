@@ -10,6 +10,8 @@ import ru.akvine.compozit.commons.visor.GenerateScriptsRequest;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
+import ru.akvine.iskra.services.integration.visor.dto.ListConstraintsResponse;
+import ru.akvine.iskra.services.integration.visor.dto.LoadConstraintsResult;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,6 +45,13 @@ public class VisorDtoMapper {
                 .setUsername(connection.getUsername())
                 .setPassword(connection.getPassword())
                 .setDatabaseType(connection.getDatabaseType().getValue());
+    }
+
+    public LoadConstraintsResult convertToLoadConstraintsResult(ListConstraintsResponse response) {
+        return new LoadConstraintsResult()
+                .setConstraintTypes(response.getConstraintTypes())
+                .setTargetColumnNameForForeignKey(response.getTargetColumnNameForForeignKey())
+                .setTargetTableNameForForeignKey(response.getTargetTableNameForForeignKey());
     }
 
     public GenerateClearScriptRequest convertToGenerateClearScriptRequest(String tableName,

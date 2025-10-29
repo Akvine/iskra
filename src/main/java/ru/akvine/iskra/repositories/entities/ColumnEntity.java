@@ -63,6 +63,12 @@ public class ColumnEntity extends BaseEntity<Long> implements Identifiable {
     @Convert(converter = ConstraintListToStringConverter.class)
     private List<ConstraintType> constraintTypes;
 
+    @Column(name = "TARGET_COLUMN_NAME_FOR_FOREIGN_KEY")
+    private String targetColumnNameForForeignKey;
+
+    @Column(name = "TARGET_TABLE_NAME_FOR_FOREIGN_KEY")
+    private String targetTableNameForForeignKey;
+
     @Column(name = "CONFIGURATIONS", nullable = false)
     @OneToMany(mappedBy = "column", cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull

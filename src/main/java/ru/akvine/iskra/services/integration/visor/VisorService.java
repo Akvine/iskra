@@ -14,10 +14,7 @@ import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.exceptions.IntegrationException;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
-import ru.akvine.iskra.services.integration.visor.dto.ColumnMetadataDto;
-import ru.akvine.iskra.services.integration.visor.dto.GetColumnsRequest;
-import ru.akvine.iskra.services.integration.visor.dto.ListConstraintsRequest;
-import ru.akvine.iskra.services.integration.visor.dto.TableMetadataDto;
+import ru.akvine.iskra.services.integration.visor.dto.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -69,14 +66,14 @@ public class VisorService {
         }
     }
 
-    public List<ConstraintType> loadConstraints(String tableName, String columnName, ConnectionModel connection) {
+    public LoadConstraintsResult loadConstraints(String tableName, String columnName, ConnectionModel connection) {
         ConnectionRequest connectionRequest = visorDtoMapper.convertToConnectionRequest(connection);
         ListConstraintsRequest request = new ListConstraintsRequest()
                 .setConnectionInfo(connectionRequest)
                 .setColumnName(columnName)
                 .setTableName(tableName);
         try {
-            return visorClient.loadConstraints(request).getConstraintTypes();
+            return visorDtoMapper.convertToLoadConstraintsResult(visorClient.loadConstraints(request));
         } catch (Exception exception) {
             String message = String.format(
                     "Error while send request to Visor. Message = [%s]",

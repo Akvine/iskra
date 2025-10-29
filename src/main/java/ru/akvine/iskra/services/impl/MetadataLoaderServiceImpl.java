@@ -22,6 +22,7 @@ import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 import ru.akvine.iskra.services.integration.visor.dto.ColumnMetadataDto;
+import ru.akvine.iskra.services.integration.visor.dto.LoadConstraintsResult;
 import ru.akvine.iskra.services.integration.visor.dto.TableMetadataDto;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
 
             List<ColumnEntity> columnsToSave = columnsMetadata.stream()
                     .map(column -> {
-                        List<ConstraintType> constraints = visorService.loadConstraints(table.getTableName(), column.getColumnName(), connection);
+                        LoadConstraintsResult result = visorService.loadConstraints(table.getTableName(), column.getColumnName(), connection);
                         return new ColumnEntity()
                                 .setUuid(UUIDGenerator.uuidWithoutDashes())
                                 .setColumnName(column.getColumnName())
@@ -73,7 +74,9 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
                                 .setGeneratedAlways(column.isGeneratedAlways())
                                 .setDatabase(column.getDatabase())
                                 .setSchemaName(column.getSchemaName())
-                                .setConstraintTypes(constraints);
+                                .setConstraintTypes(result.getConstraintTypes())
+                                .setTargetColumnNameForForeignKey(result.getTargetColumnNameForForeignKey())
+                                .setTargetTableNameForForeignKey(result.getTargetTableNameForForeignKey());
                     }).toList();
             columnService.saveAll(columnsToSave);
         }

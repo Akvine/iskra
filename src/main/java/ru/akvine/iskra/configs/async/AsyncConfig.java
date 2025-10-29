@@ -3,10 +3,12 @@ package ru.akvine.iskra.configs.async;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import ru.akvine.compozit.commons.utils.ThreadsUtils;
 import ru.akvine.iskra.configs.async.executors.TaskExecutor;
 import ru.akvine.iskra.configs.properties.ParallelExecutorProperties;
+import ru.akvine.iskra.providers.NotificationServicesProvider;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorService;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
@@ -44,12 +46,15 @@ public class AsyncConfig {
                                              final IstochnikService istochnikService,
                                              final TableProcessService tableProcessService,
                                              final GeneratorCacheService generatorCacheService,
-                                             final TableConfigurationService tableConfigurationService) {
+                                             final TableConfigurationService tableConfigurationService,
+                                             final NotificationServicesProvider notificationServicesProvider) {
         return new RestGeneratorServiceImpl(
                 visorService,
                 istochnikService,
                 tableProcessService,
                 generatorCacheService,
-                tableConfigurationService);
+                tableConfigurationService,
+                notificationServicesProvider
+        );
     }
 }
