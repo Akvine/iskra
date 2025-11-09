@@ -14,6 +14,8 @@ public interface ColumnService {
 
     ColumnModel getByUuid(String uuid);
 
+    List<ColumnModel> getWithReferenceInfo(String planUuid);
+
     ColumnEntity verifyExists(String uuid);
 
     List<ColumnModel> selectAll(SelectColumn selectColumn);

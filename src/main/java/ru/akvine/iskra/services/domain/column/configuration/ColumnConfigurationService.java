@@ -15,5 +15,10 @@ public interface ColumnConfigurationService {
 
     List<ColumnConfigurationModel> select(SelectColumnConfiguration action);
 
+    ColumnConfigurationEntity getSelected(String planUuid, String tableName, String columnName);
+
     ColumnConfigurationEntity verifyExistsBy(String columnUuid, String name);
+
+    @Transactional
+    List<ColumnConfigurationModel> generateForExternalRelations(String planUuid);
 }

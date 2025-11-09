@@ -17,4 +17,7 @@ public interface ColumnConfigurationControllerMeta {
 
     @PatchMapping("/select")
     Response select(@RequestBody @Valid SelectConfigurationRequest request);
+
+    @PostMapping("/external-relations/generate/{planUuid}")
+    Response generate(@PathVariable("planUuid") String planUuid);
 }

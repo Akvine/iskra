@@ -36,6 +36,16 @@ public class ColumnServiceImpl implements ColumnService {
     }
 
     @Override
+    public List<ColumnModel> getWithReferenceInfo(String planUuid) {
+        Asserts.isNotNull(planUuid, "planUuid is null");
+        return columnRepository
+                .findByPlanUuidAndHasReferenceInfo(planUuid)
+                .stream()
+                .map(ColumnModel::new)
+                .toList();
+    }
+
+    @Override
     public ColumnEntity verifyExists(String uuid) {
         Asserts.isNotNull(uuid);
         return columnRepository

@@ -22,4 +22,13 @@ public interface ColumnRepository extends JpaRepository<ColumnEntity, Long> {
 
     @Query("from ColumnEntity ce where ce.uuid = :uuid")
     Optional<ColumnEntity> findByUuid(@Param("uuid") String uuid);
+
+    @Query("from ColumnEntity ce " +
+            "where " +
+            "ce.table.plan.uuid = :uuid " +
+            "and " +
+            "ce.referenceInfo.targetColumnNameForForeignKey is not null " +
+            "and " +
+            "ce.referenceInfo.targetTableNameForForeignKey is not null")
+    List<ColumnEntity> findByPlanUuidAndHasReferenceInfo(@Param("uuid") String uuid);
 }

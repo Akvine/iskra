@@ -46,4 +46,11 @@ public class ColumnConfigurationController implements ColumnConfigurationControl
         columnConfigurationService.select(selectAction);
         return new SuccessfulResponse();
     }
+
+    @Override
+    public Response generate(@PathVariable("planUuid") String planUuid) {
+        List<ColumnConfigurationModel> createdConfigs = columnConfigurationService.generateForExternalRelations(planUuid);
+        return columnConfigurationMapper.mapToConfigurationListResponse(createdConfigs);
+    }
+
 }

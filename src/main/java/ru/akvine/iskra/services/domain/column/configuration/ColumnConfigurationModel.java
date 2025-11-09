@@ -39,6 +39,7 @@ public class ColumnConfigurationModel extends Model<Long> {
     @Nullable
     private List<ColumnConfigurationDictionaryModel> dictionaries;
     private Long columnId;
+    private String columnUuid;
     private boolean repeatable;
     private List<ConverterDto> converters = List.of();
     private List<ConverterDto> postConverters = List.of();
@@ -59,6 +60,7 @@ public class ColumnConfigurationModel extends Model<Long> {
         this.end = entity.getEnd();
         this.valid = entity.getValid();
         this.columnId = entity.getColumn().getId();
+        this.columnUuid = entity.getColumn().getUuid();
         this.repeatable = entity.isRepeatable();
 
         if (StringUtils.isNotBlank(entity.getRegexps())) {

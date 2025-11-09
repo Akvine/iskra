@@ -3,9 +3,12 @@ package ru.akvine.iskra.services.domain.column.configuration;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
+import ru.akvine.iskra.enums.RelationShipType;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationAlreadyExistsException;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationMaxCountException;
 import ru.akvine.iskra.exceptions.column.configuration.ConfigurationNotFoundException;
@@ -13,18 +16,21 @@ import ru.akvine.iskra.repositories.ColumnConfigurationRepository;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
+import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.column.ColumnService;
 import ru.akvine.iskra.services.domain.column.configuration.dictionary.ColumnConfigurationDictionaryService;
-import ru.akvine.iskra.services.domain.dictionary.DictionaryService;
 import ru.akvine.iskra.services.domain.column.configuration.dto.CreateColumnConfiguration;
 import ru.akvine.iskra.services.domain.column.configuration.dto.SelectColumnConfiguration;
+import ru.akvine.iskra.services.domain.dictionary.DictionaryService;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ColumnConfigurationServiceImpl implements ColumnConfigurationService {
+    private static final Logger log = LoggerFactory.getLogger(ColumnConfigurationServiceImpl.class);
     private final ColumnConfigurationRepository columnConfigurationRepository;
 
     @Value("${max.configs.per.column}")
@@ -114,6 +120,21 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
     }
 
     @Override
+    public ColumnConfigurationEntity getSelected(String planUuid, String tableName, String columnName) {
+        Asserts.isNotNull(columnName, "columnName is null");
+        Asserts.isNotNull(planUuid, "planUuid is null");
+        Asserts.isNotNull(tableName, "tableName is null");
+
+        Optional<ColumnConfigurationEntity> configuration = columnConfigurationRepository.findSelected(columnName, tableName, planUuid);
+        if (configuration.isEmpty()) {
+            throw new ConfigurationNotFoundException(
+                    "Selected column configuration for column uuid = [" + columnName + "] not found!");
+        }
+
+        return configuration.get();
+    }
+
+    @Override
     public ColumnConfigurationEntity verifyExistsBy(String columnUuid, String name) {
         Asserts.isNotNull(columnUuid);
         Asserts.isNotNull(name);
@@ -127,5 +148,74 @@ public class ColumnConfigurationServiceImpl implements ColumnConfigurationServic
                     );
                     return new ConfigurationNotFoundException(message);
                 });
+    }
+
+    @Override
+    public List<ColumnConfigurationModel> generateForExternalRelations(String planUuid) {
+        Asserts.isNotNull(planUuid, "planUuid is null");
+        List<ColumnModel> referenceColumns = columnService.getWithReferenceInfo(planUuid);
+        List<ColumnConfigurationModel> configs = columnConfigurationRepository.findByColumnsUuids(
+                        referenceColumns.stream().map(ColumnModel::getUuid).collect(Collectors.toSet()))
+                .stream()
+                .map(ColumnConfigurationModel::new)
+                .toList();
+
+        List<ColumnConfigurationModel> generatedConfigs = new ArrayList<>();
+        Collection<ColumnModel> columnsWithoutConfigs = getColumnUuidsWithoutConfigs(referenceColumns, configs);
+        for (ColumnModel referenceColumnWithoutConfig : columnsWithoutConfigs) {
+            try {
+                ColumnConfigurationEntity configuration = getSelected(planUuid,
+                        referenceColumnWithoutConfig.getTargetTableNameForForeignKey(),
+                        referenceColumnWithoutConfig.getTargetColumnNameForForeignKey());
+                ColumnConfigurationEntity targetCopyConfig = new ColumnConfigurationEntity()
+                        .setSelected(configuration.isSelected())
+                        .setName(configuration.getName())
+                        .setType(configuration.getType())
+                        .setRepeatable(referenceColumnWithoutConfig.getRelationShipType() == RelationShipType.ONE_TO_MANY)
+                        .setGenerationStrategy(configuration.getGenerationStrategy())
+                        .setUnique(configuration.isUnique())
+                        .setNotNull(configuration.isNotNull())
+                        .setRangeType(configuration.getRangeType())
+                        .setStart(configuration.getStart())
+                        .setEnd(configuration.getEnd())
+                        .setStep(configuration.getStep())
+                        .setValid(configuration.getValid())
+                        .setConvertToString(configuration.isConvertToString())
+                        .setConverters(configuration.getConverters())
+                        .setPostConverters(configuration.getPostConverters())
+                        .setRegexps(String.join(";", configuration.getRegexps()))
+                        .setColumn(configuration.getColumn());
+
+                generatedConfigs.add(new ColumnConfigurationModel(columnConfigurationRepository.save(targetCopyConfig)));
+            } catch (ConfigurationNotFoundException exception) {
+                log.info("Selected configuration for column with name = [{}] for table = [{}] not found",
+                        referenceColumnWithoutConfig.getTargetColumnNameForForeignKey(),
+                        referenceColumnWithoutConfig.getTargetTableNameForForeignKey());
+            }
+
+        }
+
+        return generatedConfigs;
+    }
+
+    // TODO: очень сложно читать содержимое метода. Можно убрать метод ниже и просто
+    //  подгружать колонки вместе с конфигурациями из базы и првоерять на их наличие
+    private Collection<ColumnModel> getColumnUuidsWithoutConfigs(List<ColumnModel> columns,
+                                                           List<ColumnConfigurationModel> configs) {
+        Set<String> difference = new HashSet<>();
+        Map<String, ColumnModel> uuidsPerColumns = columns.stream().collect(Collectors.toMap(ColumnModel::getUuid, Function.identity()));
+        Set<String> columnUuids = columns.stream().map(ColumnModel::getUuid).
+                collect(Collectors.toSet());
+        Set<String> columnUuidsWithConfigs = configs.stream().map(ColumnConfigurationModel::getColumnUuid)
+                .collect(Collectors.toSet());
+        for (String uuid : columnUuids) {
+            if (!columnUuidsWithConfigs.contains(uuid)) {
+                difference.add(uuid);
+            }
+        }
+
+        return uuidsPerColumns.entrySet().stream()
+                .filter(entry -> difference.contains(entry.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).values();
     }
 }
