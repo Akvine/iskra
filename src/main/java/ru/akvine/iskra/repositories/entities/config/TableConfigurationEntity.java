@@ -42,6 +42,9 @@ public class TableConfigurationEntity extends BaseEntity<Long> {
     @Column(name = "DELETE_DATA_BEFORE_START", nullable = false)
     private boolean deleteDataBeforeStart;
 
+    @Column(name = "IS_COPY_CONFIGURATION_FOR_FOREIGN_KEYS", nullable = false)
+    private boolean copyConfigurationForForeignKeys;
+
     @Column(name = "DELETE_MODE")
     @Enumerated(EnumType.STRING)
     private DeleteMode deleteMode;

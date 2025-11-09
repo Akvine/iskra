@@ -410,3 +410,13 @@ ALTER TABLE COLUMN_ENTITY ADD TARGET_COLUMN_NAME_FOR_FOREIGN_KEY VARCHAR(256);
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'TARGET_TABLE_NAME_FOR_FOREIGN_KEY' and upper(table_name) = 'COLUMN_ENTITY';
 ALTER TABLE COLUMN_ENTITY ADD TARGET_TABLE_NAME_FOR_FOREIGN_KEY VARCHAR(256);
+
+--changeset akvine:ISKRA-43
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_COPY_CONFIGURATION_FOR_FOREIGN_KEYS' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
+ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD IS_COPY_CONFIGURATION_FOR_FOREIGN_KEYS BOOLEAN DEFAULT TRUE;
+
+--changeset akvine:ISKRA-44
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'RELATION_SHIP_TYPE' and upper(table_name) = 'COLUMN_ENTITY';
+ALTER TABLE COLUMN_ENTITY ADD RELATION_SHIP_TYPE VARCHAR(64)

@@ -6,6 +6,7 @@ import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.rest.dto.column.ListColumnResponse;
 import ru.akvine.iskra.rest.dto.column.SelectColumnRequest;
 import ru.akvine.iskra.rest.dto.table.ColumnDto;
+import ru.akvine.iskra.rest.dto.table.ReferenceInfoDto;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.column.dto.SelectColumn;
 
@@ -26,7 +27,7 @@ public class ColumnMapper {
     }
 
     private ColumnDto buildColumnDto(ColumnModel column) {
-        return new ColumnDto()
+        ColumnDto columnDto = new ColumnDto()
                 .setUuid(column.getUuid())
                 .setColumnName(column.getColumnName())
                 .setSelected(column.isSelected())
@@ -37,8 +38,15 @@ public class ColumnMapper {
                 .setOrderIndex(column.getOrderIndex())
                 .setSchemaName(column.getSchemaName())
                 .setRawDataType(column.getRawDataType())
-                .setTargetTableNameForForeignKey(column.getTargetTableNameForForeignKey())
-                .setTargetColumnNameForForeignKey(column.getTargetColumnNameForForeignKey())
                 .setConstraints(column.getConstraints().stream().map(ConstraintType::getName).toList());
+        if (column.getConstraints().contains(ConstraintType.FOREIGN_KEY)) {
+            ReferenceInfoDto referenceInfoDto = new ReferenceInfoDto()
+                    .setTargetTableNameForForeignKey(column.getTargetTableNameForForeignKey())
+                    .setTargetColumnNameForForeignKey(column.getTargetColumnNameForForeignKey())
+                    .setRelationsShipType(column.getRelationShipType().toString());
+            columnDto.setReferenceInfo(referenceInfoDto);
+        }
+
+        return columnDto;
     }
 }

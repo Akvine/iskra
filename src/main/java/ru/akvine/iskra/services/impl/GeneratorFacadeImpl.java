@@ -15,13 +15,11 @@ import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationMod
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
 import ru.akvine.iskra.services.dto.GenerateDataAction;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,18 +76,5 @@ public class GeneratorFacadeImpl implements GeneratorFacade {
         });
 
         return result;
-    }
-
-    private Map<TableName, TableModel> extractIndependentTables(Set<String> detectedIndependentTables,
-                                                                Map<TableName, TableModel> selectedTables) {
-        Set<TableName> tables = detectedIndependentTables.stream().map(TableName::new).collect(Collectors.toSet());
-        Map<TableName, TableModel> extractedTables = new HashMap<>();
-        for (TableName tableName : tables) {
-            if (selectedTables.containsKey(tableName)) {
-                extractedTables.put(tableName, selectedTables.get(tableName));
-            }
-        }
-
-        return extractedTables;
     }
 }

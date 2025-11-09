@@ -53,7 +53,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
             List<DictionaryEntity> dictionaries = dictionaryRepository.findBy(true);
             for (DictionaryEntity dictionaryToLoad : dictionaries) {
-                log.info("{} --> loading data is complete!", dictionaryToLoad.getName());
+                log.info("System dictionary with name [{}] --> loading data is complete!", dictionaryToLoad.getName());
                 DICTIONARIES.put(dictionaryToLoad.getUuid(), new DictionaryModel(dictionaryToLoad));
             }
 

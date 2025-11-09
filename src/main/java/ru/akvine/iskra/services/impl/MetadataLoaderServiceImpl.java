@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.enums.ConstraintType;
+import ru.akvine.iskra.enums.RelationShipType;
 import ru.akvine.iskra.exceptions.table.TablesNotLoadedException;
 import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.dto.RelationsMatrix;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.repositories.entities.TableEntity;
+import ru.akvine.iskra.repositories.entities.embaddable.ReferenceInfo;
 import ru.akvine.iskra.services.MetadataLoaderService;
 import ru.akvine.iskra.services.domain.column.ColumnService;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
@@ -63,7 +65,7 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
             List<ColumnEntity> columnsToSave = columnsMetadata.stream()
                     .map(column -> {
                         LoadConstraintsResult result = visorService.loadConstraints(table.getTableName(), column.getColumnName(), connection);
-                        return new ColumnEntity()
+                        ColumnEntity columnToSave = new ColumnEntity()
                                 .setUuid(UUIDGenerator.uuidWithoutDashes())
                                 .setColumnName(column.getColumnName())
                                 .setTable(savedTable)
@@ -74,9 +76,17 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
                                 .setGeneratedAlways(column.isGeneratedAlways())
                                 .setDatabase(column.getDatabase())
                                 .setSchemaName(column.getSchemaName())
-                                .setConstraintTypes(result.getConstraintTypes())
-                                .setTargetColumnNameForForeignKey(result.getTargetColumnNameForForeignKey())
-                                .setTargetTableNameForForeignKey(result.getTargetTableNameForForeignKey());
+                                .setConstraintTypes(result.getConstraintTypes());
+
+                        if (result.getConstraintTypes().contains(ConstraintType.FOREIGN_KEY)) {
+                            ReferenceInfo referenceInfo = new ReferenceInfo()
+                                    .setRelationShipType(RelationShipType.ONE_TO_MANY)
+                                    .setTargetTableNameForForeignKey(result.getTargetTableNameForForeignKey())
+                                    .setTargetColumnNameForForeignKey(result.getTargetColumnNameForForeignKey());
+                            columnToSave.setReferenceInfo(referenceInfo);
+                        }
+
+                        return columnToSave;
                     }).toList();
             columnService.saveAll(columnsToSave);
         }

@@ -23,6 +23,7 @@ public class TableConfigurationModel extends Model<Long> {
     @Nullable
     private String clearScript;
     private DeleteMode deleteMode;
+    private boolean copyConfigurationForForeignKeys;
 
     private List<String> dropScripts;
     private List<String> createScripts;
@@ -42,5 +43,6 @@ public class TableConfigurationModel extends Model<Long> {
         if (entity.getTable() != null) {
             this.tableId = entity.getTable().getId();
         }
+        this.copyConfigurationForForeignKeys = entity.isCopyConfigurationForForeignKeys();
     }
 }

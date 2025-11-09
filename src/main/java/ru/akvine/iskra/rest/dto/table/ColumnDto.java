@@ -18,7 +18,6 @@ public class ColumnDto {
     private boolean primaryKey;
     private String database;
     private String schemaName;
-    private String targetColumnNameForForeignKey;
-    private String targetTableNameForForeignKey;
+    private ReferenceInfoDto referenceInfo;
     private List<String> constraints;
 }

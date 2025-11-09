@@ -48,7 +48,7 @@ public class TableMapper {
     }
 
     private ColumnDto buildColumnDto(ColumnModel column) {
-        return new ColumnDto()
+        ColumnDto columnDto = new ColumnDto()
                 .setUuid(column.getUuid())
                 .setColumnName(column.getColumnName())
                 .setSelected(column.isSelected())
@@ -59,8 +59,15 @@ public class TableMapper {
                 .setOrderIndex(column.getOrderIndex())
                 .setSchemaName(column.getSchemaName())
                 .setRawDataType(column.getRawDataType())
-                .setTargetColumnNameForForeignKey(column.getTargetColumnNameForForeignKey())
-                .setTargetTableNameForForeignKey(column.getTargetTableNameForForeignKey())
                 .setConstraints(column.getConstraints().stream().map(ConstraintType::getName).toList());
+        if (column.getConstraints().contains(ConstraintType.FOREIGN_KEY)) {
+            ReferenceInfoDto referenceInfoDto = new ReferenceInfoDto()
+                    .setTargetTableNameForForeignKey(column.getTargetTableNameForForeignKey())
+                    .setTargetColumnNameForForeignKey(column.getTargetColumnNameForForeignKey())
+                    .setRelationsShipType(column.getRelationShipType().toString());
+            columnDto.setReferenceInfo(referenceInfoDto);
+        }
+
+        return columnDto;
     }
 }

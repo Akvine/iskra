@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.commons.collections4.CollectionUtils;
 import ru.akvine.iskra.enums.ConstraintType;
+import ru.akvine.iskra.enums.RelationShipType;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.services.domain.base.Model;
 import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
@@ -34,6 +35,8 @@ public class ColumnModel extends Model<Long> {
     private String targetColumnNameForForeignKey;
     @Nullable
     private String targetTableNameForForeignKey;
+    @Nullable
+    private RelationShipType relationShipType;
 
     public ColumnModel(ColumnEntity entity) {
         super(entity);
@@ -46,12 +49,6 @@ public class ColumnModel extends Model<Long> {
         this.generatedAlways = entity.isGeneratedAlways();
         this.primaryKey = entity.isPrimaryKey();
         this.selected = entity.isSelected();
-        if (CollectionUtils.isEmpty(entity.getConstraintTypes())) {
-            this.constraints = new ArrayList<>();
-        } else {
-            this.constraints = entity.getConstraintTypes();
-        }
-
         this.configurations = entity.getConfigurations().stream()
                 .map(ColumnConfigurationModel::new)
                 .toList();
@@ -60,7 +57,16 @@ public class ColumnModel extends Model<Long> {
         this.database = entity.getDatabase();
         this.schemaName = entity.getSchemaName();
 
-        this.targetColumnNameForForeignKey = entity.getTargetColumnNameForForeignKey();
-        this.targetTableNameForForeignKey = entity.getTargetTableNameForForeignKey();
+        if (CollectionUtils.isEmpty(entity.getConstraintTypes())) {
+            this.constraints = new ArrayList<>();
+        } else {
+            this.constraints = entity.getConstraintTypes();
+        }
+
+        if (entity.getReferenceInfo() != null) {
+            this.relationShipType = entity.getReferenceInfo().getRelationShipType();
+            this.targetColumnNameForForeignKey = entity.getReferenceInfo().getTargetColumnNameForForeignKey();
+            this.targetTableNameForForeignKey = entity.getReferenceInfo().getTargetTableNameForForeignKey();
+        }
     }
 }
