@@ -131,6 +131,10 @@ public class PlanServiceImpl implements PlanService {
             planToUpdate.setRelationsMatrix(action.getRelationsMatrix());
         }
 
+        if (action.getPlanState() != null && action.getPlanState() != planToUpdate.getState()) {
+            planToUpdate.setState(action.getPlanState());
+        }
+
         return new PlanModel(planRepository.save(planToUpdate));
     }
 }

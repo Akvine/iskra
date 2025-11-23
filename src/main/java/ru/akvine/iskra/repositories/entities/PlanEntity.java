@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import ru.akvine.iskra.enums.PlanState;
 import ru.akvine.iskra.repositories.converters.RelationsMatrixToStringConverter;
 import ru.akvine.iskra.repositories.dto.RelationsMatrix;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
@@ -43,6 +44,10 @@ public class PlanEntity extends BaseEntity<Long> implements Identifiable {
     @NotNull
     @JoinColumn(name = "USER_ID", nullable = false)
     private UserEntity user;
+
+    @Column(name = "STATE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PlanState state = PlanState.CREATED;
 
     @Column(name = "RELATIONS_MATRIX_JSON")
     @Nullable

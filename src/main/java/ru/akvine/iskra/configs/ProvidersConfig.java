@@ -3,8 +3,11 @@ package ru.akvine.iskra.configs;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.akvine.iskra.enums.NotificationServiceType;
+import ru.akvine.iskra.enums.PlanState;
 import ru.akvine.iskra.providers.NotificationServicesProvider;
+import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.NotificationService;
+import ru.akvine.iskra.services.handlers.PlanStateHandler;
 import ru.akvine.iskra.services.impl.notifications.dto.NotificationPayload;
 
 import java.util.List;
@@ -23,5 +26,13 @@ public class ProvidersConfig {
                 .stream()
                 .collect(toMap(NotificationService::getType, identity()));
         return new NotificationServicesProvider(servicesMap);
+    }
+
+    @Bean
+    public StateHandlersProvider stateHandlersProvider(List<PlanStateHandler> planStateHandlers) {
+        Map<PlanState, PlanStateHandler> handlers = planStateHandlers
+                .stream()
+                .collect(toMap(PlanStateHandler::getCurrentState, identity()));
+        return new StateHandlersProvider(handlers);
     }
 }

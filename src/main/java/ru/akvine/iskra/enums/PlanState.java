@@ -1,0 +1,24 @@
+package ru.akvine.iskra.enums;
+
+public enum PlanState {
+    CREATED,
+
+    STARTED,
+    STARTED_FAILED,
+
+    CLEAR_TABLES,
+    CLEAR_TABLES_FAILED,
+
+    DISABLE_SQL_OBJECTS,
+    DISABLE_SQL_OBJECTS_FAILED,
+
+    STOPPED,
+
+    IN_PROGRESS,
+    FAILED,
+
+    ENABLE_SQL_OBJECTS,
+    ENABLE_SQL_OBJECTS_FAILED,
+
+    COMPLETED
+}
