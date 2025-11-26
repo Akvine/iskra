@@ -51,4 +51,11 @@ public interface TableRepository extends JpaRepository<TableEntity, Long> {
             @Param("planUuid") String planUuid,
             @Param("name") String name
     );
+
+    @Query("from TableEntity te " +
+            "where te.plan.uuid = :uuid " +
+            "and " +
+            "te.id in :tableIds")
+    List<TableEntity> findByPlanUuidAndTableIds(@Param("uuid") String uuid,
+                                                @Param("tableIds") Collection<Long> tableIds);
 }

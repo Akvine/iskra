@@ -8,7 +8,11 @@ import ru.akvine.iskra.services.handlers.PlanStateHandler;
 import java.util.Map;
 
 public record StateHandlersProvider(Map<PlanState, PlanStateHandler> handlers) {
-    public PlanStateHandler getByState(PlanState state) {
+    public PlanStateHandler getByState(PlanState state, boolean resume) {
+        if (!resume || state == PlanState.COMPLETED) {
+            return handlers.get(PlanState.STARTED);
+        }
+
         if (handlers.containsKey(state)) {
             return handlers.get(state);
         }

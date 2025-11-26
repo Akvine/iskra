@@ -47,7 +47,6 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
                 .setRowsCount(action.getRowsCount())
                 .setBatchSize(action.getBatchSize())
                 .setTable(table)
-                .setDeleteDataBeforeStart(action.isDeleteDataBeforeStart())
                 .setDeleteMode(action.getDeleteMode());
 
         String clearScript;
@@ -94,11 +93,6 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
         if (action.getDeleteMode() != null &&
                 !action.getDeleteMode().equals(configurationToUpdate.getDeleteMode())) {
             configurationToUpdate.setDeleteMode(action.getDeleteMode());
-        }
-
-        if (action.getDeleteDataBeforeStart() != null &&
-                !action.getDeleteDataBeforeStart().equals(configurationToUpdate.isDeleteDataBeforeStart())) {
-            configurationToUpdate.setDeleteDataBeforeStart(action.getDeleteDataBeforeStart());
         }
 
         if (action.getDeleteMode() != null &&

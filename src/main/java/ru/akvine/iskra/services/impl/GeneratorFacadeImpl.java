@@ -43,7 +43,6 @@ public class GeneratorFacadeImpl implements GeneratorFacade {
                         () -> {
                             GenerateDataAction generateDataAction = new GenerateDataAction()
                                     .setProcessUuid(processUuid)
-                                    .setUserUuid(userUuid)
                                     .setTable(selectedTables.get(tableName))
                                     .setResume(resume);
                             generatorService.generate(generateDataAction);

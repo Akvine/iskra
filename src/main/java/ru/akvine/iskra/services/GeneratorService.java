@@ -8,7 +8,7 @@ import ru.akvine.iskra.services.dto.GenerateDataAction;
 import java.util.Map;
 
 public interface GeneratorService {
-    boolean generate(GenerateDataAction action);
+    void generate(GenerateDataAction action);
 
     void generateScripts(PlanModel plan, Map<TableName, TableModel> selectedTables);
 }

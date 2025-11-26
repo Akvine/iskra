@@ -6,6 +6,7 @@ import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface TableService {
@@ -22,4 +23,6 @@ public interface TableService {
 
     @Transactional
     List<TableModel> toggleSelected(ToogleSelectedTables action);
+
+    List<TableModel> get(String planUuid, Collection<Long> tableIds);
 }

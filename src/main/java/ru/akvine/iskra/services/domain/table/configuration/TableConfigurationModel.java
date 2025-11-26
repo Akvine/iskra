@@ -19,7 +19,6 @@ public class TableConfigurationModel extends Model<Long> {
     private int batchSize;
     @Nullable
     private Long tableId;
-    private boolean deleteDataBeforeStart;
     @Nullable
     private String clearScript;
     private DeleteMode deleteMode;
@@ -35,7 +34,6 @@ public class TableConfigurationModel extends Model<Long> {
         this.name = entity.getName();
         this.rowsCount = entity.getRowsCount();
         this.batchSize = entity.getBatchSize();
-        this.deleteDataBeforeStart = entity.isDeleteDataBeforeStart();
         this.clearScript = entity.getClearScripts();
         this.deleteMode = entity.getDeleteMode();
         this.dropScripts = entity.getDropScripts();

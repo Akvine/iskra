@@ -11,6 +11,7 @@ import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.exceptions.plan.RelationsMatrixNotGeneratedException;
 import ru.akvine.iskra.exceptions.table.AnyTablesNotSelectedException;
 import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
+import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorFacade;
@@ -36,6 +37,7 @@ public class PlanActionServiceImpl implements PlanActionService {
     private final PlanService planService;
     private final GeneratorFacade generatorFacade;
     private final GeneratorCacheService generatorCacheService;
+    private final StateHandlersProvider stateHandlersProvider;
 
     @Override
     public String start(StartAction action) {
@@ -71,7 +73,9 @@ public class PlanActionServiceImpl implements PlanActionService {
             planService.update(updateAction);
         }
 
-        return generatorFacade.generateData(processUuid, userUuid, selectedTables, action.isResume());
+        stateHandlersProvider.getByState(plan.getState())
+                .process(new PlanModel(plan), selectedTables, isResume, processUuid);
+        return processUuid;
     }
 
     @Override
@@ -111,17 +115,7 @@ public class PlanActionServiceImpl implements PlanActionService {
     }
 
     private void validate(PlanEntity plan, Map<TableName, TableModel> selectedTables) {
-        if (CollectionUtils.isEmpty(selectedTables)) {
-            String message = "For plan = [" + plan.getName() + "] not selected any tables to generate data!";
-            throw new AnyTablesNotSelectedException(message);
-        }
 
-        selectedTables.values().forEach(table -> {
-            if (table.getConfiguration() == null) {
-                String errorMessage = String.format("Table with name = [%s] has no configuration!", table.getTableName());
-                throw new TableConfigurationNotFoundException(errorMessage);
-            }
-        });
 
         if (plan.getRelationsMatrix() == null) {
             String errorMessage = String.format(

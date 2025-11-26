@@ -4,5 +4,5 @@ public enum ProcessState {
     IN_PROGRESS,
     STOPPED,
     FAILED,
-    SUCCESS
+    COMPLETED
 }

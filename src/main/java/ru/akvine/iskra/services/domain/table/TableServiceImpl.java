@@ -9,6 +9,7 @@ import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
 import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -88,6 +89,13 @@ public class TableServiceImpl implements TableService {
         return tableRepository.saveAll(tablesToUpdate.values()).stream()
                 .map(TableModel::new)
                 .toList();
+    }
+
+    @Override
+    public List<TableModel> get(String planUuid, Collection<Long> tableIds) {
+        Asserts.isNotBlank(planUuid, "planUuid is null");
+        Asserts.isNotNull(tableIds, "tableIds is null");
+        return List.of();
     }
 
 
