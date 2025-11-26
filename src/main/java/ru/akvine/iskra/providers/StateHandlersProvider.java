@@ -3,7 +3,7 @@ package ru.akvine.iskra.providers;
 
 import ru.akvine.iskra.enums.PlanState;
 import ru.akvine.iskra.exceptions.plan.UnknownPlanStateException;
-import ru.akvine.iskra.services.handlers.PlanStateHandler;
+import ru.akvine.iskra.services.state_machine.handlers.PlanStateHandler;
 
 import java.util.Map;
 

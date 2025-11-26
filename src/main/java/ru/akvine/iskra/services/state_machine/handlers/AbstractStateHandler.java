@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.handlers;
+package ru.akvine.iskra.services.state_machine.handlers;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.akvine.compozit.commons.TableName;
@@ -9,6 +9,7 @@ import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.domain.table.TableModel;
 
+import java.util.EnumSet;
 import java.util.Map;
 
 @Slf4j
@@ -33,7 +34,7 @@ public abstract class AbstractStateHandler implements PlanStateHandler {
             doHandle(plan, selectedTables, resume, processUuid);
             updateState(plan, toNextState());
 
-            if (toNextState() != null) {
+            if (toNextState() != null || !EnumSet.of(PlanState.COMPLETED, PlanState.STOPPED).contains(toNextState())) {
                 stateHandlersProvider
                         .getByState(toNextState(), resume)
                         .process(plan, selectedTables, resume, processUuid);

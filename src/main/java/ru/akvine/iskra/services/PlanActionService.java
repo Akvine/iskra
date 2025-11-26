@@ -8,7 +8,7 @@ public interface PlanActionService {
 
     String start(StartAction action);
 
-    boolean stop(String planUuid);
+    boolean stop(String planUuid, String userUuid);
 
     @Transactional
     // TODO: обращение к внешнему сервису под Transactional будет держать коннекты к БД открытыми

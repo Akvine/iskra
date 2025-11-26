@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.handlers;
+package ru.akvine.iskra.services.state_machine.handlers;
 
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.enums.PlanState;

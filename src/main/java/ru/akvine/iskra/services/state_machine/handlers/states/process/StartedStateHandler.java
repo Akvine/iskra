@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.handlers.states.process;
+package ru.akvine.iskra.services.state_machine.handlers.states.process;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -10,7 +10,7 @@ import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
-import ru.akvine.iskra.services.handlers.AbstractStateHandler;
+import ru.akvine.iskra.services.state_machine.handlers.AbstractStateHandler;
 
 import java.util.Map;
 

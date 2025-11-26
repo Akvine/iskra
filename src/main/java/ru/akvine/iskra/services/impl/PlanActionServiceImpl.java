@@ -2,28 +2,23 @@ package ru.akvine.iskra.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
-import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.exceptions.plan.RelationsMatrixNotGeneratedException;
 import ru.akvine.iskra.exceptions.table.AnyTablesNotSelectedException;
-import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
-import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
-import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.GeneratorFacade;
 import ru.akvine.iskra.services.PlanActionService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
-import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
 import ru.akvine.iskra.services.domain.plan.dto.action.StartAction;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
+import ru.akvine.iskra.services.state_machine.managers.PlanManager;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -36,8 +31,7 @@ public class PlanActionServiceImpl implements PlanActionService {
     private final TableService tableService;
     private final PlanService planService;
     private final GeneratorFacade generatorFacade;
-    private final GeneratorCacheService generatorCacheService;
-    private final StateHandlersProvider stateHandlersProvider;
+    private final PlanManager planManager;
 
     @Override
     public String start(StartAction action) {
@@ -45,48 +39,14 @@ public class PlanActionServiceImpl implements PlanActionService {
 
         String planUuid = action.getPlanUuid();
         PlanEntity plan = planService.verifyExists(planUuid, action.getUserUuid());
-        ListTables listTables = new ListTables()
-                .setPlanUuid(planUuid)
-                .setUserUuid(action.getUserUuid())
-                .setSelected(true);
-        Map<TableName, TableModel> selectedTables = tableService
-                .list(listTables)
-                .stream().collect(Collectors.toMap(
-                        table -> new TableName(table.getTableName()),
-                        Function.identity()
-                ));
-        validate(plan, selectedTables);
 
-
-        String processUuid;
-        String userUuid = action.getUserUuid();
-        boolean isResume = action.isResume();
-        if (isResume) {
-            processUuid = plan.getLastProcessUuid();
-            generatorCacheService.remove(planUuid);
-        } else {
-            processUuid = UUIDGenerator.uuid();
-            UpdatePlan updateAction = new UpdatePlan()
-                    .setPlanUuid(planUuid)
-                    .setUserUuid(userUuid)
-                    .setLastProcessUuid(processUuid);
-            planService.update(updateAction);
-        }
-
-        stateHandlersProvider.getByState(plan.getState())
-                .process(new PlanModel(plan), selectedTables, isResume, processUuid);
-        return processUuid;
+        return planManager.start(new PlanModel(plan), action.isResume());
     }
 
     @Override
-    public boolean stop(String planUuid) {
-        if (StringUtils.isBlank(planUuid)) {
-            throw new IllegalArgumentException("Plan uuid can't be null!");
-        }
-
-        generatorCacheService.stop(planUuid);
-        log.info("Plan with uuid = [{}] was successfully stopped!", planUuid);
-        return true;
+    public boolean stop(String planUuid, String userUuid) {
+        PlanModel plan = new PlanModel(planService.verifyExists(planUuid, userUuid));
+        return planManager.stop(plan);
     }
 
     @Override
@@ -116,7 +76,7 @@ public class PlanActionServiceImpl implements PlanActionService {
 
     private void validate(PlanEntity plan, Map<TableName, TableModel> selectedTables) {
 
-
+        // TODO: удалить. RelationsMatrix больше не используется
         if (plan.getRelationsMatrix() == null) {
             String errorMessage = String.format(
                     "Relations matrix for plan = [%s] not formed!",

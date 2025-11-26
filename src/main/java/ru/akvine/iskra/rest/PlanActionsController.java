@@ -28,7 +28,7 @@ public class PlanActionsController implements PlanActionsControllerMeta {
 
     @Override
     public Response stop(String planUuid) {
-        planActionService.stop(planUuid);
+        planActionService.stop(planUuid, securityManager.getCurrentUser().getUuid());
         return new SuccessfulResponse();
     }
 

@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.handlers.states.sql;
+package ru.akvine.iskra.services.state_machine.handlers.states.sql;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.dto.ProcessPayload;
 import ru.akvine.iskra.services.facades.ScriptsFacade;
-import ru.akvine.iskra.services.handlers.AbstractStateHandler;
+import ru.akvine.iskra.services.state_machine.handlers.AbstractStateHandler;
 
 import java.util.Map;
 
