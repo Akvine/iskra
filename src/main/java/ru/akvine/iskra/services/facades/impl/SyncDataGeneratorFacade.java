@@ -32,10 +32,9 @@ public class SyncDataGeneratorFacade implements DataGeneratorFacade {
     @Override
     public void generate(String processUuid, TableModel tableModel, boolean resume) {
         TableProcessModel tableProcess = tableProcessService.get(processUuid, tableModel.getTableName());
-        String pid = tableProcess.getPid();
 
         UpdateTableProcess updateTableProcessAction = new UpdateTableProcess()
-                .setPid(pid);
+                .setProcessUuid(tableProcess.getProcessUuid());
         TableConfigurationModel configuration = tableModel.getConfiguration();
 
         int processedRowsCount = (int) tableProcess.getSuccessRowsCount();
@@ -69,8 +68,8 @@ public class SyncDataGeneratorFacade implements DataGeneratorFacade {
                 processedRowsCountBeforeUpdate += configuration.getBatchSize();
 
                 if (iterationCounter % updateIteration == 0) {
-                    log.info("Update table process with pid = [{}] and table name = [{}]. Processed rows count = [{}]",
-                            pid,
+                    log.info("Update table process with uuid = [{}] and table name = [{}]. Processed rows count = [{}]",
+                            processUuid,
                             tableModel.getTableName(),
                             processedRowsCount);
                     updateTableProcessAction.setAddSuccessRowsCount((long) processedRowsCountBeforeUpdate);
@@ -82,7 +81,7 @@ public class SyncDataGeneratorFacade implements DataGeneratorFacade {
                 iterationCounter++;
             }
 
-            log.info("Table with pid = [{}] and name = [{}] was successfully filled in!", pid, tableModel.getTableName());
+            log.info("Table with uuid = [{}] and name = [{}] was successfully filled in!", processUuid, tableModel.getTableName());
             updateTableProcessAction.setCompletedDate(new Date());
             updateTableProcessAction.setState(ProcessState.COMPLETED);
             updateTableProcessAction.setAddSuccessRowsCount(null);

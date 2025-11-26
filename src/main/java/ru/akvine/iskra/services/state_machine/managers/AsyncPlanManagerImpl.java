@@ -92,6 +92,11 @@ public class AsyncPlanManagerImpl implements PlanManager {
         Asserts.isNotNull(plan);
 
         if (plan.getPlanState() == PlanState.IN_PROGRESS) {
+            UpdatePlan action = new UpdatePlan()
+                    .setPlanUuid(plan.getUuid())
+                    .setUserUuid(plan.getUser().getUuid())
+                    .setPlanState(PlanState.STOPPED);
+            planService.update(action);
             return generatorCacheService.stop(plan.getUuid());
         }
 

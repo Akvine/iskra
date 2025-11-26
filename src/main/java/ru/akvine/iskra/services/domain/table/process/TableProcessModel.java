@@ -12,7 +12,6 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class TableProcessModel extends Model<Long> {
-    private String pid;
     private String processUuid;
     private String tableName;
     private long successRowsCount;
@@ -26,7 +25,6 @@ public class TableProcessModel extends Model<Long> {
 
     public TableProcessModel(TableProcessEntity entity) {
         super(entity);
-        this.pid = entity.getPid();
         this.processUuid = entity.getProcessUuid();
         this.tableName = entity.getTableName();
         this.successRowsCount = entity.getSuccessRowsCount();
