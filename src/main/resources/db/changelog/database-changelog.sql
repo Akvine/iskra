@@ -101,7 +101,6 @@ CREATE INDEX PLAN_ENTITY_UUID_INDX ON PLAN_ENTITY (UUID);
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'TABLE_PROCESS_ENTITY'
 CREATE TABLE TABLE_PROCESS_ENTITY (
     ID                  BIGINT NOT NULL PRIMARY KEY,
-    PID                 VARCHAR(255) NOT NULL,
     TABLE_NAME          VARCHAR(255) NOT NULL,
     SUCCESS_ROWS_COUNT  BIGINT,
     STATE               VARCHAR(255) NOT NULL,
@@ -117,7 +116,6 @@ CREATE TABLE TABLE_PROCESS_ENTITY (
 );
 CREATE SEQUENCE SEQ_TABLE_PROCESS_ENTITY START WITH 1 INCREMENT BY 1000;
 CREATE UNIQUE INDEX TABLE_PROCESS_ENTITY_ID_INDX ON TABLE_PROCESS_ENTITY (ID);
-CREATE INDEX TABLE_PROCESS_ENTITY_PID_STATE_INDX ON TABLE_PROCESS_ENTITY (PID, STATE);
 --rollback not required
 
 --changeset akvine:ISKRA-7
@@ -420,3 +418,34 @@ ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD IS_COPY_CONFIGURATION_FOR_FOREIGN_KEY
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'RELATION_SHIP_TYPE' and upper(table_name) = 'COLUMN_ENTITY';
 ALTER TABLE COLUMN_ENTITY ADD RELATION_SHIP_TYPE VARCHAR(64)
+
+--changeset akvine:ISKRA-45
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'STATE' and upper(table_name) = 'PLAN_ENTITY';
+ALTER TABLE PLAN_ENTITY ADD STATE VARCHAR(256);
+
+--changeset akvine:ISKRA-46
+--preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
+--precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'SQL_STATISTICS_ENTITY';
+CREATE TABLE SQL_STATISTICS_ENTITY (
+    ID                  BIGINT                  PRIMARY KEY NOT NULL,
+    UUID                VARCHAR(255)            NOT NULL,
+    PROCESS_UUID        VARCHAR(255)            NOT NULL,
+    TABLE_NAME          VARCHAR(255)            NOT NULL,
+    TABLE_ID            BIGINT                  NOT NULL,
+    SQL_SCRIPT_TYPE     VARCHAR(255)            NOT NULL,
+    PROCESS_DURATION    VARCHAR(255),
+    PROCESS_STATE       VARCHAR(255),
+    START_PROCESS_DATE  TIMESTAMP,
+    END_PROCESS_DATE    TIMESTAMP,
+    ERROR_MESSAGE       TEXT,
+
+    CREATED_DATE        TIMESTAMP               NOT NULL,
+    UPDATED_DATE        TIMESTAMP,
+    IS_DELETED          BOOLEAN                 NOT NULL,
+    DELETED_DATE        TIMESTAMP
+);
+CREATE SEQUENCE SEQ_SQL_STATISTICS_ENTITY START WITH 1 INCREMENT BY 1000;
+CREATE UNIQUE INDEX SQL_STATISTICS_ENTITY_ID_IDX ON SQL_STATISTICS_ENTITY (ID);
+CREATE UNIQUE INDEX SQL_STATISTICS_ENTITY_UUID_INDX ON SQL_STATISTICS_ENTITY (UUID);
+--rollback not required

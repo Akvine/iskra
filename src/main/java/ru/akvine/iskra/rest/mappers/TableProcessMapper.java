@@ -27,7 +27,6 @@ public class TableProcessMapper {
     private TableProcessDto buildTableProcessDto(TableProcessModel tableProcess) {
         return new TableProcessDto()
                 .setProcessUuid(tableProcess.getProcessUuid())
-                .setPid(tableProcess.getPid())
                 .setTableName(tableProcess.getTableName())
                 .setSuccessRowsCount(tableProcess.getSuccessRowsCount())
                 .setTotalRowsCount(tableProcess.getTotalRowsCount())

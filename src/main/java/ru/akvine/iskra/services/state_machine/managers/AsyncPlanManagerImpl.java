@@ -11,6 +11,7 @@ import ru.akvine.iskra.configs.async.executors.TaskExecutor;
 import ru.akvine.iskra.enums.PlanState;
 import ru.akvine.iskra.exceptions.plan.PlanAlreadyStartedException;
 import ru.akvine.iskra.exceptions.plan.PlanStartingException;
+import ru.akvine.iskra.managers.PlanStateManager;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
@@ -18,7 +19,6 @@ import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
-import ru.akvine.iskra.services.state_machine.handlers.PlanStateHandler;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AsyncPlanManagerImpl implements PlanManager {
     private final TaskExecutor taskExecutor;
-    private final PlanStateHandler planStateHandler;
+    private final PlanStateManager planStateManager;
     private final SecurityManager securityManager;
     private final GeneratorCacheService generatorCacheService;
     private final TableService tableService;
@@ -75,7 +75,8 @@ public class AsyncPlanManagerImpl implements PlanManager {
 
         // Асинхронно запускаем выполнение таски
         try {
-            CompletableFuture.runAsync(() -> planStateHandler.process(plan, selectedTables, resume, processUuid), taskExecutor.executor());
+            CompletableFuture.runAsync(() -> planStateManager.manage(plan, selectedTables, resume, processUuid),
+                    taskExecutor.executor());
         } catch (RejectedExecutionException exception) {
             String errorMessage = String.format(
                     "Error while start plan with uuid = [%s] and name = [%s]",

@@ -6,7 +6,6 @@ import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.enums.PlanState;
 import ru.akvine.iskra.exceptions.table.AnyTablesNotSelectedException;
 import ru.akvine.iskra.exceptions.table.configuration.TableConfigurationNotFoundException;
-import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
@@ -16,8 +15,8 @@ import java.util.Map;
 
 @Component
 public class StartedStateHandler extends AbstractStateHandler {
-    protected StartedStateHandler(PlanService planService, StateHandlersProvider stateHandlersProvider) {
-        super(planService, stateHandlersProvider);
+    protected StartedStateHandler(PlanService planService) {
+        super(planService);
     }
 
     @Override

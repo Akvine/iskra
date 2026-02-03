@@ -18,7 +18,7 @@ public interface SqlStatisticsRepository extends JpaRepository<SqlStatisticsEnti
             "and " +
             "sse.processState in :states " +
             "and " +
-            "sse.sqlActionType = :actionType " +
+            "sse.sqlScriptType = :actionType " +
             "and " +
             "sse.deleted = false")
     List<SqlStatisticsEntity> findByTableIdsAndStatesAndActionType(

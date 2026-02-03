@@ -9,13 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TableProcessRepository extends JpaRepository<TableProcessEntity, Long> {
-    @Query("from TableProcessEntity tbe " +
-            "where " +
-            "tbe.pid = :pid " +
-            "and " +
-            "tbe.deleted = false")
-    Optional<TableProcessEntity> find(@Param("pid") String pid);
-
     @Query("from TableProcessEntity tpe " +
             "where " +
             "tpe.processUuid = :uuid " +

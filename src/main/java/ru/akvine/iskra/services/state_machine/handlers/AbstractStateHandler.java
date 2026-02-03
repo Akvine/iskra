@@ -3,46 +3,37 @@ package ru.akvine.iskra.services.state_machine.handlers;
 import lombok.extern.slf4j.Slf4j;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.enums.PlanState;
-import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.domain.table.TableModel;
 
-import java.util.EnumSet;
 import java.util.Map;
 
 @Slf4j
 public abstract class AbstractStateHandler implements PlanStateHandler {
     private final PlanService planService;
-    private final StateHandlersProvider stateHandlersProvider;
 
-    protected AbstractStateHandler(PlanService planService,
-                                   StateHandlersProvider stateHandlersProvider) {
+    protected AbstractStateHandler(PlanService planService) {
         this.planService = planService;
-        this.stateHandlersProvider = stateHandlersProvider;
     }
 
     @Override
-    public final void process(PlanModel plan,
+    public final PlanModel process(PlanModel plan,
                               Map<TableName, TableModel> selectedTables,
                               boolean resume,
                               String processUuid) {
-        log.info("Handle plan: uuid = [{}] and name = [{}]. Moving from [{}] state to [{}]...",
+        log.debug("Handle plan: uuid = [{}] and name = [{}]. Moving from [{}] state to [{}]...",
                 plan.getUuid(), plan.getName(), getCurrentState(), toNextState());
         try {
             doHandle(plan, selectedTables, resume, processUuid);
             updateState(plan, toNextState());
-
-            if (toNextState() != null || !EnumSet.of(PlanState.COMPLETED, PlanState.STOPPED).contains(toNextState())) {
-                stateHandlersProvider
-                        .getByState(toNextState(), resume)
-                        .process(plan, selectedTables, resume, processUuid);
-            }
         } catch (RuntimeException exception) {
             updateState(plan, toFailedStateIfError());
             doHandleException(exception);
         }
+
+        return plan;
     }
 
     public void updateState(PlanModel plan, PlanState nextState) {

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.enums.PlanState;
-import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
@@ -19,9 +18,8 @@ public class StoppedStateHandler extends AbstractStateHandler {
 
     @Autowired
     protected StoppedStateHandler(PlanService planService,
-                                  StateHandlersProvider stateHandlersProvider,
                                   GeneratorCacheService generatorCacheService) {
-        super(planService, stateHandlersProvider);
+        super(planService);
         this.generatorCacheService = generatorCacheService;
     }
 

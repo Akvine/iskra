@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.PlanState;
-import ru.akvine.iskra.repositories.converters.RelationsMatrixToStringConverter;
-import ru.akvine.iskra.repositories.dto.RelationsMatrix;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
 
@@ -48,11 +46,6 @@ public class PlanEntity extends BaseEntity<Long> implements Identifiable {
     @Column(name = "STATE", nullable = false)
     @Enumerated(EnumType.STRING)
     private PlanState state = PlanState.CREATED;
-
-    @Column(name = "RELATIONS_MATRIX_JSON")
-    @Nullable
-    @Convert(converter = RelationsMatrixToStringConverter.class)
-    private RelationsMatrix relationsMatrix;
 
     @Column(name = "IS_GENERATE_SCRIPTS_FOR_NOT_NULL", nullable = false)
     private boolean generateScriptsForNotNull;

@@ -59,7 +59,6 @@ public class TableConfigurationMapper {
                 .setName(config.getName())
                 .setBatchSize(config.getBatchSize())
                 .setRowsCount(config.getRowsCount())
-                .setDeleteDataBeforeStart(config.isDeleteDataBeforeStart())
                 .setDeleteMode(config.getDeleteMode() != null ? config.getDeleteMode().getName() : null)
                 .setClearScript(config.getClearScript());
     }

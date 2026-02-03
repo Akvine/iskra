@@ -6,11 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
-import ru.akvine.iskra.exceptions.plan.RelationsMatrixNotGeneratedException;
 import ru.akvine.iskra.exceptions.table.AnyTablesNotSelectedException;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
-import ru.akvine.iskra.services.GeneratorFacade;
 import ru.akvine.iskra.services.PlanActionService;
+import ru.akvine.iskra.services.ScriptGeneratorService;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
@@ -30,8 +29,8 @@ import java.util.stream.Collectors;
 public class PlanActionServiceImpl implements PlanActionService {
     private final TableService tableService;
     private final PlanService planService;
-    private final GeneratorFacade generatorFacade;
     private final PlanManager planManager;
+    private final ScriptGeneratorService scriptGeneratorService;
 
     @Override
     public String start(StartAction action) {
@@ -71,18 +70,7 @@ public class PlanActionServiceImpl implements PlanActionService {
             throw new AnyTablesNotSelectedException(message);
         }
 
-        return generatorFacade.generateScripts(new PlanModel(plan), selectedTables);
+        return scriptGeneratorService.generateScripts(new PlanModel(plan), selectedTables);
     }
 
-    private void validate(PlanEntity plan, Map<TableName, TableModel> selectedTables) {
-
-        // TODO: удалить. RelationsMatrix больше не используется
-        if (plan.getRelationsMatrix() == null) {
-            String errorMessage = String.format(
-                    "Relations matrix for plan = [%s] not formed!",
-                    plan.getName()
-            );
-            throw new RelationsMatrixNotGeneratedException(errorMessage);
-        }
-    }
 }

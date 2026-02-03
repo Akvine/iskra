@@ -2,15 +2,12 @@ package ru.akvine.iskra.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.enums.RelationShipType;
-import ru.akvine.iskra.exceptions.table.TablesNotLoadedException;
 import ru.akvine.iskra.repositories.TableRepository;
-import ru.akvine.iskra.repositories.dto.RelationsMatrix;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.repositories.entities.TableEntity;
@@ -21,7 +18,6 @@ import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
-import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.integration.visor.VisorService;
 import ru.akvine.iskra.services.integration.visor.dto.ColumnMetadataDto;
 import ru.akvine.iskra.services.integration.visor.dto.LoadConstraintsResult;
@@ -96,48 +92,4 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
                 .toList();
     }
 
-    @Override
-    public RelationsMatrix generate(String planUuid, String userUuid) {
-        Asserts.isNotBlank(planUuid, "planUuid is blank");
-        Asserts.isNotBlank(userUuid, "userUuid is blank");
-
-        PlanEntity plan = planService.verifyExists(planUuid, userUuid);
-        if (plan.getRelationsMatrix() != null) {
-            return plan.getRelationsMatrix();
-        }
-
-        List<String> tableNames = tableService.getAll(planUuid, userUuid).stream()
-                .map(TableModel::getTableName).toList();
-        if (CollectionUtils.isEmpty(tableNames)) {
-            String errorMessage = String.format(
-                    "For plan with uuid = [%s] not loaded any tables!",
-                    planUuid
-            );
-            throw new TablesNotLoadedException(errorMessage);
-        }
-
-        RelationsMatrix matrix = new RelationsMatrix(tableNames);
-        log.info("Start generate relations matrix for plan with uuid = [{}]", plan.getUuid());
-
-        ConnectionModel connection = new ConnectionModel(plan.getConnection());
-        for (String tableName : tableNames) {
-            List<String> relatedTableNames = visorService.getRelatedTables(tableName, connection);
-            if (CollectionUtils.isEmpty(relatedTableNames)) {
-                continue;
-            }
-
-            for (String relatedTableName : relatedTableNames) {
-                matrix.getByColumn(tableName).replace(relatedTableName, true);
-            }
-        }
-
-        log.info("Successful generate relations matrix for plan with uuid = [{}]", plan.getUuid());
-        UpdatePlan updatePlan = new UpdatePlan()
-                .setPlanUuid(planUuid)
-                .setUserUuid(userUuid)
-                .setRelationsMatrix(matrix);
-
-        planService.update(updatePlan);
-        return matrix;
-    }
 }

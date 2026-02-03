@@ -12,13 +12,9 @@ public interface TableProcessService {
 
     TableProcessModel update(UpdateTableProcess updateTableProcess);
 
-    TableProcessModel get(String pid);
-
     TableProcessModel get(String processUuid, String tableName);
 
     TableProcessEntity verifyExists(String byProcessUuid, String byTableName);
 
     List<TableProcessModel> list(ListTableProcess listTableProcess);
-
-    TableProcessEntity verifyExists(String byPid);
 }

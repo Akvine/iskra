@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.components.SecurityManager;
-import ru.akvine.iskra.repositories.dto.RelationsMatrix;
 import ru.akvine.iskra.rest.mappers.MetadataLoaderMapper;
 import ru.akvine.iskra.rest.meta.MetadataLoaderMeta;
 import ru.akvine.iskra.services.MetadataLoaderService;
@@ -27,11 +26,5 @@ public class MetadataLoaderController implements MetadataLoaderMeta {
                 securityManager.getCurrentUser().getUuid()
         );
         return metadataLoaderMapper.mapToListTablesResponse(tables);
-    }
-
-    @Override
-    public Response generate(String planUuid) {
-        RelationsMatrix matrix = metadataLoaderService.generate(planUuid, securityManager.getCurrentUser().getUuid());
-        return metadataLoaderMapper.mapToGenerateRelationsMatrixResponse(matrix);
     }
 }

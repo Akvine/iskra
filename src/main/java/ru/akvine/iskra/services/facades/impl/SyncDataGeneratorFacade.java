@@ -3,7 +3,6 @@ package ru.akvine.iskra.services.facades.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.services.GeneratorCacheService;
 import ru.akvine.iskra.services.domain.table.TableModel;
@@ -17,7 +16,6 @@ import ru.akvine.iskra.services.integration.visor.VisorService;
 
 import java.util.Date;
 
-@Service
 @RequiredArgsConstructor
 @Slf4j
 public class SyncDataGeneratorFacade implements DataGeneratorFacade {

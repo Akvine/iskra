@@ -8,7 +8,7 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 import java.util.Map;
 
 public interface PlanStateHandler {
-    void process(PlanModel planModel,
+    PlanModel process(PlanModel planModel,
                  Map<TableName, TableModel> selectedTables,
                  boolean resume,
                  String processUuid);

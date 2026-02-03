@@ -2,14 +2,13 @@ package ru.akvine.iskra.services.state_machine.handlers.states.failed;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.iskra.enums.PlanState;
-import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.state_machine.handlers.AbstractStateHandler;
 
 @Component
 public class StartedFailedStateHandler extends AbstractStateHandler {
-    protected StartedFailedStateHandler(PlanService planService, StateHandlersProvider stateHandlersProvider) {
-        super(planService, stateHandlersProvider);
+    protected StartedFailedStateHandler(PlanService planService) {
+        super(planService);
     }
 
     @Override

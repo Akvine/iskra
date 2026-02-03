@@ -82,7 +82,6 @@ public class PlanServiceImpl implements PlanService {
         }
 
         if (duplicatePlan.isCopyResults()) {
-            target.setRelationsMatrix(from.getRelationsMatrix());
             PlanModel savedPlan = new PlanModel(planRepository.save(target));
             // TODO: сделано для того, чтобы избежать циклической зависимости между PlanService <-> MetadataLoaderService
             publisher.publishEvent(new LoadMetadataEvent(this, savedPlan.getUuid(), userUuid));
@@ -124,11 +123,6 @@ public class PlanServiceImpl implements PlanService {
         if (StringUtils.isNotBlank(action.getLastProcessUuid()) && (
                 StringUtils.isBlank(planToUpdate.getLastProcessUuid()) || !action.getLastProcessUuid().equals(planToUpdate.getLastProcessUuid()))) {
             planToUpdate.setLastProcessUuid(action.getLastProcessUuid());
-        }
-
-        if (action.getRelationsMatrix() != null &&
-                !action.getRelationsMatrix().equals(planToUpdate.getRelationsMatrix())) {
-            planToUpdate.setRelationsMatrix(action.getRelationsMatrix());
         }
 
         if (action.getPlanState() != null && action.getPlanState() != planToUpdate.getState()) {

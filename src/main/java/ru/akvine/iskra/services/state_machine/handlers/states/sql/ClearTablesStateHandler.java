@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.enums.PlanState;
-import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
@@ -22,9 +21,8 @@ public class ClearTablesStateHandler extends AbstractStateHandler {
 
     @Autowired
     protected ClearTablesStateHandler(PlanService planService,
-                                      StateHandlersProvider stateHandlersProvider,
                                       ScriptsFacade scriptsFacade) {
-        super(planService, stateHandlersProvider);
+        super(planService);
         this.scriptsFacade = scriptsFacade;
     }
 

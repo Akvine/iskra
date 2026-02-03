@@ -46,7 +46,8 @@ public class TableProcessServiceImpl implements TableProcessService {
 
         TableProcessEntity tableProcessToUpdate;
         if (StringUtils.isNotBlank(updateTableProcess.getPid())) {
-            tableProcessToUpdate = verifyExists(updateTableProcess.getPid());
+            tableProcessToUpdate = verifyExists(updateTableProcess.getProcessUuid(),
+                    updateTableProcess.getTableName());
         } else {
             tableProcessToUpdate = verifyExists(updateTableProcess.getProcessUuid(), updateTableProcess.getTableName());
         }
@@ -75,11 +76,6 @@ public class TableProcessServiceImpl implements TableProcessService {
 
         tableProcessToUpdate.setUpdatedDate(new Date());
         return new TableProcessModel(tableProcessRepository.save(tableProcessToUpdate));
-    }
-
-    @Override
-    public TableProcessModel get(String pid) {
-        return new TableProcessModel(verifyExists(pid));
     }
 
     @Override
@@ -116,16 +112,5 @@ public class TableProcessServiceImpl implements TableProcessService {
                     .toList();
         }
         return tableProcessModels;
-    }
-
-    @Override
-    public TableProcessEntity verifyExists(String byPid) {
-        Asserts.isNotNull(byPid);
-        return tableProcessRepository
-                .find(byPid)
-                .orElseThrow(() -> {
-                    String errorMessage = String.format("Table process not found by pid = [%s]", byPid);
-                    return new TableProcessNotFoundException(errorMessage);
-                });
     }
 }

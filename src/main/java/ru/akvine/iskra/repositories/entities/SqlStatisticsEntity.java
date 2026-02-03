@@ -55,6 +55,5 @@ public class SqlStatisticsEntity extends SoftBaseEntity<Long> implements Identif
     private Date endProcessDate;
 
     @Column(name = "ERROR_MESSAGE")
-    @Lob
     private String errorMessage;
 }
