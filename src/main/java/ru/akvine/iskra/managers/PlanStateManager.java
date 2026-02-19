@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface PlanStateManager {
     void manage(PlanModel planModel,
-                Map<TableName, TableModel> selectedTables,
-                boolean resume,
-                String processUuid);
+                  Map<TableName, TableModel> selectedTables,
+                  boolean resume,
+                  String planProcessUuid);
 }

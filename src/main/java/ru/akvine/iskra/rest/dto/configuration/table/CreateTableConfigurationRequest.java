@@ -25,7 +25,5 @@ public class CreateTableConfigurationRequest {
 
     private Boolean generateClearScript;
 
-    private Boolean deleteDataBeforeStart;
-
     private String deleteMode;
 }

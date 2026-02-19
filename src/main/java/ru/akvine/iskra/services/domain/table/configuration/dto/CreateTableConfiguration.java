@@ -14,7 +14,6 @@ public class CreateTableConfiguration {
     private String name;
     private int rowsCount;
     private int batchSize;
-    private boolean deleteDataBeforeStart;
     @Nullable
     private Boolean generateClearScript;
     @Nullable

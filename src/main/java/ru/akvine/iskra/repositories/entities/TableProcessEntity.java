@@ -23,9 +23,6 @@ public class TableProcessEntity extends SoftBaseEntity<Long> {
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "PROCESS_UUID", nullable = false, updatable = false)
-    private String processUuid;
-
     @Column(name = "TABLE_NAME", nullable = false)
     private String tableName;
 
@@ -48,8 +45,7 @@ public class TableProcessEntity extends SoftBaseEntity<Long> {
     @Column(name = "ERROR_MESSAGE")
     private String errorMessage;
 
-    @JoinColumn(name = "PLAN_ID", nullable = false)
-    @NotNull
-    @ManyToOne
-    private PlanEntity plan;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PLAN_PROCESS_ID", nullable = false)
+    private PlanProcessEntity process;
 }

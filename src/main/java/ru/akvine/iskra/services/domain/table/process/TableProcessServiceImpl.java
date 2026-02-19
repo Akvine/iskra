@@ -7,9 +7,9 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.exceptions.process.TableProcessNotFoundException;
 import ru.akvine.iskra.repositories.TableProcessRepository;
-import ru.akvine.iskra.repositories.entities.PlanEntity;
+import ru.akvine.iskra.repositories.entities.PlanProcessEntity;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
-import ru.akvine.iskra.services.domain.plan.PlanService;
+import ru.akvine.iskra.services.domain.process.PlanProcessService;
 import ru.akvine.iskra.services.domain.table.process.dto.CreateTableProcess;
 import ru.akvine.iskra.services.domain.table.process.dto.ListTableProcess;
 import ru.akvine.iskra.services.domain.table.process.dto.UpdateTableProcess;
@@ -22,21 +22,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TableProcessServiceImpl implements TableProcessService {
     private final TableProcessRepository tableProcessRepository;
-    private final PlanService planService;
+    private final PlanProcessService planProcessService;
 
     @Override
     public TableProcessModel create(CreateTableProcess createTableProcess) {
         Asserts.isNotNull(createTableProcess);
 
-        PlanEntity process = planService.verifyExists(createTableProcess.getPlanUuid(), createTableProcess.getUserUuid());
+        PlanProcessEntity process = planProcessService.verifyExistsBy(createTableProcess.getProcessUuid());
 
         TableProcessEntity entityToCreate = new TableProcessEntity()
                 .setTotalRowsCount(createTableProcess.getTotalRowsCount())
-                .setProcessUuid(createTableProcess.getProcessUuid())
+                .setProcess(process)
                 .setTableName(createTableProcess.getTableName())
                 .setStartedDate(new Date())
-                .setProcessState(ProcessState.IN_PROGRESS)
-                .setPlan(process);
+                .setProcessState(ProcessState.IN_PROGRESS);
         return new TableProcessModel(tableProcessRepository.save(entityToCreate));
     }
 

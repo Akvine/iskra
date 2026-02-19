@@ -11,4 +11,5 @@ public class ListTables {
     private String planUuid;
     @Nullable
     private Boolean selected;
+    private boolean resume;
 }

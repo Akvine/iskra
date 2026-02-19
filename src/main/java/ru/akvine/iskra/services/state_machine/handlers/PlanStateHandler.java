@@ -11,7 +11,7 @@ public interface PlanStateHandler {
     PlanModel process(PlanModel planModel,
                  Map<TableName, TableModel> selectedTables,
                  boolean resume,
-                 String processUuid);
+                      String planProcessUuid);
 
     PlanState getCurrentState();
 

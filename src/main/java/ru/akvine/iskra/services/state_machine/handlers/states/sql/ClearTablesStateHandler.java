@@ -84,7 +84,7 @@ public class ClearTablesStateHandler extends AbstractStateHandler {
 
     @Override
     public PlanState toNextState() {
-        return PlanState.DISABLE_SQL_OBJECTS;
+        return PlanState.IN_PROGRESS;
     }
 
     @Override

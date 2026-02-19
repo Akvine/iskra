@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface TableProcessRepository extends JpaRepository<TableProcessEntity, Long> {
     @Query("from TableProcessEntity tpe " +
             "where " +
-            "tpe.processUuid = :uuid " +
+            "tpe.process.uuid = :uuid " +
             "and " +
             "tpe.tableName = :tableName " +
             "and " +
@@ -21,7 +21,7 @@ public interface TableProcessRepository extends JpaRepository<TableProcessEntity
 
     @Query("from TableProcessEntity tbe " +
             "where " +
-            "tbe.plan.uuid = :uuid " +
+            "tbe.process.plan.uuid = :uuid " +
             "and " +
             "tbe.deleted = false")
     List<TableProcessEntity> findAll(@Param("uuid") String planUuid);

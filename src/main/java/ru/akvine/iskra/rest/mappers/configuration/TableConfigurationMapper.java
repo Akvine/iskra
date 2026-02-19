@@ -30,7 +30,6 @@ public class TableConfigurationMapper {
                 .setBatchSize(request.getBatchSize())
                 .setRowsCount(request.getRowsCount())
                 .setName(request.getName())
-                .setDeleteDataBeforeStart(request.getDeleteDataBeforeStart())
                 .setDeleteMode(StringUtils.isBlank(request.getDeleteMode()) ? null : DeleteMode.from(request.getDeleteMode()))
                 .setGenerateClearScript(request.getGenerateClearScript());
     }
