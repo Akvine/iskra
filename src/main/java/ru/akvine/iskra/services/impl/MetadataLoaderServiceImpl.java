@@ -54,6 +54,7 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
                     .setName(table.getTableName())
                     .setSchema(table.getSchema())
                     .setDatabase(table.getDatabase())
+                    .setSelected(true)
                     .setPlan(plan);
             TableEntity savedTable = tableService.save(tableToCreate);
             List<ColumnMetadataDto> columnsMetadata = visorService.loadColumns(tableToCreate.getName(), connection);
