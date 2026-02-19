@@ -56,6 +56,7 @@ public class PlanActionServiceImpl implements PlanActionService {
         PlanEntity plan = planService.verifyExists(planUuid, userUuid);
 
         ListTables listTables = new ListTables()
+                .setUserUuid(userUuid)
                 .setPlanUuid(planUuid)
                 .setSelected(true);
         Map<TableName, TableModel> selectedTables = tableService
