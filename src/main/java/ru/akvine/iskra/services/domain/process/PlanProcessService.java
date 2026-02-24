@@ -15,6 +15,8 @@ public interface PlanProcessService {
 
     PlanProcessModel toFail(PlanProcessModel planProcess, String errorMessage);
 
+    PlanProcessModel toCompleted(PlanProcessModel planProcessModel);
+
     @Nullable
     PlanProcessModel getOrNull(String processUuid);
 }

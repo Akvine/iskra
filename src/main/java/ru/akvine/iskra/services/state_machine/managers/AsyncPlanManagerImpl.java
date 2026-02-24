@@ -53,6 +53,12 @@ public class AsyncPlanManagerImpl implements PlanManager {
             throw new PlanAlreadyStartedException(message);
         }
 
+        if (plan.getPlanState() == PlanState.COMPLETED && resume) {
+            String message = String.format("Plan with uuid = [%s] and name = [%s] can't be resumed. " +
+                    "Already has COMPLETED state", plan.getUuid(), plan.getName());
+            throw new PlanAlreadyStartedException(message);
+        }
+
         ListTables listTables = new ListTables()
                 .setPlanUuid(planUuid)
                 .setUserUuid(userUuid)

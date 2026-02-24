@@ -70,6 +70,8 @@ public class SyncDataGeneratorFacade implements DataGeneratorFacade {
                             processUuid,
                             tableModel.getTableName(),
                             processedRowsCount);
+                    updateTableProcessAction.setProcessUuid(processUuid);
+                    updateTableProcessAction.setTableName(tableModel.getTableName());
                     updateTableProcessAction.setAddSuccessRowsCount((long) processedRowsCountBeforeUpdate);
                     tableProcessService.update(updateTableProcessAction);
                     processedRowsCountBeforeUpdate = 0;

@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.domain.table.process;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
 import ru.akvine.iskra.services.domain.table.process.dto.CreateTableProcess;
 import ru.akvine.iskra.services.domain.table.process.dto.ListTableProcess;
@@ -10,10 +11,13 @@ import java.util.List;
 public interface TableProcessService {
     TableProcessModel create(CreateTableProcess createTableProcess);
 
+    @Transactional
     TableProcessModel update(UpdateTableProcess updateTableProcess);
 
+    @Transactional
     TableProcessModel get(String processUuid, String tableName);
 
+    @Transactional
     TableProcessEntity verifyExists(String byProcessUuid, String byTableName);
 
     List<TableProcessModel> list(ListTableProcess listTableProcess);

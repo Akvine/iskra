@@ -8,6 +8,8 @@ import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.enums.PlanState;
 import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
+import ru.akvine.iskra.services.domain.plan.PlanService;
+import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 import ru.akvine.iskra.services.domain.process.PlanProcessModel;
 import ru.akvine.iskra.services.domain.process.PlanProcessService;
 import ru.akvine.iskra.services.domain.process.dto.CreatePlanProcess;
@@ -22,6 +24,7 @@ public class DefaultPlanStateManager implements PlanStateManager {
     private static final Logger log = LoggerFactory.getLogger(DefaultPlanStateManager.class);
     private final StateHandlersProvider stateHandlersProvider;
     private final PlanProcessService planProcessService;
+    private final PlanService planService;
 
     @Override
     public void manage(PlanModel planModel,
@@ -43,6 +46,14 @@ public class DefaultPlanStateManager implements PlanStateManager {
             planProcessService.start(planProcess);
         }
 
+        if (planModel.getPlanState() == PlanState.COMPLETED) {
+            UpdatePlan action = new UpdatePlan()
+                    .setPlanState(PlanState.STARTED)
+                    .setPlanUuid(planModel.getUuid())
+                    .setUserUuid(userUuid);
+            planModel = planService.update(action);
+        }
+
         try {
             PlanModel plan = planModel;
 
@@ -51,6 +62,8 @@ public class DefaultPlanStateManager implements PlanStateManager {
                 plan = stateHandlersProvider.getByState(plan.getPlanState(), resume)
                         .process(planModel, selectedTables, resume, planProcessUuid);
             }
+
+            planProcessService.toCompleted(planProcess);
         } catch (Exception exception) {
             log.info("Error was occurred for plan = [{}], process = [{}]. Message = [{}]",
                     planModel.getName(), planProcessUuid, exception.getMessage());

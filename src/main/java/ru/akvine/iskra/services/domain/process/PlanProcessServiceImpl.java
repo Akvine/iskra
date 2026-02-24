@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.utils.UUIDGenerator;
 import ru.akvine.iskra.components.SecurityManager;
+import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.exceptions.process.PlanProcessNotFoundException;
 import ru.akvine.iskra.repositories.PlanProcessRepository;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
@@ -21,7 +22,6 @@ import java.util.Date;
 public class PlanProcessServiceImpl implements PlanProcessService {
     private final PlanProcessRepository planProcessRepository;
     private final PlanService planService;
-    private final SecurityManager securityManager;
 
     @Override
     public PlanProcessModel create(CreatePlanProcess action) {
@@ -71,6 +71,15 @@ public class PlanProcessServiceImpl implements PlanProcessService {
         process.setCompletedDate(new Date());
         process.setUpdatedDate(new Date());
         process.setErrorMessage(errorMessage);
+        return new PlanProcessModel(planProcessRepository.save(process));
+    }
+
+    @Override
+    public PlanProcessModel toCompleted(PlanProcessModel planProcessModel) {
+        PlanProcessEntity process = verifyExistsBy(planProcessModel.getUuid());
+        process.setCompletedDate(new Date());
+        process.setUpdatedDate(new Date());
+        process.setProcessState(ProcessState.COMPLETED);
         return new PlanProcessModel(planProcessRepository.save(process));
     }
 
