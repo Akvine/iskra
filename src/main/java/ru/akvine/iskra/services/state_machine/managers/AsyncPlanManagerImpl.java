@@ -88,7 +88,7 @@ public class AsyncPlanManagerImpl implements PlanManager {
         // Асинхронно запускаем выполнение генерации для плана
         try {
             CompletableFuture.runAsync(
-                            () -> planStateManager.manage(plan, selectedTables, resume, processUuid),
+                            () -> planStateManager.manage(plan, selectedTables, resume, processUuid, userUuid),
                             taskExecutor.executor());
         } catch (RejectedExecutionException exception) {
             String errorMessage = String.format(

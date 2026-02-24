@@ -27,7 +27,8 @@ public class DefaultPlanStateManager implements PlanStateManager {
     public void manage(PlanModel planModel,
                        Map<TableName, TableModel> selectedTables,
                        boolean resume,
-                       String planProcessUuid) {
+                       String planProcessUuid,
+                       String userUuid) {
         log.debug("Manage plan with name = [{}] and uuid = [{}]", planModel.getName(), planModel.getUser());
 
         PlanProcessModel planProcess = planProcessService.getOrNull(planProcessUuid);
@@ -36,7 +37,8 @@ public class DefaultPlanStateManager implements PlanStateManager {
             CreatePlanProcess action = new CreatePlanProcess()
                     .setPlanUuid(planModel.getUuid())
                     .setTotalTablesCount(selectedTables.size())
-                    .setProcessUuid(planProcessUuid);
+                    .setProcessUuid(planProcessUuid)
+                    .setUserUuid(userUuid);
             planProcess = planProcessService.create(action);
             planProcessService.start(planProcess);
         }
@@ -46,7 +48,7 @@ public class DefaultPlanStateManager implements PlanStateManager {
 
             while (!EnumSet.of(PlanState.COMPLETED, PlanState.STOPPED).contains(plan.getPlanState())
                     || plan.getPlanState() == null) {
-                plan = stateHandlersProvider.getByState(planModel.getPlanState(), resume)
+                plan = stateHandlersProvider.getByState(plan.getPlanState(), resume)
                         .process(planModel, selectedTables, resume, planProcessUuid);
             }
         } catch (Exception exception) {

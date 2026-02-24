@@ -270,15 +270,10 @@ ALTER TABLE COLUMN_ENTITY ADD CONSTRAINTS VARCHAR(256);
 
 --changeset akvine:ISKRA-17
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
---precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'PROCESS_UUID' and upper(table_name) = 'TABLE_PROCESS_ENTITY';
-ALTER TABLE TABLE_PROCESS_ENTITY ADD PROCESS_UUID VARCHAR(128) NOT NULL;
-
---changeset akvine:ISKRA-18
---preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'LAST_PROCESS_UUID' and upper(table_name) = 'TABLE_PROCESS_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD LAST_PROCESS_UUID VARCHAR(128);
 
---changeset akvine:ISKRA-19
+--changeset akvine:ISKRA-18
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
 CREATE TABLE TABLE_CONFIGURATION_ENTITY (
@@ -296,67 +291,67 @@ CREATE INDEX TABLE_CONFIGURATION_ENTITY_NAME_IDX ON TABLE_CONFIGURATION_ENTITY(N
 CREATE UNIQUE INDEX TABLE_CONFIGURATION_ENTITY_ID_IDX ON TABLE_CONFIGURATION_ENTITY (ID);
 --rollback not required
 
---changeset akvine:ISKRA-20
+--changeset akvine:ISKRA-19
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CONFIGURATION_ID' and upper(table_name) = 'TABLE_ENTITY';
 ALTER TABLE TABLE_ENTITY ADD COLUMN CONFIGURATION_ID BIGINT;
 
---changeset akvine:ISKRA-21
+--changeset akvine:ISKRA-20
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.table_constraints where constraint_type = 'FOREIGN KEY' and upper(constraint_name) = 'FK_CONFIGURATION' and upper(table_name) = 'TABLE_ENTITY';
 ALTER TABLE TABLE_ENTITY ADD CONSTRAINT FK_CONFIGURATION FOREIGN KEY (CONFIGURATION_ID) REFERENCES TABLE_CONFIGURATION_ENTITY (ID);
 
---changeset akvine:ISKRA-22
+--changeset akvine:ISKRA-21
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'REPEATABLE' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
 ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD REPEATABLE BOOLEAN NOT NULL DEFAULT TRUE;
 
---changeset akvine:ISKRA-23
+--changeset akvine:ISKRA-22
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'TOTAL_ROWS_COUNT' and upper(table_name) = 'TABLE_PROCESS_ENTITY';
 ALTER TABLE TABLE_PROCESS_ENTITY ADD TOTAL_ROWS_COUNT BIGINT NOT NULL DEFAULT 0;
 
---changeset akvine:ISKRA-24
+--changeset akvine:ISKRA-23
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'DELETE_DATA_BEFORE_START' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
 ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD DELETE_DATA_BEFORE_START BOOLEAN NOT NULL DEFAULT FALSE;
 
---changeset akvine:ISKRA-25
+--changeset akvine:ISKRA-24
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'DELETE_MODE' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
 ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD DELETE_MODE VARCHAR(64);
 
---changeset akvine:ISKRA-26
+--changeset akvine:ISKRA-25
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CLEAR_SCRIPT' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
 ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD CLEAR_SCRIPT VARCHAR(256);
 
---changeset akvine:ISKRA-27
+--changeset akvine:ISKRA-26
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_CONVERT_TO_STRING' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
 ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD IS_CONVERT_TO_STRING BOOLEAN NOT NULL DEFAULT FALSE;
 
---changeset akvine:ISKRA-28
+--changeset akvine:ISKRA-27
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CONVERTERS' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
 ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD CONVERTERS TEXT;
 
---changeset akvine:ISKRA-29
+--changeset akvine:ISKRA-28
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'POST_CONVERTERS' and upper(table_name) = 'COLUMN_CONFIGURATION_ENTITY';
 ALTER TABLE COLUMN_CONFIGURATION_ENTITY ADD POST_CONVERTERS TEXT;
 
---changeset akvine:ISKRA-30
+--changeset akvine:ISKRA-29
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'UUID' and upper(table_name) = 'DICTIONARY_ENTITY';
 ALTER TABLE DICTIONARY_ENTITY ADD UUID VARCHAR(64) NOT NULL;
 
---changeset akvine:ISKRA-31
+--changeset akvine:ISKRA-30
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'RELATIONS_MATRIX_JSON' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD RELATIONS_MATRIX_JSON TEXT;
 
---changeset akvine:ISKRA-32
+--changeset akvine:ISKRA-31
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'REGEX_ENTITY';
 CREATE TABLE REGEX_ENTITY (
@@ -378,77 +373,77 @@ CREATE INDEX DICTIONARY_ENTITY_USER_ID_NAME_IS_DELETED_INDX ON REGEX_ENTITY (USE
 CREATE UNIQUE INDEX REGEX_ENTITY_ID_INDX ON REGEX_ENTITY (ID);
 --rollback not required
 
---changeset akvine:ISKRA-33
+--changeset akvine:ISKRA-32
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_NOT_NULL' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_NOT_NULL BOOLEAN DEFAULT FALSE;
 
---changeset akvine:ISKRA-34
+--changeset akvine:ISKRA-33
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_INDEX' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_INDEX BOOLEAN DEFAULT TRUE;
 
---changeset akvine:ISKRA-35
+--changeset akvine:ISKRA-34
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_PRIMARY_KEY' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_PRIMARY_KEY BOOLEAN DEFAULT TRUE;
 
---changeset akvine:ISKRA-36
+--changeset akvine:ISKRA-35
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_TRIGGER' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_TRIGGER BOOLEAN DEFAULT TRUE;
 
---changeset akvine:ISKRA-37
+--changeset akvine:ISKRA-36
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_UNIQUE' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_UNIQUE BOOLEAN DEFAULT FALSE;
 
---changeset akvine:ISKRA-38
+--changeset akvine:ISKRA-37
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_DEFAULT' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_DEFAULT BOOLEAN DEFAULT TRUE;
 
---changeset akvine:ISKRA-39
+--changeset akvine:ISKRA-38
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_GENERATE_SCRIPTS_FOR_CHECK' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD IS_GENERATE_SCRIPTS_FOR_CHECK BOOLEAN DEFAULT FALSE;
 
---changeset akvine:ISKRA-40
+--changeset akvine:ISKRA-39
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'DROP_SCRIPTS' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
 ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD DROP_SCRIPTS TEXT;
 
---changeset akvine:ISKRA-41
+--changeset akvine:ISKRA-40
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'CREATE_SCRIPTS' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
 ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD CREATE_SCRIPTS TEXT;
 
---changeset akvine:ISKRA-42
+--changeset akvine:ISKRA-41
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'TARGET_COLUMN_NAME_FOR_FOREIGN_KEY' and upper(table_name) = 'COLUMN_ENTITY';
 ALTER TABLE COLUMN_ENTITY ADD TARGET_COLUMN_NAME_FOR_FOREIGN_KEY VARCHAR(256);
 
---changeset akvine:ISKRA-43
+--changeset akvine:ISKRA-42
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'TARGET_TABLE_NAME_FOR_FOREIGN_KEY' and upper(table_name) = 'COLUMN_ENTITY';
 ALTER TABLE COLUMN_ENTITY ADD TARGET_TABLE_NAME_FOR_FOREIGN_KEY VARCHAR(256);
 
---changeset akvine:ISKRA-44
+--changeset akvine:ISKRA-43
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'IS_COPY_CONFIGURATION_FOR_FOREIGN_KEYS' and upper(table_name) = 'TABLE_CONFIGURATION_ENTITY';
 ALTER TABLE TABLE_CONFIGURATION_ENTITY ADD IS_COPY_CONFIGURATION_FOR_FOREIGN_KEYS BOOLEAN DEFAULT TRUE;
 
---changeset akvine:ISKRA-45
+--changeset akvine:ISKRA-44
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'RELATION_SHIP_TYPE' and upper(table_name) = 'COLUMN_ENTITY';
 ALTER TABLE COLUMN_ENTITY ADD RELATION_SHIP_TYPE VARCHAR(64)
 
---changeset akvine:ISKRA-46
+--changeset akvine:ISKRA-45
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.columns where upper(column_name) = 'STATE' and upper(table_name) = 'PLAN_ENTITY';
 ALTER TABLE PLAN_ENTITY ADD STATE VARCHAR(256);
 
---changeset akvine:ISKRA-47
+--changeset akvine:ISKRA-46
 --preconditions onFail:MARK_RAN onError:HALT onUpdateSql:FAIL
 --precondition-sql-check expectedResult:0 select count(*) from information_schema.tables where upper(table_name) = 'SQL_STATISTICS_ENTITY';
 CREATE TABLE SQL_STATISTICS_ENTITY (

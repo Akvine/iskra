@@ -20,7 +20,7 @@ public class PlanActionsMapper {
         return new StartAction()
                 .setUserUuid(securityManager.getCurrentUser().getUuid())
                 .setPlanUuid(request.getPlanUuid())
-                .setResume(false);
+                .setResume(request.isResume());
     }
 
     public StartPlanResponse mapToStartPlanResponse(String processUuid) {

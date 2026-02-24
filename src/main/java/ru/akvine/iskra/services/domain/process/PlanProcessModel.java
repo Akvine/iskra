@@ -19,6 +19,7 @@ public class PlanProcessModel extends SoftModel<Long> {
 
     public PlanProcessModel(PlanProcessEntity entity) {
         super(entity);
+        this.uuid = entity.getUuid();
 
         this.state = entity.getProcessState();
         this.totalTablesCount = entity.getTotalTablesCount();

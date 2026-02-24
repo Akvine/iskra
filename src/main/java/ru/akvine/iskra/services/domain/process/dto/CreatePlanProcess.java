@@ -8,5 +8,6 @@ import lombok.experimental.Accessors;
 public class CreatePlanProcess {
     private String planUuid;
     private String processUuid;
+    private String userUuid;
     private int totalTablesCount;
 }

@@ -28,9 +28,9 @@ public class PlanProcessServiceImpl implements PlanProcessService {
         Asserts.isNotNull(action);
 
         PlanEntity plan = planService.verifyExists(action.getPlanUuid(),
-                securityManager.getCurrentUser().getUuid());
+                action.getUserUuid());
         PlanProcessEntity entity = new PlanProcessEntity()
-                .setUuid(UUIDGenerator.uuid())
+                .setUuid(action.getProcessUuid())
                 .setTotalTablesCount(action.getTotalTablesCount())
                 .setPlan(plan);
 

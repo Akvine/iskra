@@ -29,7 +29,8 @@ public class TableMapper {
         Asserts.isNotNull(request);
         return new ToogleSelectedTables()
                 .setPlanUuid(request.getPlanUuid())
-                .setToggled(request.getToggled());
+                .setToggled(request.getToggled())
+                .setUserUuid(securityManager.getCurrentUser().getUuid());
     }
 
     public ListTables mapToListTables(ListTablesRequest request) {

@@ -26,6 +26,7 @@ public class SqlStatisticsModel extends SoftModel<Long> {
 
     public SqlStatisticsModel(SqlStatisticsEntity entity) {
         super(entity);
+        this.uuid = entity.getUuid();
 
         this.processUuid = entity.getProcessUuid();
         this.tableId = entity.getTableId();

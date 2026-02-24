@@ -27,21 +27,21 @@ public abstract class AbstractStateHandler implements PlanStateHandler {
                 plan.getUuid(), plan.getName(), getCurrentState(), toNextState());
         try {
             doHandle(plan, selectedTables, resume, processUuid);
-            updateState(plan, toNextState());
+            plan = updateState(plan, toNextState());
         } catch (RuntimeException exception) {
-            updateState(plan, toFailedStateIfError());
+            plan = updateState(plan, toFailedStateIfError());
             doHandleException(exception);
         }
 
         return plan;
     }
 
-    public void updateState(PlanModel plan, PlanState nextState) {
+    public PlanModel updateState(PlanModel plan, PlanState nextState) {
         UpdatePlan action = new UpdatePlan()
                 .setPlanUuid(plan.getUuid())
                 .setPlanState(nextState)
                 .setUserUuid(plan.getUser().getUuid());
-        planService.update(action);
+        return planService.update(action);
     }
 
     public void doHandle(PlanModel plan, Map<TableName, TableModel> selectedTables,
