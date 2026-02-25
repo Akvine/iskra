@@ -13,8 +13,10 @@ import ru.akvine.iskra.services.domain.user.UserModel;
 @Accessors(chain = true)
 public class PlanModel extends Model<Long> {
     private String uuid;
+
     @Nullable
     private String lastProcessUuid;
+
     private String name;
     private ConnectionModel connection;
     private UserModel user;

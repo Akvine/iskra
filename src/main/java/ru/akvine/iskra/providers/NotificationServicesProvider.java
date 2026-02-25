@@ -1,10 +1,9 @@
 package ru.akvine.iskra.providers;
 
+import java.util.Map;
 import ru.akvine.iskra.enums.NotificationServiceType;
 import ru.akvine.iskra.services.NotificationService;
 import ru.akvine.iskra.services.impl.notifications.dto.NotificationPayload;
-
-import java.util.Map;
 
 public record NotificationServicesProvider(
         Map<NotificationServiceType, NotificationService<? extends NotificationPayload>> notificationServices) {
@@ -13,6 +12,7 @@ public record NotificationServicesProvider(
             return notificationServices.get(type);
         }
 
-        throw new UnsupportedOperationException("Notification service with type = [" + type + "] is not supported by app!");
+        throw new UnsupportedOperationException(
+                "Notification service with type = [" + type + "] is not supported by app!");
     }
 }

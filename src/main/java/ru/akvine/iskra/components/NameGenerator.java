@@ -1,10 +1,9 @@
 package ru.akvine.iskra.components;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.stereotype.Component;
 
 @Component
 public class NameGenerator {
@@ -13,7 +12,7 @@ public class NameGenerator {
         if (count < 1) {
             throw new IllegalArgumentException("The number must be greater than zero");
         }
-        if (!Character.isDigit(name.charAt(name.length()-1))) {
+        if (!Character.isDigit(name.charAt(name.length() - 1))) {
             return List.of();
         }
 
@@ -21,7 +20,7 @@ public class NameGenerator {
         int zeroesCount = 0;
         int sliceIndex;
 
-        for (sliceIndex = name.length()-1; sliceIndex >= 0; sliceIndex--) {
+        for (sliceIndex = name.length() - 1; sliceIndex >= 0; sliceIndex--) {
             char c = name.charAt(sliceIndex);
             if (!Character.isDigit(c)) {
                 break;

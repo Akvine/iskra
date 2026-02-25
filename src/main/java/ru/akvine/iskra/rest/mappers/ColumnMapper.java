@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest.mappers;
 
+import java.util.List;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.enums.ConstraintType;
@@ -9,8 +10,6 @@ import ru.akvine.iskra.rest.dto.table.ColumnDto;
 import ru.akvine.iskra.rest.dto.table.ReferenceInfoDto;
 import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.column.dto.SelectColumn;
-
-import java.util.List;
 
 @Component
 public class ColumnMapper {
@@ -23,7 +22,8 @@ public class ColumnMapper {
     }
 
     public ListColumnResponse mapToListColumnResponse(List<ColumnModel> columns) {
-        return new ListColumnResponse().setColumns(columns.stream().map(this::buildColumnDto).toList());
+        return new ListColumnResponse()
+                .setColumns(columns.stream().map(this::buildColumnDto).toList());
     }
 
     private ColumnDto buildColumnDto(ColumnModel column) {
@@ -38,7 +38,9 @@ public class ColumnMapper {
                 .setOrderIndex(column.getOrderIndex())
                 .setSchemaName(column.getSchemaName())
                 .setRawDataType(column.getRawDataType())
-                .setConstraints(column.getConstraints().stream().map(ConstraintType::getName).toList());
+                .setConstraints(column.getConstraints().stream()
+                        .map(ConstraintType::getName)
+                        .toList());
         if (column.getConstraints().contains(ConstraintType.FOREIGN_KEY)) {
             ReferenceInfoDto referenceInfoDto = new ReferenceInfoDto()
                     .setTargetTableNameForForeignKey(column.getTargetTableNameForForeignKey())

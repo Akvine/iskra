@@ -9,7 +9,9 @@ import lombok.experimental.Accessors;
 public class ListTables {
     private String userUuid;
     private String planUuid;
+
     @Nullable
     private Boolean selected;
+
     private boolean resume;
 }

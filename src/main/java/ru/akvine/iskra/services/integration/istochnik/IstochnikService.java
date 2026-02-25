@@ -17,9 +17,8 @@ public class IstochnikService {
         try {
             return client.generate(request);
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Istochnik. Message = [%s]",
-                    exception.getMessage());
+            String message =
+                    String.format("Error while send request to Istochnik. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }

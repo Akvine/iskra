@@ -1,9 +1,8 @@
 package ru.akvine.iskra.rest.dto.plan.process;
 
+import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.Date;
 
 @Data
 @Accessors(chain = true)

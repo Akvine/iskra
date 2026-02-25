@@ -1,15 +1,14 @@
 package ru.akvine.iskra.utils;
 
-import lombok.experimental.UtilityClass;
-import org.springframework.web.multipart.MultipartFile;
-import ru.akvine.iskra.exceptions.FileProcessException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.experimental.UtilityClass;
+import org.springframework.web.multipart.MultipartFile;
+import ru.akvine.iskra.exceptions.FileProcessException;
 
 @UtilityClass
 public class FileUtils {
@@ -22,10 +21,8 @@ public class FileUtils {
                 parsedValues.add(line);
             }
         } catch (IOException exception) {
-            String errorMessage = String.format(
-                    "Some error was occurred while parse file = [%s]",
-                    exception.getMessage()
-            );
+            String errorMessage =
+                    String.format("Some error was occurred while parse file = [%s]", exception.getMessage());
             throw new FileProcessException(errorMessage);
         }
 
@@ -38,8 +35,7 @@ public class FileUtils {
         } catch (IOException exception) {
             String errorMessage = String.format(
                     "Some error was occurred while extract input stream from file. Message = [%s]",
-                    exception.getMessage()
-            );
+                    exception.getMessage());
             throw new FileProcessException(errorMessage);
         }
     }

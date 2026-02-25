@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.domain.regex;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -12,8 +13,6 @@ import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.domain.regex.dto.CreateRegex;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class RegexServiceImpl implements RegexService {
@@ -23,9 +22,7 @@ public class RegexServiceImpl implements RegexService {
     @Override
     public List<RegexModel> list(String userUuid) {
         Asserts.isNotBlank(userUuid);
-        return regexRepository.find(userUuid).stream()
-                .map(RegexModel::new)
-                .toList();
+        return regexRepository.find(userUuid).stream().map(RegexModel::new).toList();
     }
 
     @Override
@@ -55,14 +52,10 @@ public class RegexServiceImpl implements RegexService {
     public RegexEntity verifyExistsByName(String name, String userUuid) {
         Asserts.isNotBlank(name);
         Asserts.isNotBlank(userUuid);
-        return regexRepository
-                .find(userUuid, name)
-                .orElseThrow(() -> {
-                    String errorMessage = String.format(
-                            "Regex with name = [%s] for user with uuid = [%s] is not found",
-                            name, userUuid
-                    );
-                    return new RegexNotFoundException(errorMessage);
-                });
+        return regexRepository.find(userUuid, name).orElseThrow(() -> {
+            String errorMessage =
+                    String.format("Regex with name = [%s] for user with uuid = [%s] is not found", name, userUuid);
+            return new RegexNotFoundException(errorMessage);
+        });
     }
 }

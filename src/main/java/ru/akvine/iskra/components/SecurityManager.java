@@ -20,10 +20,7 @@ public class SecurityManager {
     public void authenticate(UserModel userModel, HttpServletRequest request) {
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(new UserAuthentication(
-                userModel.getId(),
-                userModel.getUuid(),
-                userModel.getUsername(),
-                userModel.getEmail()));
+                userModel.getId(), userModel.getUuid(), userModel.getUsername(), userModel.getEmail()));
 
         HttpSession session = request.getSession(true);
         session.setAttribute("SPRING_SECURITY_CONTEXT", context);

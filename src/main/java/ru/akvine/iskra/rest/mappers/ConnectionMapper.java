@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest.mappers;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.ConnectionDto;
@@ -12,8 +13,6 @@ import ru.akvine.iskra.rest.dto.connection.DuplicateConnectionRequest;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.connection.dto.CreateConnection;
 import ru.akvine.iskra.services.domain.connection.dto.DuplicateConnection;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -42,7 +41,9 @@ public class ConnectionMapper {
     }
 
     public ConnectionResponse mapToConnectionResponse(List<ConnectionModel> connections) {
-        return new ConnectionResponse().setConnections(connections.stream().map(this::buildConnectionDto).toList());
+        return new ConnectionResponse()
+                .setConnections(
+                        connections.stream().map(this::buildConnectionDto).toList());
     }
 
     private ConnectionDto buildConnectionDto(ConnectionModel connection) {

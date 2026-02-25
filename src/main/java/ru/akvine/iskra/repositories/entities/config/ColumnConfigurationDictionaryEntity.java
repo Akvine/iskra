@@ -18,8 +18,10 @@ import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
 public class ColumnConfigurationDictionaryEntity extends SoftBaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "columnConfigurationDictionaryEntitySeq")
-    @SequenceGenerator(name = "columnConfigurationDictionaryEntitySeq",
-            sequenceName = "SEQ_COLUMN_CONFIGURATION_DICTIONARY_ENTITY", allocationSize = 1000)
+    @SequenceGenerator(
+            name = "columnConfigurationDictionaryEntitySeq",
+            sequenceName = "SEQ_COLUMN_CONFIGURATION_DICTIONARY_ENTITY",
+            allocationSize = 1000)
     @NotNull
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;

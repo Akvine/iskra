@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,6 @@ import ru.akvine.iskra.services.integration.visor.VisorService;
 import ru.akvine.iskra.services.integration.visor.dto.ColumnMetadataDto;
 import ru.akvine.iskra.services.integration.visor.dto.LoadConstraintsResult;
 import ru.akvine.iskra.services.integration.visor.dto.TableMetadataDto;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +60,8 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
 
             List<ColumnEntity> columnsToSave = columnsMetadata.stream()
                     .map(column -> {
-                        LoadConstraintsResult result = visorService.loadConstraints(table.getTableName(), column.getColumnName(), connection);
+                        LoadConstraintsResult result =
+                                visorService.loadConstraints(table.getTableName(), column.getColumnName(), connection);
                         ColumnEntity columnToSave = new ColumnEntity()
                                 .setUuid(UUIDGenerator.uuidWithoutDashes())
                                 .setColumnName(column.getColumnName())
@@ -84,7 +84,8 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
                         }
 
                         return columnToSave;
-                    }).toList();
+                    })
+                    .toList();
             columnService.saveAll(columnsToSave);
         }
 
@@ -92,5 +93,4 @@ public class MetadataLoaderServiceImpl implements MetadataLoaderService {
                 .map(TableModel::new)
                 .toList();
     }
-
 }

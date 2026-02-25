@@ -1,9 +1,8 @@
 package ru.akvine.iskra.services.domain.column.dto;
 
+import java.util.Map;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.Map;
 
 @Data
 @Accessors(chain = true)

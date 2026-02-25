@@ -1,6 +1,11 @@
 package ru.akvine.iskra.services.state_machine.managers;
 
 import jakarta.annotation.PreDestroy;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -24,12 +29,6 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
 
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class AsyncPlanManagerImpl implements PlanManager {
@@ -49,13 +48,15 @@ public class AsyncPlanManagerImpl implements PlanManager {
         String planUuid = plan.getUuid();
 
         if (plan.getPlanState() == PlanState.IN_PROGRESS) {
-            String message = String.format("Plan with uuid = [%s] and name = [%s] has already started", plan.getUuid(), plan.getName());
+            String message = String.format(
+                    "Plan with uuid = [%s] and name = [%s] has already started", plan.getUuid(), plan.getName());
             throw new PlanAlreadyStartedException(message);
         }
 
         if (plan.getPlanState() == PlanState.COMPLETED && resume) {
-            String message = String.format("Plan with uuid = [%s] and name = [%s] can't be resumed. " +
-                    "Already has COMPLETED state", plan.getUuid(), plan.getName());
+            String message = String.format(
+                    "Plan with uuid = [%s] and name = [%s] can't be resumed. " + "Already has COMPLETED state",
+                    plan.getUuid(), plan.getName());
             throw new PlanAlreadyStartedException(message);
         }
 
@@ -64,12 +65,8 @@ public class AsyncPlanManagerImpl implements PlanManager {
                 .setUserUuid(userUuid)
                 .setSelected(true)
                 .setResume(resume);
-        Map<TableName, TableModel> selectedTables = tableService
-                .list(listTables)
-                .stream().collect(Collectors.toMap(
-                        table -> new TableName(table.getTableName()),
-                        Function.identity()
-                ));
+        Map<TableName, TableModel> selectedTables = tableService.list(listTables).stream()
+                .collect(Collectors.toMap(table -> new TableName(table.getTableName()), Function.identity()));
 
         String processUuid;
         if (resume) {
@@ -83,24 +80,23 @@ public class AsyncPlanManagerImpl implements PlanManager {
 
             selectedTables.values().forEach(table -> {
                 if (table.getConfiguration() == null) {
-                    String errorMessage = String.format("Table with name = [%s] has no configuration!", table.getTableName());
+                    String errorMessage =
+                            String.format("Table with name = [%s] has no configuration!", table.getTableName());
                     throw new TableConfigurationNotFoundException(errorMessage);
                 }
             });
 
-             processUuid = UUIDGenerator.uuid();
+            processUuid = UUIDGenerator.uuid();
         }
 
         // Асинхронно запускаем выполнение генерации для плана
         try {
             CompletableFuture.runAsync(
-                            () -> planStateManager.manage(plan, selectedTables, resume, processUuid, userUuid),
-                            taskExecutor.executor());
+                    () -> planStateManager.manage(plan, selectedTables, resume, processUuid, userUuid),
+                    taskExecutor.executor());
         } catch (RejectedExecutionException exception) {
             String errorMessage = String.format(
-                    "Error while start plan with uuid = [%s] and name = [%s]",
-                    plan.getUuid(), plan.getName()
-            );
+                    "Error while start plan with uuid = [%s] and name = [%s]", plan.getUuid(), plan.getName());
             throw new PlanStartingException(errorMessage, exception);
         }
 
@@ -122,8 +118,7 @@ public class AsyncPlanManagerImpl implements PlanManager {
 
         String errorMessage = String.format(
                 "Plan with uuid = [%s] and name = [%s] has illegal state = [%s] for stopping!",
-                plan.getUuid(), plan.getName(), plan.getPlanState()
-        );
+                plan.getUuid(), plan.getName(), plan.getPlanState());
         throw new IllegalStateException(errorMessage);
     }
 

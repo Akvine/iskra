@@ -12,6 +12,7 @@ public class CacheConfig {
 
     @Value("${cache.type}")
     private String cacheType;
+
     @Value("${max.generator.cache.size}")
     private int maxGeneratorCacheSize;
 

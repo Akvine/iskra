@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
@@ -11,8 +12,6 @@ import ru.akvine.iskra.services.domain.regex.RegexModel;
 import ru.akvine.iskra.services.domain.regex.RegexService;
 import ru.akvine.iskra.services.domain.regex.dto.CreateRegex;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class RegexController implements RegexControllerMeta {
@@ -22,7 +21,8 @@ public class RegexController implements RegexControllerMeta {
 
     @Override
     public Response list() {
-        List<RegexModel> regexps = regexService.list(securityManager.getCurrentUser().getUuid());
+        List<RegexModel> regexps =
+                regexService.list(securityManager.getCurrentUser().getUuid());
         return regexMapper.mapToListRegexResponse(regexps);
     }
 

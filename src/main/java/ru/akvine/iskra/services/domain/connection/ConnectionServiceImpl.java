@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.domain.connection;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,8 +15,6 @@ import ru.akvine.iskra.repositories.entities.UserEntity;
 import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.domain.connection.dto.CreateConnection;
 import ru.akvine.iskra.services.domain.connection.dto.DuplicateConnection;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -68,8 +67,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 .setDatabaseType(from.getDatabaseType())
                 .setUser(owner);
 
-        if (StringUtils.isNotBlank(action.getNewConnectionName()) &&
-                !action.getNewConnectionName().equals(from.getConnectionName())) {
+        if (StringUtils.isNotBlank(action.getNewConnectionName())
+                && !action.getNewConnectionName().equals(from.getConnectionName())) {
             target.setConnectionName(action.getNewConnectionName());
         } else {
             List<String> generatedNames = nameGenerator.tryGetIncrementedNames(from.getConnectionName(), 1);
@@ -78,7 +77,6 @@ public class ConnectionServiceImpl implements ConnectionService {
             } else {
                 target.setConnectionName(generatedNames.getFirst());
             }
-
         }
 
         return new ConnectionModel(connectionRepository.save(target));

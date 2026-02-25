@@ -1,9 +1,8 @@
 package ru.akvine.iskra.rest.dto.table;
 
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.List;
 
 @Data
 @Accessors(chain = true)

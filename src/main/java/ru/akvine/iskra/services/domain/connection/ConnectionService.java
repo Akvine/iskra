@@ -1,10 +1,9 @@
 package ru.akvine.iskra.services.domain.connection;
 
+import java.util.List;
 import ru.akvine.iskra.repositories.entities.ConnectionEntity;
 import ru.akvine.iskra.services.domain.connection.dto.CreateConnection;
 import ru.akvine.iskra.services.domain.connection.dto.DuplicateConnection;
-
-import java.util.List;
 
 public interface ConnectionService {
     List<ConnectionModel> list(String userUuid);

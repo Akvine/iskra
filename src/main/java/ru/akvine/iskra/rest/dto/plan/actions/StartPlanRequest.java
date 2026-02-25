@@ -9,5 +9,6 @@ import lombok.experimental.Accessors;
 public class StartPlanRequest {
     @NotBlank
     private String planUuid;
+
     private boolean resume;
 }

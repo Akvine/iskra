@@ -1,5 +1,7 @@
 package ru.akvine.iskra.services.impl;
 
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.TableName;
@@ -11,9 +13,6 @@ import ru.akvine.iskra.services.domain.plan.dto.action.GenerateScriptsResult;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationModel;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
-
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +28,8 @@ public class ScriptGeneratorServiceImpl implements ScriptGeneratorService {
         restGeneratorService.generateScripts(plan, selectedTables);
         GenerateScriptsResult result = new GenerateScriptsResult();
         List<TableConfigurationModel> configs = tableConfigurationService.list(
-                plan.getUuid(), selectedTables.keySet().stream().map(TableName::getName).toList()
-        );
+                plan.getUuid(),
+                selectedTables.keySet().stream().map(TableName::getName).toList());
         configs.forEach(config -> {
             result.getDropScripts().addAll(config.getDropScripts());
             result.getCreateScripts().addAll(config.getCreateScripts());

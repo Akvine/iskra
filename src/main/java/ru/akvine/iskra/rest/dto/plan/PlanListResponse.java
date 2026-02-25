@@ -1,10 +1,9 @@
 package ru.akvine.iskra.rest.dto.plan;
 
+import java.util.Collection;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
-
-import java.util.Collection;
 
 @Data
 @Accessors(chain = true)

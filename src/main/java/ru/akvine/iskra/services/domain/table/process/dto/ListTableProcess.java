@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ListTableProcess {
     private String planUuid;
+
     @Nullable
     private String processUuid;
 }

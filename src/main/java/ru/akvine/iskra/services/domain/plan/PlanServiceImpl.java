@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.domain.plan;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,8 +22,6 @@ import ru.akvine.iskra.services.domain.plan.dto.CreatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.DuplicatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class PlanServiceImpl implements PlanService {
@@ -37,7 +36,8 @@ public class PlanServiceImpl implements PlanService {
     @Transactional
     public PlanModel create(CreatePlan createPlan) {
         Asserts.isNotNull(createPlan);
-        ConnectionEntity connection = connectionService.verifyExists(createPlan.getConnectionName(), createPlan.getUserUuid());
+        ConnectionEntity connection =
+                connectionService.verifyExists(createPlan.getConnectionName(), createPlan.getUserUuid());
 
         UserEntity owner = userService.verifyExistsByUuid(createPlan.getUserUuid());
         PlanEntity plan = new PlanEntity()
@@ -69,8 +69,8 @@ public class PlanServiceImpl implements PlanService {
                 .setGenerateScriptsForCheck(from.isGenerateScriptsForCheck())
                 .setGenerateScriptsForDefault(from.isGenerateScriptsForDefault());
 
-        if (StringUtils.isNotBlank(duplicatePlan.getName()) &&
-                !duplicatePlan.getName().equals(from.getName())) {
+        if (StringUtils.isNotBlank(duplicatePlan.getName())
+                && !duplicatePlan.getName().equals(from.getName())) {
             target.setName(duplicatePlan.getName());
         } else {
             List<String> generatedNames = nameGenerator.tryGetIncrementedNames(from.getName(), 1);
@@ -83,7 +83,8 @@ public class PlanServiceImpl implements PlanService {
 
         if (duplicatePlan.isCopyResults()) {
             PlanModel savedPlan = new PlanModel(planRepository.save(target));
-            // TODO: сделано для того, чтобы избежать циклической зависимости между PlanService <-> MetadataLoaderService
+            // TODO: сделано для того, чтобы избежать циклической зависимости между PlanService <->
+            // MetadataLoaderService
             publisher.publishEvent(new LoadMetadataEvent(this, savedPlan.getUuid(), userUuid));
             return savedPlan;
         }
@@ -100,10 +101,7 @@ public class PlanServiceImpl implements PlanService {
     @Transactional
     public List<PlanModel> list(String uuid) {
         Asserts.isNotNull(uuid);
-        return planRepository
-                .findAll(uuid).stream()
-                .map(PlanModel::new)
-                .toList();
+        return planRepository.findAll(uuid).stream().map(PlanModel::new).toList();
     }
 
     @Override
@@ -120,8 +118,9 @@ public class PlanServiceImpl implements PlanService {
 
         PlanEntity planToUpdate = verifyExists(action.getPlanUuid(), action.getUserUuid());
 
-        if (StringUtils.isNotBlank(action.getLastProcessUuid()) && (
-                StringUtils.isBlank(planToUpdate.getLastProcessUuid()) || !action.getLastProcessUuid().equals(planToUpdate.getLastProcessUuid()))) {
+        if (StringUtils.isNotBlank(action.getLastProcessUuid())
+                && (StringUtils.isBlank(planToUpdate.getLastProcessUuid())
+                        || !action.getLastProcessUuid().equals(planToUpdate.getLastProcessUuid()))) {
             planToUpdate.setLastProcessUuid(action.getLastProcessUuid());
         }
 

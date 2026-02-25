@@ -1,10 +1,9 @@
 package ru.akvine.iskra.repositories.dto;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)

@@ -9,7 +9,9 @@ import lombok.experimental.Accessors;
 public class DuplicatePlan {
     private String userUuid;
     private String uuid;
+
     @Nullable
     private String name;
+
     private boolean copyResults;
 }

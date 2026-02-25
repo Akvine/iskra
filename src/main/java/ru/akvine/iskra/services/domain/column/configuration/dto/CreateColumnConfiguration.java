@@ -1,14 +1,13 @@
 package ru.akvine.iskra.services.domain.column.configuration.dto;
 
 import jakarta.annotation.Nullable;
-import lombok.Data;
-import lombok.experimental.Accessors;
-import ru.akvine.compozit.commons.istochnik.ConverterDto;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import ru.akvine.compozit.commons.istochnik.ConverterDto;
 
 @Data
 @Accessors(chain = true)
@@ -25,14 +24,19 @@ public class CreateColumnConfiguration {
     private boolean unique;
     private boolean notNull;
     private String rangeType;
+
     @Nullable
     private String start;
+
     @Nullable
     private String end;
+
     @Nullable
     private String step;
+
     @Nullable
     private Boolean valid;
+
     private List<String> regexps = new ArrayList<>();
     private List<ConverterDto> converters = new ArrayList<>();
     private List<ConverterDto> postConverters = new ArrayList<>();

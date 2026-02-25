@@ -1,11 +1,10 @@
 package ru.akvine.iskra.utils;
 
 import jakarta.annotation.Nullable;
+import java.util.List;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
 
 @UtilityClass
 public class StringHelper {

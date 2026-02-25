@@ -1,17 +1,17 @@
 package ru.akvine.iskra.validators;
 
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.akvine.iskra.constants.ApiErrorCodes;
 import ru.akvine.iskra.exceptions.ValidationException;
 
-import java.util.regex.Pattern;
-
 @Component
 public class PasswordValidator implements Validator<String> {
     @Value("${security.min.password.length}")
     private int minPasswordLength;
+
     @Value("${security.max.password.length}")
     private int maxPasswordLength;
 
@@ -25,17 +25,11 @@ public class PasswordValidator implements Validator<String> {
         if (StringUtils.isBlank(password)
                 || password.length() < minPasswordLength
                 || password.length() > maxPasswordLength) {
-            throw new ValidationException(
-                    ApiErrorCodes.Validation.PASSWORD_INVALID_ERROR,
-                    "Password is invalid"
-            );
+            throw new ValidationException(ApiErrorCodes.Validation.PASSWORD_INVALID_ERROR, "Password is invalid");
         }
 
         if (password.contains(" ")) {
-            throw new ValidationException(
-                    ApiErrorCodes.Validation.PASSWORD_INVALID_ERROR,
-                    "Password is invalid"
-            );
+            throw new ValidationException(ApiErrorCodes.Validation.PASSWORD_INVALID_ERROR, "Password is invalid");
         }
 
         long findCount = 0;
@@ -56,10 +50,7 @@ public class PasswordValidator implements Validator<String> {
         }
 
         if (findCount < 3) {
-            throw new ValidationException(
-                    ApiErrorCodes.Validation.PASSWORD_INVALID_ERROR,
-                    "Password is invalid!"
-            );
+            throw new ValidationException(ApiErrorCodes.Validation.PASSWORD_INVALID_ERROR, "Password is invalid!");
         }
     }
 }

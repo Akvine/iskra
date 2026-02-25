@@ -1,11 +1,10 @@
 package ru.akvine.iskra.services.domain.plan;
 
+import java.util.List;
 import ru.akvine.iskra.repositories.entities.PlanEntity;
 import ru.akvine.iskra.services.domain.plan.dto.CreatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.DuplicatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
-
-import java.util.List;
 
 public interface PlanService {
 

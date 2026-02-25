@@ -1,12 +1,11 @@
 package ru.akvine.iskra.configs.security;
 
+import java.util.Collection;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
-import java.util.List;
 
 @AllArgsConstructor
 @Getter

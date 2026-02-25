@@ -14,8 +14,10 @@ public class RegexModel extends SoftModel<Long> {
     private String pattern;
     private boolean system;
     private String name;
+
     @Nullable
     private String description;
+
     private UserModel user;
 
     public RegexModel(RegexEntity regexEntity) {

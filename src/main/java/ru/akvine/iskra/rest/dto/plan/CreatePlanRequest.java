@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 public class CreatePlanRequest {
     @NotBlank
     private String name;
+
     @NotBlank
     private String connectionName;
 }

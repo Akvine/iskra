@@ -1,10 +1,9 @@
 package ru.akvine.iskra.services.domain.dictionary.dto;
 
+import java.util.Set;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.compozit.commons.PageInfo;
-
-import java.util.Set;
 
 @Data
 @Accessors(chain = true)

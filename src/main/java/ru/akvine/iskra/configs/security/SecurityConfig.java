@@ -22,14 +22,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/security/**").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers("/security/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .exceptionHandling(c -> c.authenticationEntryPoint(new RestAuthenticationEntryPoint()))
                 .logout(logout -> {
                     logout.deleteCookies(cookieName);

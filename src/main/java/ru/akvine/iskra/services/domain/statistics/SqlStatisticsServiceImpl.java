@@ -1,5 +1,8 @@
 package ru.akvine.iskra.services.domain.statistics;
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -13,10 +16,6 @@ import ru.akvine.iskra.services.domain.statistics.dto.CreateStatisticAction;
 import ru.akvine.iskra.services.domain.statistics.dto.SearchStatisticsContext;
 import ru.akvine.iskra.services.domain.statistics.dto.UpdateStatisticAction;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class SqlStatisticsServiceImpl implements SqlStatisticsService {
@@ -27,9 +26,7 @@ public class SqlStatisticsServiceImpl implements SqlStatisticsService {
         Asserts.isNotNull(searchContext);
         return sqlStatisticsRepository
                 .findByTableIdsAndStatesAndActionType(
-                        searchContext.getProcessUuid(),
-                        searchContext.getStates(),
-                        searchContext.getSqlScriptType())
+                        searchContext.getProcessUuid(), searchContext.getStates(), searchContext.getSqlScriptType())
                 .stream()
                 .map(SqlStatisticsModel::new)
                 .toList();
@@ -64,17 +61,13 @@ public class SqlStatisticsServiceImpl implements SqlStatisticsService {
     }
 
     @Override
-    public List<SqlStatisticsModel> updateToStatus(String processUuid,
-                                                   SqlScriptType scriptType,
-                                                   ProcessState targetState,
-                                                   Collection<ProcessState> excludeStates) {
+    public List<SqlStatisticsModel> updateToStatus(
+            String processUuid,
+            SqlScriptType scriptType,
+            ProcessState targetState,
+            Collection<ProcessState> excludeStates) {
         // TODO : сделать через Criteria API или Query DSL из-за большого числа параметров
-        return sqlStatisticsRepository
-                .updateState(targetState,
-                        processUuid,
-                        scriptType,
-                        excludeStates)
-                .stream()
+        return sqlStatisticsRepository.updateState(targetState, processUuid, scriptType, excludeStates).stream()
                 .map(SqlStatisticsModel::new)
                 .toList();
     }
@@ -82,11 +75,9 @@ public class SqlStatisticsServiceImpl implements SqlStatisticsService {
     @Override
     public SqlStatisticsEntity verifyExists(String uuid) {
         Asserts.isNotBlank(uuid, "uuid is null");
-        return sqlStatisticsRepository
-                .findByUuid(uuid)
-                .orElseThrow(() -> {
-                    String message = "SQL statistics not found by uuid = [" + uuid + "]";
-                    return new SqlStatisticsNotFoundException(message);
-                });
+        return sqlStatisticsRepository.findByUuid(uuid).orElseThrow(() -> {
+            String message = "SQL statistics not found by uuid = [" + uuid + "]";
+            return new SqlStatisticsNotFoundException(message);
+        });
     }
 }

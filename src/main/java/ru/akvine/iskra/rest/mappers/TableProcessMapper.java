@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest.mappers;
 
+import java.util.List;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.rest.dto.process.TableProcessDto;
@@ -7,21 +8,18 @@ import ru.akvine.iskra.rest.dto.process.TableProcessListResponse;
 import ru.akvine.iskra.services.domain.table.process.TableProcessModel;
 import ru.akvine.iskra.services.domain.table.process.dto.ListTableProcess;
 
-import java.util.List;
-
 @Component
 public class TableProcessMapper {
 
     public ListTableProcess mapToListTableProcess(String planUuid, String processUuid) {
-        return new ListTableProcess()
-                .setPlanUuid(planUuid)
-                .setProcessUuid(processUuid);
+        return new ListTableProcess().setPlanUuid(planUuid).setProcessUuid(processUuid);
     }
 
     public TableProcessListResponse mapToTableProcessListResponse(List<TableProcessModel> tableProcesses) {
         Asserts.isNotNull(tableProcesses);
         return new TableProcessListResponse()
-                .setTableProcesses(tableProcesses.stream().map(this::buildTableProcessDto).toList());
+                .setTableProcesses(
+                        tableProcesses.stream().map(this::buildTableProcessDto).toList());
     }
 
     private TableProcessDto buildTableProcessDto(TableProcessModel tableProcess) {

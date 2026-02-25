@@ -1,10 +1,9 @@
 package ru.akvine.iskra.services.domain.plan.dto.action;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)

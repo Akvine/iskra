@@ -1,5 +1,10 @@
 package ru.akvine.iskra.services.domain.table;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -8,12 +13,6 @@ import ru.akvine.iskra.repositories.TableRepository;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
 import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,11 +38,10 @@ public class TableServiceImpl implements TableService {
     public TableEntity verifyExistsBy(String planUuid, String name) {
         Asserts.isNotNull(name);
         Asserts.isNotNull(planUuid);
-        return tableRepository.findBy(planUuid, name)
-                .orElseThrow(() -> {
-                    String message = "Table by name = [" + name + "] not found for plan = [" + planUuid + "]";
-                    return new TableNotFoundException(message);
-                });
+        return tableRepository.findBy(planUuid, name).orElseThrow(() -> {
+            String message = "Table by name = [" + name + "] not found for plan = [" + planUuid + "]";
+            return new TableNotFoundException(message);
+        });
     }
 
     @Override
@@ -51,16 +49,13 @@ public class TableServiceImpl implements TableService {
         Asserts.isNotNull(listTables);
         // TODO: сделать поиск через спецификацию
         if (listTables.getSelected() == null) {
-            return tableRepository.findAll(listTables.getPlanUuid(), listTables.getUserUuid())
-                    .stream()
+            return tableRepository.findAll(listTables.getPlanUuid(), listTables.getUserUuid()).stream()
                     .map(TableModel::new)
                     .toList();
         }
 
-        return tableRepository.findAll(
-                        listTables.getUserUuid(),
-                        listTables.getPlanUuid(),
-                        listTables.getSelected())
+        return tableRepository
+                .findAll(listTables.getUserUuid(), listTables.getPlanUuid(), listTables.getSelected())
                 .stream()
                 .map(TableModel::new)
                 .toList();
@@ -72,10 +67,7 @@ public class TableServiceImpl implements TableService {
 
         Map<String, Boolean> toggled = action.getToggled();
         Map<String, TableEntity> tablesToUpdate = map(tableRepository.findAll(
-                action.getPlanUuid(),
-                action.getToggled().keySet(),
-                action.getUserUuid()
-        ));
+                action.getPlanUuid(), action.getToggled().keySet(), action.getUserUuid()));
 
         for (String tableName : tablesToUpdate.keySet()) {
             Boolean isSelect = toggled.get(tableName);
@@ -98,12 +90,7 @@ public class TableServiceImpl implements TableService {
         return List.of();
     }
 
-
     private Map<String, TableEntity> map(List<TableEntity> tablesToUpdate) {
-        return tablesToUpdate.stream()
-                .collect(Collectors.toMap(
-                        TableEntity::getName,
-                        Function.identity()
-                ));
+        return tablesToUpdate.stream().collect(Collectors.toMap(TableEntity::getName, Function.identity()));
     }
 }

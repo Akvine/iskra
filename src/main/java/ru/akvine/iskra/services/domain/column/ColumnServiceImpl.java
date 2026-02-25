@@ -1,19 +1,18 @@
 package ru.akvine.iskra.services.domain.column;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.iskra.exceptions.column.ColumnNotFoundException;
 import ru.akvine.iskra.repositories.ColumnRepository;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
-import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.column.dto.SelectColumn;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import ru.akvine.iskra.services.domain.table.TableService;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +23,7 @@ public class ColumnServiceImpl implements ColumnService {
 
     @Override
     public List<ColumnModel> getAll(Collection<String> tableNames) {
-        return columnRepository
-                .findAll(tableNames).stream()
+        return columnRepository.findAll(tableNames).stream()
                 .map(ColumnModel::new)
                 .toList();
     }
@@ -38,9 +36,7 @@ public class ColumnServiceImpl implements ColumnService {
     @Override
     public List<ColumnModel> getWithReferenceInfo(String planUuid) {
         Asserts.isNotNull(planUuid, "planUuid is null");
-        return columnRepository
-                .findByPlanUuidAndHasReferenceInfo(planUuid)
-                .stream()
+        return columnRepository.findByPlanUuidAndHasReferenceInfo(planUuid).stream()
                 .map(ColumnModel::new)
                 .toList();
     }
@@ -48,12 +44,10 @@ public class ColumnServiceImpl implements ColumnService {
     @Override
     public ColumnEntity verifyExists(String uuid) {
         Asserts.isNotNull(uuid);
-        return columnRepository
-                .findByUuid(uuid)
-                .orElseThrow(() -> {
-                    String errorMessage = "Column with uuid = [" + uuid + "] is not found!";
-                    return new ColumnNotFoundException(errorMessage);
-                });
+        return columnRepository.findByUuid(uuid).orElseThrow(() -> {
+            String errorMessage = "Column with uuid = [" + uuid + "] is not found!";
+            return new ColumnNotFoundException(errorMessage);
+        });
     }
 
     @Override
@@ -65,10 +59,8 @@ public class ColumnServiceImpl implements ColumnService {
         tableService.verifyExistsBy(planUuid, tableName);
 
         Map<String, Boolean> selected = selectColumn.getSelected();
-        Map<String, ColumnEntity> columnsToUpdate = map(columnRepository.findAll(
-                tableName,
-                selectColumn.getSelected().keySet()
-        ));
+        Map<String, ColumnEntity> columnsToUpdate = map(
+                columnRepository.findAll(tableName, selectColumn.getSelected().keySet()));
 
         for (String columnUuid : selected.keySet()) {
             Boolean isSelect = selected.get(columnUuid);
@@ -92,10 +84,6 @@ public class ColumnServiceImpl implements ColumnService {
     }
 
     private Map<String, ColumnEntity> map(List<ColumnEntity> columnsToUpdate) {
-        return columnsToUpdate.stream()
-                .collect(Collectors.toMap(
-                        ColumnEntity::getUuid,
-                        Function.identity()
-                ));
+        return columnsToUpdate.stream().collect(Collectors.toMap(ColumnEntity::getUuid, Function.identity()));
     }
 }

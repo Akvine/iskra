@@ -1,5 +1,9 @@
 package ru.akvine.iskra.services.facades.impl;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.TableName;
@@ -21,11 +25,6 @@ import ru.akvine.iskra.services.domain.table.configuration.dto.UpdateTableConfig
 import ru.akvine.iskra.services.dto.ProcessPayload;
 import ru.akvine.iskra.services.facades.ScriptsFacade;
 import ru.akvine.iskra.services.integration.visor.VisorService;
-
-import java.util.*;
-
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
 
 @Service
 @RequiredArgsConstructor
@@ -54,21 +53,21 @@ public class SyncScriptsFacade implements ScriptsFacade {
             List<SqlStatisticsModel> result = sqlStatisticsService.get(context);
 
             statistics = result.stream().collect(toMap(SqlStatisticsModel::getTableId, identity()));
-            tablesToDisable = tableService.get(plan.getUuid(),
+            tablesToDisable = tableService.get(
+                    plan.getUuid(),
                     result.stream().map(SqlStatisticsModel::getTableId).toList());
         } else {
             statistics = new HashMap<>();
             tablesToDisable = selectedTables.values();
-            tablesToDisable
-                    .forEach(table -> {
-                        CreateStatisticAction action = new CreateStatisticAction()
-                                .setScriptType(SqlScriptType.DISABLE)
-                                .setProcessUuid(processUuid)
-                                .setTableName(table.getTableName())
-                                .setTableId(table.getId());
-                        SqlStatisticsModel statistic = sqlStatisticsService.create(action);
-                        statistics.put(table.getId(), statistic);
-                    });
+            tablesToDisable.forEach(table -> {
+                CreateStatisticAction action = new CreateStatisticAction()
+                        .setScriptType(SqlScriptType.DISABLE)
+                        .setProcessUuid(processUuid)
+                        .setTableName(table.getTableName())
+                        .setTableId(table.getId());
+                SqlStatisticsModel statistic = sqlStatisticsService.create(action);
+                statistics.put(table.getId(), statistic);
+            });
         }
 
         tablesToDisable.forEach(table -> {
@@ -76,21 +75,15 @@ public class SyncScriptsFacade implements ScriptsFacade {
                     .setUuid(statistics.get(table.getId()).getUuid());
 
             try {
-                visorService.executeScripts(
-                        table.getConfiguration().getDropScripts(),
-                        plan.getConnection()
-                );
+                visorService.executeScripts(table.getConfiguration().getDropScripts(), plan.getConnection());
 
                 action.setState(ProcessState.COMPLETED);
                 sqlStatisticsService.update(action);
             } catch (RuntimeException exception) {
-                // Обновляем статусы для всех статистик в рамках процесса в STOPPED (кроме завершенных = COMPLETED)
+                // Обновляем статусы для всех статистик в рамках процесса в STOPPED (кроме завершенных =
+                // COMPLETED)
                 sqlStatisticsService.updateToStatus(
-                        processUuid,
-                        SqlScriptType.DISABLE,
-                        ProcessState.STOPPED,
-                        EnumSet.of(ProcessState.COMPLETED)
-                );
+                        processUuid, SqlScriptType.DISABLE, ProcessState.STOPPED, EnumSet.of(ProcessState.COMPLETED));
 
                 // Обновляем статус статистики для проблемной таблицы в FAILED
                 action.setState(ProcessState.FAILED);
@@ -118,21 +111,21 @@ public class SyncScriptsFacade implements ScriptsFacade {
             List<SqlStatisticsModel> result = sqlStatisticsService.get(context);
 
             statistics = result.stream().collect(toMap(SqlStatisticsModel::getTableId, identity()));
-            tablesToDisable = tableService.get(plan.getUuid(),
+            tablesToDisable = tableService.get(
+                    plan.getUuid(),
                     result.stream().map(SqlStatisticsModel::getTableId).toList());
         } else {
             statistics = new HashMap<>();
             tablesToDisable = selectedTables.values();
-            tablesToDisable
-                    .forEach(table -> {
-                        CreateStatisticAction action = new CreateStatisticAction()
-                                .setScriptType(SqlScriptType.CLEAR)
-                                .setProcessUuid(processUuid)
-                                .setTableName(table.getTableName())
-                                .setTableId(table.getId());
-                        SqlStatisticsModel statistic = sqlStatisticsService.create(action);
-                        statistics.put(table.getId(), statistic);
-                    });
+            tablesToDisable.forEach(table -> {
+                CreateStatisticAction action = new CreateStatisticAction()
+                        .setScriptType(SqlScriptType.CLEAR)
+                        .setProcessUuid(processUuid)
+                        .setTableName(table.getTableName())
+                        .setTableId(table.getId());
+                SqlStatisticsModel statistic = sqlStatisticsService.create(action);
+                statistics.put(table.getId(), statistic);
+            });
         }
 
         tablesToDisable.forEach(table -> {
@@ -140,21 +133,15 @@ public class SyncScriptsFacade implements ScriptsFacade {
                     .setUuid(statistics.get(table.getId()).getUuid());
 
             try {
-                visorService.executeScripts(
-                        table.getConfiguration().getDropScripts(),
-                        plan.getConnection()
-                );
+                visorService.executeScripts(table.getConfiguration().getDropScripts(), plan.getConnection());
 
                 action.setState(ProcessState.COMPLETED);
                 sqlStatisticsService.update(action);
             } catch (RuntimeException exception) {
-                // Обновляем статусы для всех статистик в рамках процесса в STOPPED (кроме завершенных = COMPLETED)
+                // Обновляем статусы для всех статистик в рамках процесса в STOPPED (кроме завершенных =
+                // COMPLETED)
                 sqlStatisticsService.updateToStatus(
-                        processUuid,
-                        SqlScriptType.CLEAR,
-                        ProcessState.STOPPED,
-                        EnumSet.of(ProcessState.COMPLETED)
-                );
+                        processUuid, SqlScriptType.CLEAR, ProcessState.STOPPED, EnumSet.of(ProcessState.COMPLETED));
 
                 // Обновляем статус статистики для проблемной таблицы в FAILED
                 action.setState(ProcessState.FAILED);
@@ -163,7 +150,8 @@ public class SyncScriptsFacade implements ScriptsFacade {
         });
     }
 
-    // TODO: подумать над тем, чтоб вынести повторяющийся код для методов disableSqlObjects, enableSqlObjects, clearTables
+    // TODO: подумать над тем, чтоб вынести повторяющийся код для методов disableSqlObjects,
+    // enableSqlObjects, clearTables
     // TODO: в абстрактный класс
     @Override
     public void enableSqlObjects(ProcessPayload payload) {
@@ -184,21 +172,21 @@ public class SyncScriptsFacade implements ScriptsFacade {
             List<SqlStatisticsModel> result = sqlStatisticsService.get(context);
 
             statistics = result.stream().collect(toMap(SqlStatisticsModel::getTableId, identity()));
-            tablesToDisable = tableService.get(plan.getUuid(),
+            tablesToDisable = tableService.get(
+                    plan.getUuid(),
                     result.stream().map(SqlStatisticsModel::getTableId).toList());
         } else {
             statistics = new HashMap<>();
             tablesToDisable = selectedTables.values();
-            tablesToDisable
-                    .forEach(table -> {
-                        CreateStatisticAction action = new CreateStatisticAction()
-                                .setScriptType(SqlScriptType.ENABLE)
-                                .setProcessUuid(processUuid)
-                                .setTableName(table.getTableName())
-                                .setTableId(table.getId());
-                        SqlStatisticsModel statistic = sqlStatisticsService.create(action);
-                        statistics.put(table.getId(), statistic);
-                    });
+            tablesToDisable.forEach(table -> {
+                CreateStatisticAction action = new CreateStatisticAction()
+                        .setScriptType(SqlScriptType.ENABLE)
+                        .setProcessUuid(processUuid)
+                        .setTableName(table.getTableName())
+                        .setTableId(table.getId());
+                SqlStatisticsModel statistic = sqlStatisticsService.create(action);
+                statistics.put(table.getId(), statistic);
+            });
         }
 
         tablesToDisable.forEach(table -> {
@@ -206,21 +194,15 @@ public class SyncScriptsFacade implements ScriptsFacade {
                     .setUuid(statistics.get(table.getId()).getUuid());
 
             try {
-                visorService.executeScripts(
-                        table.getConfiguration().getDropScripts(),
-                        plan.getConnection()
-                );
+                visorService.executeScripts(table.getConfiguration().getDropScripts(), plan.getConnection());
 
                 action.setState(ProcessState.COMPLETED);
                 sqlStatisticsService.update(action);
             } catch (RuntimeException exception) {
-                // Обновляем статусы для всех статистик в рамках процесса в STOPPED (кроме завершенных = COMPLETED)
+                // Обновляем статусы для всех статистик в рамках процесса в STOPPED (кроме завершенных =
+                // COMPLETED)
                 sqlStatisticsService.updateToStatus(
-                        processUuid,
-                        SqlScriptType.ENABLE,
-                        ProcessState.STOPPED,
-                        EnumSet.of(ProcessState.COMPLETED)
-                );
+                        processUuid, SqlScriptType.ENABLE, ProcessState.STOPPED, EnumSet.of(ProcessState.COMPLETED));
 
                 // Обновляем статус статистики для проблемной таблицы в FAILED
                 action.setState(ProcessState.FAILED);
@@ -256,8 +238,7 @@ public class SyncScriptsFacade implements ScriptsFacade {
         }
 
         Map<String, ScriptResultDto> generatedScripts = visorService.generateScriptsForTables(
-                selectedTables.keySet().stream()
-                        .map(TableName::getName).toList(),
+                selectedTables.keySet().stream().map(TableName::getName).toList(),
                 constraintsToGenerateScripts,
                 plan.getConnection());
 

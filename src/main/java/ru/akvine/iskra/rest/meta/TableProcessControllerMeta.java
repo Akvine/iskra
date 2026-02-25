@@ -8,6 +8,7 @@ import ru.akvine.compozit.commons.dto.Response;
 @RequestMapping(value = "/table-processes")
 public interface TableProcessControllerMeta {
     @GetMapping
-    Response list(@RequestParam("uuid") String planUuid,
-                  @RequestParam(value = "processUuid", required = false) String processUuid);
+    Response list(
+            @RequestParam("uuid") String planUuid,
+            @RequestParam(value = "processUuid", required = false) String processUuid);
 }

@@ -1,5 +1,9 @@
 package ru.akvine.iskra.services.integration.visor;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.*;
 import ru.akvine.compozit.commons.enums.DeleteMode;
@@ -13,24 +17,18 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.integration.visor.dto.ListConstraintsResponse;
 import ru.akvine.iskra.services.integration.visor.dto.LoadConstraintsResult;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @Service
 public class VisorDtoMapper {
-    public InsertValuesRequest convert(TableModel tableModel,
-                                       byte[] table) {
+    public InsertValuesRequest convert(TableModel tableModel, byte[] table) {
         return new InsertValuesRequest()
                 .setTableName(tableModel.getTableName())
                 .setContent(table)
                 .setConnection(convertToConnectionDto(tableModel.getPlan().getConnection()))
                 .setColumnsMetaInfo(buildColumnsMetaInfo(tableModel.getColumns()));
-
     }
 
-    public ExecuteScriptsRequest convertToExecuteScriptsRequest(ConnectionModel connectionModel, Collection<String> scripts) {
+    public ExecuteScriptsRequest convertToExecuteScriptsRequest(
+            ConnectionModel connectionModel, Collection<String> scripts) {
         return new ExecuteScriptsRequest()
                 .setConnection(convertToConnectionRequest(connectionModel))
                 .setScripts(scripts);
@@ -54,9 +52,8 @@ public class VisorDtoMapper {
                 .setTargetTableNameForForeignKey(response.getTargetTableNameForForeignKey());
     }
 
-    public GenerateClearScriptRequest convertToGenerateClearScriptRequest(String tableName,
-                                                                          DeleteMode deleteMode,
-                                                                          ConnectionModel connectionModel) {
+    public GenerateClearScriptRequest convertToGenerateClearScriptRequest(
+            String tableName, DeleteMode deleteMode, ConnectionModel connectionModel) {
         return new GenerateClearScriptRequest()
                 .setConnection(convertToConnectionRequest(connectionModel))
                 .setTableName(tableName)
@@ -72,9 +69,8 @@ public class VisorDtoMapper {
                 .setConnection(convertToConnectionRequest(connection));
     }
 
-    public GenerateScriptsRequest convertToGenerateScriptsRequest(Collection<String> tableNames,
-                                                                  List<String> constraints,
-                                                                  ConnectionModel connection) {
+    public GenerateScriptsRequest convertToGenerateScriptsRequest(
+            Collection<String> tableNames, List<String> constraints, ConnectionModel connection) {
         return new GenerateScriptsRequest()
                 .setConstraints(constraints)
                 .setTableNames(tableNames)
@@ -96,8 +92,7 @@ public class VisorDtoMapper {
         Map<String, ColumnMetaInfoDto> metaInfo = new HashMap<>();
 
         columns.forEach(column -> {
-            metaInfo.put(column.getColumnName(), new ColumnMetaInfoDto()
-                    .setColumnTypeName(column.getRawDataType()));
+            metaInfo.put(column.getColumnName(), new ColumnMetaInfoDto().setColumnTypeName(column.getRawDataType()));
         });
         return metaInfo;
     }

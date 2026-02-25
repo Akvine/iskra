@@ -13,16 +13,22 @@ import ru.akvine.iskra.services.domain.user.UserModel;
 @Accessors(chain = true)
 public class ConnectionModel extends Model<Long> {
     private String connectionName;
+
     @Nullable
     private String databaseName;
+
     @Nullable
     private String schema;
+
     private String host;
     private String port;
+
     @ToString.Exclude
     private String username;
+
     @ToString.Exclude
     private String password;
+
     private DatabaseType databaseType;
     private UserModel user;
 

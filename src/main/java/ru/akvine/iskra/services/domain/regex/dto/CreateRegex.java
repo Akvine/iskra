@@ -10,6 +10,7 @@ public class CreateRegex {
     private String userUuid;
     private String name;
     private String pattern;
+
     @Nullable
     private String description;
 }

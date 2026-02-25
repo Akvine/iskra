@@ -2,10 +2,9 @@ package ru.akvine.iskra.rest.dto.column;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.Map;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.Map;
 
 @Data
 @Accessors(chain = true)

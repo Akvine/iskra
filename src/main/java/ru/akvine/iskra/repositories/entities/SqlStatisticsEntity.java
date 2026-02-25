@@ -2,6 +2,7 @@ package ru.akvine.iskra.repositories.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -9,8 +10,6 @@ import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.enums.SqlScriptType;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
 import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
-
-import java.util.Date;
 
 @Setter
 @Getter
@@ -20,7 +19,10 @@ import java.util.Date;
 public class SqlStatisticsEntity extends SoftBaseEntity<Long> implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqlStatisticsEntitySeq")
-    @SequenceGenerator(name = "sqlStatisticsEntitySeq", sequenceName = "SEQ_SQL_STATISTICS_ENTITY", allocationSize = 1000)
+    @SequenceGenerator(
+            name = "sqlStatisticsEntitySeq",
+            sequenceName = "SEQ_SQL_STATISTICS_ENTITY",
+            allocationSize = 1000)
     @NotNull
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;

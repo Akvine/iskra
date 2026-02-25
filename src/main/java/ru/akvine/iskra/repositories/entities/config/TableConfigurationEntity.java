@@ -3,6 +3,7 @@ package ru.akvine.iskra.repositories.entities.config;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,6 @@ import ru.akvine.iskra.repositories.converters.ScriptsListToStringConverter;
 import ru.akvine.iskra.repositories.entities.TableEntity;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -24,7 +23,10 @@ import java.util.List;
 public class TableConfigurationEntity extends BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tableConfigurationEntitySeq")
-    @SequenceGenerator(name = "tableConfigurationEntitySeq", sequenceName = "SEQ_TABLE_CONFIGURATION_ENTITY", allocationSize = 1000)
+    @SequenceGenerator(
+            name = "tableConfigurationEntitySeq",
+            sequenceName = "SEQ_TABLE_CONFIGURATION_ENTITY",
+            allocationSize = 1000)
     @NotNull
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;

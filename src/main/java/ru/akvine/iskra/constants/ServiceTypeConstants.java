@@ -8,4 +8,3 @@ public final class ServiceTypeConstants {
     public static final String VISOR = "dbvisor";
     public static final String ISTOCHNIK = "istochnik";
 }
-

@@ -1,5 +1,9 @@
 package ru.akvine.iskra.services.integration.istochnik;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.istochnik.ColumnDto;
@@ -10,15 +14,9 @@ import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @Service
 public class IstochnikDtoMapper {
-    public GenerateTableRequest convertToGenerateTableRequest(int processedRowsCount,
-                                                              TableModel table) {
+    public GenerateTableRequest convertToGenerateTableRequest(int processedRowsCount, TableModel table) {
 
         int batchSize = table.getConfiguration().getBatchSize();
         List<ColumnDto> columns = new ArrayList<>();
@@ -29,9 +27,7 @@ public class IstochnikDtoMapper {
                     .orElseThrow(() -> {
                         String message = String.format(
                                 "Has no selected or created config for column = [%s], table = [%s]",
-                                column.getColumnName(),
-                                column.getTableName()
-                        );
+                                column.getColumnName(), column.getTableName());
                         return new ConfigurationNotSelectedException(message);
                     });
 
@@ -44,10 +40,8 @@ public class IstochnikDtoMapper {
                 .setColumns(columns);
     }
 
-    private ColumnDto buildColumnDto(ColumnModel column,
-                                     ColumnConfigurationModel config,
-                                     int processedRowsCount,
-                                     int batchSize) {
+    private ColumnDto buildColumnDto(
+            ColumnModel column, ColumnConfigurationModel config, int processedRowsCount, int batchSize) {
         return new ColumnDto()
                 .setName(column.getColumnName())
                 .setType(config.getType())

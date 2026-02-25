@@ -20,9 +20,9 @@ public interface DictionaryControllerMeta {
     Response delete(@PathVariable("uuid") String uuid);
 
     @PostMapping(value = "/import")
-    Response importFile(@RequestParam("file") MultipartFile file,
-                        @RequestParam("name") String name,
-                        @RequestParam(value = "lang", required = false) String lang,
-                        @RequestParam(value = "description", required = false) String description);
-
+    Response importFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("name") String name,
+            @RequestParam(value = "lang", required = false) String lang,
+            @RequestParam(value = "description", required = false) String description);
 }

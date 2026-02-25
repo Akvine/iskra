@@ -10,13 +10,10 @@ import ru.akvine.iskra.configs.properties.ParallelExecutorProperties;
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
-@EnableConfigurationProperties({
-		ParallelExecutorProperties.class
-})
+@EnableConfigurationProperties({ParallelExecutorProperties.class})
 public class IskraApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(IskraApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(IskraApplication.class, args);
+    }
 }

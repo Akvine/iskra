@@ -1,13 +1,12 @@
 package ru.akvine.iskra.services.domain.table;
 
+import java.util.Collection;
+import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.TableEntity;
-import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
-
-import java.util.Collection;
-import java.util.List;
+import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
 
 public interface TableService {
     @Transactional

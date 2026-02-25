@@ -2,6 +2,8 @@ package ru.akvine.iskra.repositories.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,9 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.akvine.iskra.enums.Language;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
 import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
-
-import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter

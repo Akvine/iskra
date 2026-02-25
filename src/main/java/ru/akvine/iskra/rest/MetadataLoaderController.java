@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,8 +10,6 @@ import ru.akvine.iskra.rest.mappers.MetadataLoaderMapper;
 import ru.akvine.iskra.rest.meta.MetadataLoaderMeta;
 import ru.akvine.iskra.services.MetadataLoaderService;
 import ru.akvine.iskra.services.domain.table.TableModel;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +21,7 @@ public class MetadataLoaderController implements MetadataLoaderMeta {
     @Override
     public Response loadOrList(@RequestParam("planUuid") String planUuid) {
         List<TableModel> tables = metadataLoaderService.loadOrList(
-                planUuid,
-                securityManager.getCurrentUser().getUuid()
-        );
+                planUuid, securityManager.getCurrentUser().getUuid());
         return metadataLoaderMapper.mapToListTablesResponse(tables);
     }
 }

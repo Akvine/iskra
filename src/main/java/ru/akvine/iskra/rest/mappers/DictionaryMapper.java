@@ -1,5 +1,7 @@
 package ru.akvine.iskra.rest.mappers;
 
+import java.util.HashSet;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,9 +18,6 @@ import ru.akvine.iskra.services.domain.dictionary.dto.ListDictionaries;
 import ru.akvine.iskra.utils.FileUtils;
 import ru.akvine.iskra.utils.StringHelper;
 
-import java.util.HashSet;
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class DictionaryMapper {
@@ -27,14 +26,16 @@ public class DictionaryMapper {
     public ListDictionaries mapToListDictionaries(ListDictionariesRequest request) {
         Asserts.isNotNull(request);
         return new ListDictionaries()
-                .setPageInfo(new PageInfo(request.getNextPage().getPage(), request.getNextPage().getCount()))
+                .setPageInfo(new PageInfo(
+                        request.getNextPage().getPage(), request.getNextPage().getCount()))
                 .setNames(request.getNames())
                 .setSystem(request.isSystem());
     }
 
     public DictionaryListResponse mapToDictionaryListResponse(List<DictionaryModel> dictionaries) {
         return new DictionaryListResponse()
-                .setDictionaries(dictionaries.stream().map(this::buildDictionaryDto).toList());
+                .setDictionaries(
+                        dictionaries.stream().map(this::buildDictionaryDto).toList());
     }
 
     private DictionaryDto buildDictionaryDto(DictionaryModel dictionary) {
@@ -58,10 +59,7 @@ public class DictionaryMapper {
                 .setValues(request.getValues());
     }
 
-    public CreateDictionary mapToCreateDictionary(MultipartFile file,
-                                                  String name,
-                                                  String locale,
-                                                  String description) {
+    public CreateDictionary mapToCreateDictionary(MultipartFile file, String name, String locale, String description) {
         return new CreateDictionary()
                 .setName(name)
                 .setValues(new HashSet<>(FileUtils.parseValues(FileUtils.extractInputStream(file))))

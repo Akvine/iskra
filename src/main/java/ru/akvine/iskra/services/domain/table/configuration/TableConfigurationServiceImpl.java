@@ -1,5 +1,7 @@
 package ru.akvine.iskra.services.domain.table.configuration;
 
+import java.util.Collection;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -15,9 +17,6 @@ import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.table.configuration.dto.CreateTableConfiguration;
 import ru.akvine.iskra.services.domain.table.configuration.dto.UpdateTableConfiguration;
 import ru.akvine.iskra.services.integration.visor.VisorService;
-
-import java.util.Collection;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -53,13 +52,9 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
         Boolean generateClearScript = action.getGenerateClearScript();
         if (generateClearScript != null && generateClearScript.equals(Boolean.TRUE)) {
             ConnectionModel connection = new ConnectionModel(table.getPlan().getConnection());
-            clearScript = visorService.generateClearScript(action.getTableName(),
-                    action.getDeleteMode(),
-                    connection
-            );
+            clearScript = visorService.generateClearScript(action.getTableName(), action.getDeleteMode(), connection);
             configurationToSave.setClearScripts(clearScript);
         }
-
 
         TableConfigurationEntity savedConfiguration = tableConfigurationRepository.save(configurationToSave);
         table.setConfiguration(savedConfiguration);
@@ -75,29 +70,25 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
         TableEntity table = tableService.verifyExistsBy(action.getPlanUuid(), action.getTableName());
         TableConfigurationEntity configurationToUpdate = verifyExistsByName(action.getTableName());
 
-        if (StringUtils.isNotBlank(action.getName()) &&
-                !action.getName().equals(configurationToUpdate.getName())) {
+        if (StringUtils.isNotBlank(action.getName()) && !action.getName().equals(configurationToUpdate.getName())) {
             configurationToUpdate.setName(action.getName());
         }
 
-        if (action.getRowsCount() != null &&
-                !action.getRowsCount().equals(configurationToUpdate.getRowsCount())) {
+        if (action.getRowsCount() != null && !action.getRowsCount().equals(configurationToUpdate.getRowsCount())) {
             configurationToUpdate.setRowsCount(action.getRowsCount());
         }
 
-        if (action.getBatchSize() != null &&
-                !action.getBatchSize().equals(configurationToUpdate.getBatchSize())) {
+        if (action.getBatchSize() != null && !action.getBatchSize().equals(configurationToUpdate.getBatchSize())) {
             configurationToUpdate.setBatchSize(action.getBatchSize());
         }
 
-        if (action.getDeleteMode() != null &&
-                !action.getDeleteMode().equals(configurationToUpdate.getDeleteMode())) {
+        if (action.getDeleteMode() != null && !action.getDeleteMode().equals(configurationToUpdate.getDeleteMode())) {
             configurationToUpdate.setDeleteMode(action.getDeleteMode());
         }
 
-        if (action.getDeleteMode() != null &&
-                action.getGenerateClearScript() != null) {
-            String clearScript = visorService.generateClearScript(action.getTableName(),
+        if (action.getDeleteMode() != null && action.getGenerateClearScript() != null) {
+            String clearScript = visorService.generateClearScript(
+                    action.getTableName(),
                     action.getDeleteMode(),
                     new ConnectionModel(table.getPlan().getConnection()));
             configurationToUpdate.setClearScripts(clearScript);
@@ -117,13 +108,9 @@ public class TableConfigurationServiceImpl implements TableConfigurationService 
     @Override
     public TableConfigurationEntity verifyExistsByName(String tableName) {
         Asserts.isNotNull(tableName);
-        return tableConfigurationRepository.findBy(tableName)
-                .orElseThrow(() -> {
-                    String errorMessage = String.format(
-                            "Table configuration for table with name = [%s] not found!",
-                            tableName
-                    );
-                    return new TableConfigurationNotFoundException(errorMessage);
-                });
+        return tableConfigurationRepository.findBy(tableName).orElseThrow(() -> {
+            String errorMessage = String.format("Table configuration for table with name = [%s] not found!", tableName);
+            return new TableConfigurationNotFoundException(errorMessage);
+        });
     }
 }

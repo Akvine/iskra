@@ -11,5 +11,4 @@ import ru.akvine.iskra.rest.dto.column.SelectColumnRequest;
 public interface ColumnControllerMeta {
     @PatchMapping(value = "/select")
     Response select(@RequestBody @Valid SelectColumnRequest request);
-
 }

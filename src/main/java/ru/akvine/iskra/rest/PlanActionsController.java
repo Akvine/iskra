@@ -34,7 +34,8 @@ public class PlanActionsController implements PlanActionsControllerMeta {
 
     @Override
     public Response generateScripts(String planUuid) {
-        GenerateScriptsResult result = planActionService.generateScripts(planUuid, securityManager.getCurrentUser().getUuid());
+        GenerateScriptsResult result = planActionService.generateScripts(
+                planUuid, securityManager.getCurrentUser().getUuid());
         return planActionsMapper.mapToGenerateScriptsResponse(result);
     }
 }

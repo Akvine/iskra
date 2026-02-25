@@ -1,11 +1,10 @@
 package ru.akvine.iskra.services.domain.statistics.dto;
 
+import java.util.Collection;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.enums.SqlScriptType;
-
-import java.util.Collection;
 
 @Data
 @Accessors(chain = true)

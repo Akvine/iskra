@@ -1,11 +1,10 @@
 package ru.akvine.iskra.services.domain.dictionary;
 
+import java.util.Collection;
+import java.util.List;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
 import ru.akvine.iskra.services.domain.dictionary.dto.CreateDictionary;
 import ru.akvine.iskra.services.domain.dictionary.dto.ListDictionaries;
-
-import java.util.Collection;
-import java.util.List;
 
 public interface DictionaryService {
     List<DictionaryModel> list(ListDictionaries action);

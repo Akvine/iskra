@@ -1,13 +1,12 @@
 package ru.akvine.iskra.repositories.specifications;
 
 import jakarta.persistence.criteria.Expression;
+import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import ru.akvine.iskra.repositories.dto.DictionariesFilter;
 import ru.akvine.iskra.repositories.entities.DictionaryEntity;
-
-import java.util.Set;
 
 @Component
 public class DictionarySpecification {

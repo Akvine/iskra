@@ -47,34 +47,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity verifyExistsByUuid(String uuid) {
         Asserts.isNotBlank(uuid, "userUuid is null");
-        return userRepository
-                .findByUuid(uuid)
-                .orElseThrow(() -> {
-                    String message = String.format("User with uuid = [" + uuid + "] is not found!");
-                    return new UserNotFoundException(message);
-                });
+        return userRepository.findByUuid(uuid).orElseThrow(() -> {
+            String message = String.format("User with uuid = [" + uuid + "] is not found!");
+            return new UserNotFoundException(message);
+        });
     }
 
     @Override
     public UserEntity verifyExistsByUsername(String username) {
         Asserts.isNotNull(username);
-        return userRepository
-                .findByUsername(username)
-                .orElseThrow(() -> {
-                    String message = String.format("User with username = [" + username + "] is not found!");
-                    return new UserNotFoundException(message);
-                });
+        return userRepository.findByUsername(username).orElseThrow(() -> {
+            String message = String.format("User with username = [" + username + "] is not found!");
+            return new UserNotFoundException(message);
+        });
     }
 
     @Override
     public UserEntity verifyExistsByEmail(String email) {
         Asserts.isNotNull(email);
-        return userRepository
-                .findByEmail(email)
-                .orElseThrow(() -> {
-                    String message = String.format("User with email = [" + email + "] is not found!");
-                    return new UserNotFoundException(message);
-                });
+        return userRepository.findByEmail(email).orElseThrow(() -> {
+            String message = String.format("User with email = [" + email + "] is not found!");
+            return new UserNotFoundException(message);
+        });
     }
 
     @Override

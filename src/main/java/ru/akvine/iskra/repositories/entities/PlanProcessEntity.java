@@ -2,6 +2,7 @@ package ru.akvine.iskra.repositories.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,8 +10,6 @@ import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
 import ru.akvine.iskra.repositories.entities.base.SoftBaseEntity;
-
-import java.util.Date;
 
 @Entity
 @Getter
@@ -50,5 +49,4 @@ public class PlanProcessEntity extends SoftBaseEntity<Long> implements Identifia
     @NotNull
     @ManyToOne
     private PlanEntity plan;
-
 }

@@ -1,6 +1,7 @@
 package ru.akvine.iskra.rest;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,17 +9,15 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
 import ru.akvine.iskra.components.SecurityManager;
-import ru.akvine.iskra.rest.mappers.DictionaryMapper;
 import ru.akvine.iskra.rest.dto.dictionary.CreateDictionaryRequest;
 import ru.akvine.iskra.rest.dto.dictionary.ListDictionariesRequest;
+import ru.akvine.iskra.rest.mappers.DictionaryMapper;
 import ru.akvine.iskra.rest.meta.DictionaryControllerMeta;
 import ru.akvine.iskra.rest.validators.DictionaryValidator;
-import ru.akvine.iskra.services.domain.dictionary.DictionaryService;
 import ru.akvine.iskra.services.domain.dictionary.DictionaryModel;
+import ru.akvine.iskra.services.domain.dictionary.DictionaryService;
 import ru.akvine.iskra.services.domain.dictionary.dto.CreateDictionary;
 import ru.akvine.iskra.services.domain.dictionary.dto.ListDictionaries;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,9 +51,7 @@ public class DictionaryController implements DictionaryControllerMeta {
     @Override
     public Response importFile(MultipartFile file, String name, String lang, String description) {
         dictionaryValidator.verifyCreateDictionaryRequest(file);
-        CreateDictionary createDictionaryAction = dictionaryMapper.mapToCreateDictionary(
-                file, name, lang, description
-        );
+        CreateDictionary createDictionaryAction = dictionaryMapper.mapToCreateDictionary(file, name, lang, description);
         DictionaryModel createdDictionary = dictionaryService.create(createDictionaryAction);
         return dictionaryMapper.mapToDictionaryListResponse(List.of(createdDictionary));
     }

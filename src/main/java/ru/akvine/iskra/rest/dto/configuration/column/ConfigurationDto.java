@@ -1,19 +1,20 @@
 package ru.akvine.iskra.rest.dto.configuration.column;
 
 import jakarta.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.compozit.commons.istochnik.ConverterDto;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Accessors(chain = true)
 public class ConfigurationDto {
     private String name;
+
     @Nullable
     private List<String> dictionariesNames;
+
     private boolean selected;
     private boolean repeatable;
     private boolean convertToString;

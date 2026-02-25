@@ -1,13 +1,12 @@
 package ru.akvine.iskra.services.domain.table.process;
 
+import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
 import ru.akvine.iskra.services.domain.base.Model;
 import ru.akvine.iskra.services.domain.process.PlanProcessModel;
-
-import java.util.Date;
 
 @Data
 @Accessors(chain = true)

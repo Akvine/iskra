@@ -3,6 +3,8 @@ package ru.akvine.iskra.repositories.entities;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,9 +15,6 @@ import ru.akvine.iskra.repositories.entities.base.BaseEntity;
 import ru.akvine.iskra.repositories.entities.base.Identifiable;
 import ru.akvine.iskra.repositories.entities.config.ColumnConfigurationEntity;
 import ru.akvine.iskra.repositories.entities.embaddable.ReferenceInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

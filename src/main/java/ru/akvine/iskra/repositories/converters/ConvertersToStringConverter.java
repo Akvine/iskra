@@ -3,10 +3,9 @@ package ru.akvine.iskra.repositories.converters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import java.util.List;
 import ru.akvine.compozit.commons.istochnik.ConverterDto;
 import ru.akvine.iskra.utils.ObjectMapperUtils;
-
-import java.util.List;
 
 @Converter
 public class ConvertersToStringConverter implements AttributeConverter<List<ConverterDto>, String> {

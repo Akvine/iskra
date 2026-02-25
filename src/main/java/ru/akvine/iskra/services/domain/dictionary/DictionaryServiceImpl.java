@@ -1,6 +1,11 @@
 package ru.akvine.iskra.services.domain.dictionary;
 
 import jakarta.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,12 +30,6 @@ import ru.akvine.iskra.services.UserService;
 import ru.akvine.iskra.services.domain.dictionary.dto.CreateDictionary;
 import ru.akvine.iskra.services.domain.dictionary.dto.ListDictionaries;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -43,6 +42,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     @Value("${dictionaries.cache.enabled}")
     private boolean cacheEnabled;
+
     @Value("${max.dictionaries.per.user}")
     private int maxCountPerUser;
 
@@ -73,21 +73,21 @@ public class DictionaryServiceImpl implements DictionaryService {
                 systemDictionaries = new ArrayList<>(DICTIONARIES.values());
             } else {
                 systemDictionaries = dictionaryRepository.findBy(true).stream()
-                        .map(DictionaryModel::new).toList();
+                        .map(DictionaryModel::new)
+                        .toList();
             }
         }
 
         List<DictionaryModel> userDictionaries = List.of();
         if (CollectionUtils.isNotEmpty(action.getNames())) {
-            DictionariesFilter filter = new DictionariesFilter()
-                    .setNames(action.getNames())
-                    .setUserUuid(action.getUserUuid());
+            DictionariesFilter filter =
+                    new DictionariesFilter().setNames(action.getNames()).setUserUuid(action.getUserUuid());
 
             Specification<DictionaryEntity> specification = dictionarySpecification.build(filter);
 
-            PageRequest pageRequest = PageRequest.of(action.getPageInfo().getPage(), action.getPageInfo().getCount());
-            userDictionaries = dictionaryRepository
-                    .findAll(specification, pageRequest).stream()
+            PageRequest pageRequest = PageRequest.of(
+                    action.getPageInfo().getPage(), action.getPageInfo().getCount());
+            userDictionaries = dictionaryRepository.findAll(specification, pageRequest).stream()
                     .map(DictionaryModel::new)
                     .toList();
         }
@@ -104,9 +104,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         if (maxCountPerUser == dictionaryRepository.count(owner.getUuid())) {
             String errorMessage = String.format(
-                    "Max count dictionaries = [%s] per user was exceeded! Remove unused dictionaries",
-                    maxCountPerUser
-            );
+                    "Max count dictionaries = [%s] per user was exceeded! Remove unused dictionaries", maxCountPerUser);
             throw new DictionaryMaxCountException(errorMessage);
         }
         DictionaryEntity dictionaryToCreate = new DictionaryEntity()
@@ -134,15 +132,10 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public DictionaryEntity verifySystemExists(String uuid) {
 
-        return dictionaryRepository
-                .findSystem(uuid)
-                .orElseThrow(() -> {
-                    String errorMessage = String.format(
-                            "System dictionary with uuid = [%s] not found!",
-                            uuid
-                    );
-                    return new DictionaryNotFoundException(errorMessage);
-                });
+        return dictionaryRepository.findSystem(uuid).orElseThrow(() -> {
+            String errorMessage = String.format("System dictionary with uuid = [%s] not found!", uuid);
+            return new DictionaryNotFoundException(errorMessage);
+        });
     }
 
     @Override
@@ -155,15 +148,11 @@ public class DictionaryServiceImpl implements DictionaryService {
     public DictionaryEntity verifyUserExists(String uuid, String userUuid) {
         Asserts.isNotBlank(uuid, "uuid is blank!");
         Asserts.isNotBlank(userUuid, "userUuid is blank!");
-        return dictionaryRepository
-                .findByUuid(uuid, userUuid)
-                .orElseThrow(() -> {
-                    String errorMessage = String.format(
-                            "Dictionary with uuid = [%s] not found for user = [%s]!",
-                            uuid, userUuid
-                    );
-                    return new DictionaryNotFoundException(errorMessage);
-                });
+        return dictionaryRepository.findByUuid(uuid, userUuid).orElseThrow(() -> {
+            String errorMessage =
+                    String.format("Dictionary with uuid = [%s] not found for user = [%s]!", uuid, userUuid);
+            return new DictionaryNotFoundException(errorMessage);
+        });
     }
 
     @Override

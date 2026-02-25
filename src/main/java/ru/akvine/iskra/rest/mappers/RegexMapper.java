@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest.mappers;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -9,8 +10,6 @@ import ru.akvine.iskra.rest.dto.regex.ListRegexResponse;
 import ru.akvine.iskra.rest.dto.regex.RegexDto;
 import ru.akvine.iskra.services.domain.regex.RegexModel;
 import ru.akvine.iskra.services.domain.regex.dto.CreateRegex;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -28,7 +27,8 @@ public class RegexMapper {
 
     public ListRegexResponse mapToListRegexResponse(List<RegexModel> regexps) {
         Asserts.isNotNull(regexps);
-        return new ListRegexResponse().setRegexps(regexps.stream().map(this::buildRegexDto).toList());
+        return new ListRegexResponse()
+                .setRegexps(regexps.stream().map(this::buildRegexDto).toList());
     }
 
     private RegexDto buildRegexDto(RegexModel model) {

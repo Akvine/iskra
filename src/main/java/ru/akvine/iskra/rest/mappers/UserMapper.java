@@ -17,8 +17,10 @@ public class UserMapper {
                 .setEmail(request.getEmail())
                 .setUsername(request.getUsername())
                 .setPassword(request.getPassword())
-                .setLanguage(StringUtils.isBlank(request.getLanguage()) ?
-                        Language.RU : Language.from(request.getLanguage()));
+                .setLanguage(
+                        StringUtils.isBlank(request.getLanguage())
+                                ? Language.RU
+                                : Language.from(request.getLanguage()));
     }
 
     public AuthResponse mapToAuthResponse(UserModel user) {

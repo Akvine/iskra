@@ -1,9 +1,8 @@
 package ru.akvine.iskra.services;
 
+import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.services.domain.table.TableModel;
-
-import java.util.List;
 
 public interface MetadataLoaderService {
     @Transactional

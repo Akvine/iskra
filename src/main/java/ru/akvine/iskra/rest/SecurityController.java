@@ -36,9 +36,8 @@ public class SecurityController implements SecurityControllerMeta {
 
     @Override
     public Response auth(AuthRequest request, HttpServletRequest httpServletRequest) {
-        UserModel user = credentialsValidator.validateCredentialsByUsername(
-                request.getUsername(),
-                request.getPassword());
+        UserModel user =
+                credentialsValidator.validateCredentialsByUsername(request.getUsername(), request.getPassword());
         securityManager.authenticate(user, httpServletRequest);
         return userMapper.mapToAuthResponse(user);
     }

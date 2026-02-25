@@ -33,9 +33,7 @@ public class ObjectMapperUtils {
         } catch (JsonProcessingException exception) {
             String message = String.format(
                     "Some error was occurred while marshaling json to class with type = [%s]. Message = [%s]",
-                    valueType.getSimpleName(),
-                    exception.getMessage()
-            );
+                    valueType.getSimpleName(), exception.getMessage());
             throw new MarshalingException(message);
         }
     }

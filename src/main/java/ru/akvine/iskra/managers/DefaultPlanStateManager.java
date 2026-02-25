@@ -1,5 +1,7 @@
 package ru.akvine.iskra.managers;
 
+import java.util.EnumSet;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +17,6 @@ import ru.akvine.iskra.services.domain.process.PlanProcessService;
 import ru.akvine.iskra.services.domain.process.dto.CreatePlanProcess;
 import ru.akvine.iskra.services.domain.table.TableModel;
 
-import java.util.EnumSet;
-import java.util.Map;
-
 @Component
 @RequiredArgsConstructor
 public class DefaultPlanStateManager implements PlanStateManager {
@@ -27,11 +26,12 @@ public class DefaultPlanStateManager implements PlanStateManager {
     private final PlanService planService;
 
     @Override
-    public void manage(PlanModel planModel,
-                       Map<TableName, TableModel> selectedTables,
-                       boolean resume,
-                       String planProcessUuid,
-                       String userUuid) {
+    public void manage(
+            PlanModel planModel,
+            Map<TableName, TableModel> selectedTables,
+            boolean resume,
+            String planProcessUuid,
+            String userUuid) {
         log.debug("Manage plan with name = [{}] and uuid = [{}]", planModel.getName(), planModel.getUser());
 
         PlanProcessModel planProcess = planProcessService.getOrNull(planProcessUuid);
@@ -59,16 +59,19 @@ public class DefaultPlanStateManager implements PlanStateManager {
 
             while (!EnumSet.of(PlanState.COMPLETED, PlanState.STOPPED).contains(plan.getPlanState())
                     || plan.getPlanState() == null) {
-                plan = stateHandlersProvider.getByState(plan.getPlanState(), resume)
+                plan = stateHandlersProvider
+                        .getByState(plan.getPlanState(), resume)
                         .process(planModel, selectedTables, resume, planProcessUuid);
             }
 
             planProcessService.toCompleted(planProcess);
         } catch (Exception exception) {
-            log.info("Error was occurred for plan = [{}], process = [{}]. Message = [{}]",
-                    planModel.getName(), planProcessUuid, exception.getMessage());
+            log.info(
+                    "Error was occurred for plan = [{}], process = [{}]. Message = [{}]",
+                    planModel.getName(),
+                    planProcessUuid,
+                    exception.getMessage());
             planProcessService.toFail(planProcess, exception.getMessage());
         }
-
     }
 }

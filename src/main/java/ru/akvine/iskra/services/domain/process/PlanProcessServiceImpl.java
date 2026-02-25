@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.domain.process;
 
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,6 @@ import ru.akvine.iskra.repositories.entities.PlanProcessEntity;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.process.dto.CreatePlanProcess;
 
-import java.util.Date;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,8 +24,7 @@ public class PlanProcessServiceImpl implements PlanProcessService {
     public PlanProcessModel create(CreatePlanProcess action) {
         Asserts.isNotNull(action);
 
-        PlanEntity plan = planService.verifyExists(action.getPlanUuid(),
-                action.getUserUuid());
+        PlanEntity plan = planService.verifyExists(action.getPlanUuid(), action.getUserUuid());
         PlanProcessEntity entity = new PlanProcessEntity()
                 .setUuid(action.getProcessUuid())
                 .setTotalTablesCount(action.getTotalTablesCount())
@@ -37,22 +35,20 @@ public class PlanProcessServiceImpl implements PlanProcessService {
 
     @Override
     public PlanProcessEntity verifyExistsBy(String processUuid) {
-        return planProcessRepository.findByUuid(processUuid)
-                .orElseThrow(() -> new PlanProcessNotFoundException("Plan process with uuid = [" + processUuid + "] not found!"));
+        return planProcessRepository
+                .findByUuid(processUuid)
+                .orElseThrow(() ->
+                        new PlanProcessNotFoundException("Plan process with uuid = [" + processUuid + "] not found!"));
     }
 
     @Override
     public PlanProcessModel getLastStoppedOrFailed(String planUuid) {
         Asserts.isNotBlank(planUuid, "planUuid is null");
-        return new PlanProcessModel(planProcessRepository
-                .findLastStoppedOrFailed(planUuid)
-                .orElseThrow(() -> {
-                    String message = String.format(
-                            "Failed or stopped process for plan = [%s] not found!", planUuid
-                    );
+        return new PlanProcessModel(
+                planProcessRepository.findLastStoppedOrFailed(planUuid).orElseThrow(() -> {
+                    String message = String.format("Failed or stopped process for plan = [%s] not found!", planUuid);
                     return new PlanProcessNotFoundException(message);
                 }));
-
     }
 
     @Override

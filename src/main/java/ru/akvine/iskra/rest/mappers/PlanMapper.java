@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest.mappers;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -8,8 +9,6 @@ import ru.akvine.iskra.rest.dto.plan.*;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.dto.CreatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.DuplicatePlan;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

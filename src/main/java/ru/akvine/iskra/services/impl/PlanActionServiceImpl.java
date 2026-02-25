@@ -1,5 +1,8 @@
 package ru.akvine.iskra.services.impl;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,10 +21,6 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
 import ru.akvine.iskra.services.state_machine.managers.PlanManager;
-
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,16 +54,10 @@ public class PlanActionServiceImpl implements PlanActionService {
 
         PlanEntity plan = planService.verifyExists(planUuid, userUuid);
 
-        ListTables listTables = new ListTables()
-                .setUserUuid(userUuid)
-                .setPlanUuid(planUuid)
-                .setSelected(true);
-        Map<TableName, TableModel> selectedTables = tableService
-                .list(listTables)
-                .stream().collect(Collectors.toMap(
-                        table -> new TableName(table.getTableName()),
-                        Function.identity()
-                ));
+        ListTables listTables =
+                new ListTables().setUserUuid(userUuid).setPlanUuid(planUuid).setSelected(true);
+        Map<TableName, TableModel> selectedTables = tableService.list(listTables).stream()
+                .collect(Collectors.toMap(table -> new TableName(table.getTableName()), Function.identity()));
 
         if (CollectionUtils.isEmpty(selectedTables)) {
             String message = "For plan = [" + plan.getName() + "] not selected any tables to generate scripts!";
@@ -73,5 +66,4 @@ public class PlanActionServiceImpl implements PlanActionService {
 
         return scriptGeneratorService.generateScripts(new PlanModel(plan), selectedTables);
     }
-
 }

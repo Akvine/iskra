@@ -2,10 +2,9 @@ package ru.akvine.iskra.rest.dto.dictionary;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.Set;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.Set;
 
 @Data
 @Accessors(chain = true)

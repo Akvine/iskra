@@ -1,5 +1,8 @@
 package ru.akvine.iskra.configs.async;
 
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +16,6 @@ import ru.akvine.iskra.services.facades.DataGeneratorFacade;
 import ru.akvine.iskra.services.facades.impl.SyncDataGeneratorFacade;
 import ru.akvine.iskra.services.integration.istochnik.IstochnikService;
 import ru.akvine.iskra.services.integration.visor.VisorService;
-
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableAsync
@@ -39,14 +38,11 @@ public class AsyncConfig {
     }
 
     @Bean
-    public DataGeneratorFacade generatorService(final VisorService visorService,
-                                                final IstochnikService istochnikService,
-                                                final TableProcessService tableProcessService,
-                                                final GeneratorCacheService generatorCacheService) {
-        return new SyncDataGeneratorFacade(
-                visorService,
-                istochnikService,
-                tableProcessService,
-                generatorCacheService);
+    public DataGeneratorFacade generatorService(
+            final VisorService visorService,
+            final IstochnikService istochnikService,
+            final TableProcessService tableProcessService,
+            final GeneratorCacheService generatorCacheService) {
+        return new SyncDataGeneratorFacade(visorService, istochnikService, tableProcessService, generatorCacheService);
     }
 }

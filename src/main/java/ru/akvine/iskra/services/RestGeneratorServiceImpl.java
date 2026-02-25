@@ -1,5 +1,8 @@
 package ru.akvine.iskra.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.TableName;
@@ -10,10 +13,6 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.configuration.TableConfigurationService;
 import ru.akvine.iskra.services.domain.table.configuration.dto.UpdateTableConfiguration;
 import ru.akvine.iskra.services.integration.visor.VisorService;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +46,7 @@ public class RestGeneratorServiceImpl {
         }
 
         Map<String, ScriptResultDto> generatedScripts = visorService.generateScriptsForTables(
-                selectedTables.keySet().stream()
-                        .map(TableName::getName).toList(),
+                selectedTables.keySet().stream().map(TableName::getName).toList(),
                 constraintsToGenerateScripts,
                 plan.getConnection());
 

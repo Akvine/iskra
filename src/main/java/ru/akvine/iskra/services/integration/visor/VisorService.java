@@ -1,5 +1,8 @@
 package ru.akvine.iskra.services.integration.visor;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.*;
@@ -10,15 +13,10 @@ import ru.akvine.compozit.commons.utils.Asserts;
 import ru.akvine.compozit.commons.visor.GenerateScriptsRequest;
 import ru.akvine.compozit.commons.visor.GenerateScriptsResponse;
 import ru.akvine.compozit.commons.visor.ScriptResultDto;
-import ru.akvine.iskra.enums.ConstraintType;
 import ru.akvine.iskra.exceptions.IntegrationException;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.integration.visor.dto.*;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +30,7 @@ public class VisorService {
         try {
             visorClient.insertValues(request);
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Visor. Message = [%s]",
-                    exception.getMessage());
+            String message = String.format("Error while send request to Visor. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }
@@ -42,26 +38,21 @@ public class VisorService {
     public List<TableMetadataDto> loadTables(ConnectionModel connection) {
         ConnectionRequest request = visorDtoMapper.convertToConnectionRequest(connection);
         try {
-           return visorClient.loadTables(request).getTables();
+            return visorClient.loadTables(request).getTables();
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Visor. Message = [%s]",
-                    exception.getMessage());
+            String message = String.format("Error while send request to Visor. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }
 
     public List<ColumnMetadataDto> loadColumns(String tableName, ConnectionModel connection) {
         ConnectionRequest connectionRequest = visorDtoMapper.convertToConnectionRequest(connection);
-        GetColumnsRequest request = new GetColumnsRequest()
-                .setConnection(connectionRequest)
-                .setTableName(tableName);
+        GetColumnsRequest request =
+                new GetColumnsRequest().setConnection(connectionRequest).setTableName(tableName);
         try {
             return visorClient.loadColumns(request).getColumns();
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Visor. Message = [%s]",
-                    exception.getMessage());
+            String message = String.format("Error while send request to Visor. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }
@@ -75,9 +66,7 @@ public class VisorService {
         try {
             return visorDtoMapper.convertToLoadConstraintsResult(visorClient.loadConstraints(request));
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Visor. Message = [%s]",
-                    exception.getMessage());
+            String message = String.format("Error while send request to Visor. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }
@@ -89,26 +78,20 @@ public class VisorService {
             visorClient.execute(request);
             return "OK";
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Visor. Message = [%s]",
-                    exception.getMessage());
+            String message = String.format("Error while send request to Visor. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }
 
     public String generateClearScript(String tableName, DeleteMode deleteMode, ConnectionModel connection) {
-        GenerateClearScriptRequest request = visorDtoMapper.convertToGenerateClearScriptRequest(
-                tableName,
-                deleteMode,
-                connection);
+        GenerateClearScriptRequest request =
+                visorDtoMapper.convertToGenerateClearScriptRequest(tableName, deleteMode, connection);
 
         try {
             GenerateClearScriptResponse response = visorClient.generateClearScript(request);
             return response.getResult();
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Visor. Message = [%s]",
-                    exception.getMessage());
+            String message = String.format("Error while send request to Visor. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }
@@ -120,28 +103,24 @@ public class VisorService {
             GetRelatedTablesResponse response = visorClient.getRelatedTables(request);
             return response.getRelatedTablesNames();
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Visor. Message = [%s]",
-                    exception.getMessage());
+            String message = String.format("Error while send request to Visor. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }
 
-    public Map<String, ScriptResultDto> generateScriptsForTables(Collection<String> tableNames,
-                                                                 List<String> constraints,
-                                                                 ConnectionModel connection) {
+    public Map<String, ScriptResultDto> generateScriptsForTables(
+            Collection<String> tableNames, List<String> constraints, ConnectionModel connection) {
         Asserts.isNotEmpty(tableNames);
         Asserts.isNotEmpty(constraints);
 
-        GenerateScriptsRequest request = visorDtoMapper.convertToGenerateScriptsRequest(tableNames, constraints, connection);
-        
+        GenerateScriptsRequest request =
+                visorDtoMapper.convertToGenerateScriptsRequest(tableNames, constraints, connection);
+
         try {
             GenerateScriptsResponse response = visorClient.generateScripts(request);
             return response.getTableNameWithScripts();
         } catch (Exception exception) {
-            String message = String.format(
-                    "Error while send request to Visor. Message = [%s]",
-                    exception.getMessage());
+            String message = String.format("Error while send request to Visor. Message = [%s]", exception.getMessage());
             throw new IntegrationException(message);
         }
     }

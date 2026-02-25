@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest.mappers;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -10,9 +11,6 @@ import ru.akvine.iskra.services.domain.column.ColumnModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
 import ru.akvine.iskra.services.domain.table.dto.ToogleSelectedTables;
-
-import java.util.List;
-
 
 @Component
 @RequiredArgsConstructor
@@ -45,7 +43,8 @@ public class TableMapper {
         return new TableDto()
                 .setTableName(table.getTableName())
                 .setSelected(table.isSelected())
-                .setColumns(table.getColumns().stream().map(this::buildColumnDto).toList());
+                .setColumns(
+                        table.getColumns().stream().map(this::buildColumnDto).toList());
     }
 
     private ColumnDto buildColumnDto(ColumnModel column) {
@@ -60,7 +59,9 @@ public class TableMapper {
                 .setOrderIndex(column.getOrderIndex())
                 .setSchemaName(column.getSchemaName())
                 .setRawDataType(column.getRawDataType())
-                .setConstraints(column.getConstraints().stream().map(ConstraintType::getName).toList());
+                .setConstraints(column.getConstraints().stream()
+                        .map(ConstraintType::getName)
+                        .toList());
         if (column.getConstraints().contains(ConstraintType.FOREIGN_KEY)) {
             ReferenceInfoDto referenceInfoDto = new ReferenceInfoDto()
                     .setTargetTableNameForForeignKey(column.getTargetTableNameForForeignKey())

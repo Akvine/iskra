@@ -12,5 +12,4 @@ public class UpdateStatisticAction {
 
     @Nullable
     private ProcessState state;
-
 }

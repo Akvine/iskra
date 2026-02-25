@@ -1,21 +1,20 @@
 package ru.akvine.iskra.rest;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.components.SecurityManager;
+import ru.akvine.iskra.rest.dto.connection.CreateConnectionRequest;
 import ru.akvine.iskra.rest.dto.connection.DuplicateConnectionRequest;
 import ru.akvine.iskra.rest.mappers.ConnectionMapper;
-import ru.akvine.iskra.rest.dto.connection.CreateConnectionRequest;
 import ru.akvine.iskra.rest.meta.ConnectionControllerMeta;
-import ru.akvine.iskra.services.domain.connection.ConnectionService;
 import ru.akvine.iskra.services.domain.connection.ConnectionModel;
+import ru.akvine.iskra.services.domain.connection.ConnectionService;
 import ru.akvine.iskra.services.domain.connection.dto.CreateConnection;
 import ru.akvine.iskra.services.domain.connection.dto.DuplicateConnection;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +25,8 @@ public class ConnectionController implements ConnectionControllerMeta {
 
     @Override
     public Response list() {
-        List<ConnectionModel> connections = connectionService.list(securityManager.getCurrentUser().getUuid());
+        List<ConnectionModel> connections =
+                connectionService.list(securityManager.getCurrentUser().getUuid());
         return connectionMapper.mapToConnectionResponse(connections);
     }
 

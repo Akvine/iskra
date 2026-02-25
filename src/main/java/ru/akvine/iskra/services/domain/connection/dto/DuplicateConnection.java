@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 public class DuplicateConnection {
     private String userUuid;
     private String connectionName;
+
     @Nullable
     private String newConnectionName;
 }

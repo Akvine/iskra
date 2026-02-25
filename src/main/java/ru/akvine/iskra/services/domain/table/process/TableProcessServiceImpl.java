@@ -1,5 +1,7 @@
 package ru.akvine.iskra.services.domain.table.process;
 
+import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,6 @@ import ru.akvine.iskra.services.domain.table.process.dto.CreateTableProcess;
 import ru.akvine.iskra.services.domain.table.process.dto.ListTableProcess;
 import ru.akvine.iskra.services.domain.table.process.dto.UpdateTableProcess;
 import ru.akvine.iskra.utils.StringHelper;
-
-import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,8 +49,7 @@ public class TableProcessServiceImpl implements TableProcessService {
         String errorMessage = updateTableProcess.getErrorMessage();
         Date completedDate = updateTableProcess.getCompletedDate();
 
-        if (processState != null &&
-                !tableProcessToUpdate.getProcessState().equals(processState)) {
+        if (processState != null && !tableProcessToUpdate.getProcessState().equals(processState)) {
             tableProcessToUpdate.setProcessState(processState);
         }
 
@@ -81,28 +79,27 @@ public class TableProcessServiceImpl implements TableProcessService {
     public TableProcessEntity verifyExists(String byProcessUuid, String byTableName) {
         Asserts.isNotNull(byProcessUuid);
         Asserts.isNotNull(byTableName);
-        return tableProcessRepository
-                .find(byProcessUuid, byTableName)
-                .orElseThrow(() -> {
-                    String errorMessage = String.format(
-                            "Table process not found by processUuid = [%s] and table name = [%s]",
-                            byProcessUuid, byTableName);
-                    return new TableProcessNotFoundException(errorMessage);
-                });
+        return tableProcessRepository.find(byProcessUuid, byTableName).orElseThrow(() -> {
+            String errorMessage = String.format(
+                    "Table process not found by processUuid = [%s] and table name = [%s]", byProcessUuid, byTableName);
+            return new TableProcessNotFoundException(errorMessage);
+        });
     }
 
     @Override
     public List<TableProcessModel> list(ListTableProcess listTableProcess) {
         Asserts.isNotNull(listTableProcess);
-        List<TableProcessModel> tableProcessModels = tableProcessRepository
-                .findAll(listTableProcess.getPlanUuid()).stream()
-                .map(TableProcessModel::new)
-                .toList();
+        List<TableProcessModel> tableProcessModels =
+                tableProcessRepository.findAll(listTableProcess.getPlanUuid()).stream()
+                        .map(TableProcessModel::new)
+                        .toList();
 
-        // TODO : сделать через Criteria API или Query DSL, т.к. выгружать в память - не самая лучшая идея, особенно если много таблиц
+        // TODO : сделать через Criteria API или Query DSL, т.к. выгружать в память - не самая лучшая
+        // идея, особенно если много таблиц
         if (StringUtils.isNotBlank(listTableProcess.getProcessUuid())) {
             tableProcessModels = tableProcessModels.stream()
-                    .filter(tableProcess -> tableProcess.getPlanProcess().getUuid().equals(listTableProcess.getProcessUuid()))
+                    .filter(tableProcess ->
+                            tableProcess.getPlanProcess().getUuid().equals(listTableProcess.getProcessUuid()))
                     .toList();
         }
         return tableProcessModels;

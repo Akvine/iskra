@@ -1,10 +1,9 @@
 package ru.akvine.iskra.services.domain.regex;
 
+import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.RegexEntity;
 import ru.akvine.iskra.services.domain.regex.dto.CreateRegex;
-
-import java.util.List;
 
 public interface RegexService {
     @Transactional

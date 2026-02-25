@@ -29,14 +29,9 @@ public class TableConfigurationValidator {
 
     private void verify(int rowsCount, int batchSize) {
         if (rowsCount < batchSize) {
-            String errorMessage = String.format(
-                    "Rows count = [%s] can't be less than batch size = [%s]",
-                    rowsCount, batchSize
-            );
-            throw new ValidationException(
-                    ApiErrorCodes.Configuration.TABLE_CONFIGURATION_ERROR,
-                    errorMessage
-            );
+            String errorMessage =
+                    String.format("Rows count = [%s] can't be less than batch size = [%s]", rowsCount, batchSize);
+            throw new ValidationException(ApiErrorCodes.Configuration.TABLE_CONFIGURATION_ERROR, errorMessage);
         }
     }
 
@@ -44,12 +39,8 @@ public class TableConfigurationValidator {
         if (batchSize > maxBatchSize) {
             String errorMessage = String.format(
                     "Request batch size = [%s] can't be more than max limit batch size = [%s]",
-                    batchSize, maxBatchSize
-            );
-            throw new ValidationException(
-                    ApiErrorCodes.Configuration.TABLE_CONFIGURATION_ERROR,
-                    errorMessage
-            );
+                    batchSize, maxBatchSize);
+            throw new ValidationException(ApiErrorCodes.Configuration.TABLE_CONFIGURATION_ERROR, errorMessage);
         }
     }
 }

@@ -1,11 +1,10 @@
 package ru.akvine.iskra.rest.mappers;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.akvine.iskra.rest.dto.table.ListTablesResponse;
 import ru.akvine.iskra.services.domain.table.TableModel;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

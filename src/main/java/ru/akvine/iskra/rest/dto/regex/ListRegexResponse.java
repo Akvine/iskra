@@ -1,11 +1,10 @@
 package ru.akvine.iskra.rest.dto.regex;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.akvine.compozit.commons.dto.SuccessfulResponse;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Accessors(chain = true)

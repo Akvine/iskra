@@ -1,12 +1,11 @@
 package ru.akvine.iskra.services.domain.table.process;
 
+import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
 import ru.akvine.iskra.services.domain.table.process.dto.CreateTableProcess;
 import ru.akvine.iskra.services.domain.table.process.dto.ListTableProcess;
 import ru.akvine.iskra.services.domain.table.process.dto.UpdateTableProcess;
-
-import java.util.List;
 
 public interface TableProcessService {
     TableProcessModel create(CreateTableProcess createTableProcess);

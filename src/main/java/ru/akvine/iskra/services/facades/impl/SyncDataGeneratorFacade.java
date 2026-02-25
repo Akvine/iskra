@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.facades.impl;
 
+import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +14,6 @@ import ru.akvine.iskra.services.domain.table.process.dto.UpdateTableProcess;
 import ru.akvine.iskra.services.facades.DataGeneratorFacade;
 import ru.akvine.iskra.services.integration.istochnik.IstochnikService;
 import ru.akvine.iskra.services.integration.visor.VisorService;
-
-import java.util.Date;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -49,7 +48,8 @@ public class SyncDataGeneratorFacade implements DataGeneratorFacade {
                     return;
                 }
 
-                log.info("Sending batch count = [{}] for [{}]. Batch size = [{}]",
+                log.info(
+                        "Sending batch count = [{}] for [{}]. Batch size = [{}]",
                         iterationCounter,
                         tableModel.getTableName(),
                         configuration.getBatchSize());
@@ -66,7 +66,8 @@ public class SyncDataGeneratorFacade implements DataGeneratorFacade {
                 processedRowsCountBeforeUpdate += configuration.getBatchSize();
 
                 if (iterationCounter % updateIteration == 0) {
-                    log.info("Update table process with uuid = [{}] and table name = [{}]. Processed rows count = [{}]",
+                    log.info(
+                            "Update table process with uuid = [{}] and table name = [{}]. Processed rows count = [{}]",
                             processUuid,
                             tableModel.getTableName(),
                             processedRowsCount);
@@ -81,7 +82,10 @@ public class SyncDataGeneratorFacade implements DataGeneratorFacade {
                 iterationCounter++;
             }
 
-            log.info("Table with uuid = [{}] and name = [{}] was successfully filled in!", processUuid, tableModel.getTableName());
+            log.info(
+                    "Table with uuid = [{}] and name = [{}] was successfully filled in!",
+                    processUuid,
+                    tableModel.getTableName());
             updateTableProcessAction.setCompletedDate(new Date());
             updateTableProcessAction.setState(ProcessState.COMPLETED);
             updateTableProcessAction.setAddSuccessRowsCount(null);

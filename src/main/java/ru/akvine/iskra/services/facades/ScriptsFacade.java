@@ -1,11 +1,10 @@
 package ru.akvine.iskra.services.facades;
 
+import java.util.Map;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.dto.ProcessPayload;
-
-import java.util.Map;
 
 public interface ScriptsFacade {
     void disableSqlObjects(ProcessPayload payload);

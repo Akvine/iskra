@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.state_machine.handlers.states.sql;
 
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,25 +13,20 @@ import ru.akvine.iskra.services.dto.ProcessPayload;
 import ru.akvine.iskra.services.facades.ScriptsFacade;
 import ru.akvine.iskra.services.state_machine.handlers.AbstractStateHandler;
 
-import java.util.Map;
-
 @Component
 @Slf4j
 public class ClearTablesStateHandler extends AbstractStateHandler {
     private final ScriptsFacade scriptsFacade;
 
     @Autowired
-    protected ClearTablesStateHandler(PlanService planService,
-                                      ScriptsFacade scriptsFacade) {
+    protected ClearTablesStateHandler(PlanService planService, ScriptsFacade scriptsFacade) {
         super(planService);
         this.scriptsFacade = scriptsFacade;
     }
 
     @Override
-    public void doHandle(PlanModel plan,
-                         Map<TableName, TableModel> selectedTables,
-                         boolean resume,
-                         String processUuid) {
+    public void doHandle(
+            PlanModel plan, Map<TableName, TableModel> selectedTables, boolean resume, String processUuid) {
         ProcessPayload payload = new ProcessPayload()
                 .setPlan(plan)
                 .setSelectedTables(selectedTables)
@@ -38,7 +34,6 @@ public class ClearTablesStateHandler extends AbstractStateHandler {
                 .setProcessUuid(processUuid);
         scriptsFacade.clearTables(payload);
     }
-
 
     @Override
     public PlanState getCurrentState() {

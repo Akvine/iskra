@@ -1,6 +1,8 @@
 package ru.akvine.iskra.services.domain.column;
 
 import jakarta.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.commons.collections4.CollectionUtils;
@@ -9,9 +11,6 @@ import ru.akvine.iskra.enums.RelationShipType;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.services.domain.base.Model;
 import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -24,17 +23,23 @@ public class ColumnModel extends Model<Long> {
     private boolean selected;
     private boolean generatedAlways;
     private boolean primaryKey;
+
     @Nullable
     private String database;
+
     @Nullable
     private String schemaName;
+
     private String tableName;
     private List<ColumnConfigurationModel> configurations;
     private List<ConstraintType> constraints;
+
     @Nullable
     private String targetColumnNameForForeignKey;
+
     @Nullable
     private String targetTableNameForForeignKey;
+
     @Nullable
     private RelationShipType relationShipType;
 

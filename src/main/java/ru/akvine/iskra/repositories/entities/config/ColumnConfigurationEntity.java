@@ -3,6 +3,8 @@ package ru.akvine.iskra.repositories.entities.config;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,9 +13,6 @@ import ru.akvine.compozit.commons.istochnik.ConverterDto;
 import ru.akvine.iskra.repositories.converters.ConvertersToStringConverter;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.repositories.entities.base.BaseEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,7 +23,10 @@ import java.util.List;
 public class ColumnConfigurationEntity extends BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "columnConfigurationEntitySeq")
-    @SequenceGenerator(name = "columnConfigurationEntitySeq", sequenceName = "SEQ_COLUMN_CONFIGURATION_ENTITY", allocationSize = 1000)
+    @SequenceGenerator(
+            name = "columnConfigurationEntitySeq",
+            sequenceName = "SEQ_COLUMN_CONFIGURATION_ENTITY",
+            allocationSize = 1000)
     @NotNull
     @Column(name = "ID", nullable = false, updatable = false)
     private Long id;

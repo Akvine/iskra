@@ -26,55 +26,46 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({Exception.class})
     public ResponseEntity<?> handleException(Exception exception) {
         log.error("Error was occurred {}", exception);
-        ErrorResponse errorResponse = new ErrorResponse(
-                ApiErrorCodes.GENERAL_ERROR,
-                exception.getMessage()
-        );
+        ErrorResponse errorResponse = new ErrorResponse(ApiErrorCodes.GENERAL_ERROR, exception.getMessage());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({PlanNotFoundException.class})
     public ResponseEntity<?> handlePlanNotFoundException(PlanNotFoundException exception) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                ApiErrorCodes.Plan.PLAN_NOT_FOUND_ERROR,
-                exception.getMessage()
-        );
+        ErrorResponse errorResponse =
+                new ErrorResponse(ApiErrorCodes.Plan.PLAN_NOT_FOUND_ERROR, exception.getMessage());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({TableProcessNotFoundException.class})
     public ResponseEntity<?> handleTableProcessNotFoundException(TableProcessNotFoundException exception) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                ApiErrorCodes.Process.PROCESS_NOT_FOUND_ERROR,
-                exception.getMessage()
-        );
+        ErrorResponse errorResponse =
+                new ErrorResponse(ApiErrorCodes.Process.PROCESS_NOT_FOUND_ERROR, exception.getMessage());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ConnectionNotFoundException.class})
     public ResponseEntity<?> handleConnectionNotFoundException(ConnectionNotFoundException exception) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                ApiErrorCodes.Connection.CONNECTION_NOT_FOUND_ERROR,
-                exception.getMessage()
-        );
+        ErrorResponse errorResponse =
+                new ErrorResponse(ApiErrorCodes.Connection.CONNECTION_NOT_FOUND_ERROR, exception.getMessage());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({PlanProcessNotFoundException.class})
     public ResponseEntity<?> handlePlanProcessNotFoundException(PlanProcessNotFoundException exception) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                ApiErrorCodes.Process.PLAN_PROCESS_NOT_FOUND_ERROR,
-                exception.getMessage()
-        );
+        ErrorResponse errorResponse =
+                new ErrorResponse(ApiErrorCodes.Process.PLAN_PROCESS_NOT_FOUND_ERROR, exception.getMessage());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(
+            MissingServletRequestParameterException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
         logger.info("Request parameter is not present", ex);
-        ErrorResponse errorResponse = new ErrorResponse(
-                ApiErrorCodes.FIELD_INVALID_FORMAT,
-                ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(ApiErrorCodes.FIELD_INVALID_FORMAT, ex.getMessage());
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }

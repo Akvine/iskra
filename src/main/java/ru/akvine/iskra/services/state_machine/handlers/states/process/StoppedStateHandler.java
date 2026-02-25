@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.state_machine.handlers.states.process;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.TableName;
@@ -10,21 +11,19 @@ import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.state_machine.handlers.AbstractStateHandler;
 
-import java.util.Map;
-
 @Service
 public class StoppedStateHandler extends AbstractStateHandler {
     private final GeneratorCacheService generatorCacheService;
 
     @Autowired
-    protected StoppedStateHandler(PlanService planService,
-                                  GeneratorCacheService generatorCacheService) {
+    protected StoppedStateHandler(PlanService planService, GeneratorCacheService generatorCacheService) {
         super(planService);
         this.generatorCacheService = generatorCacheService;
     }
 
     @Override
-    public void doHandle(PlanModel plan, Map<TableName, TableModel> selectedTables, boolean resume, String processUuid) {
+    public void doHandle(
+            PlanModel plan, Map<TableName, TableModel> selectedTables, boolean resume, String processUuid) {
         generatorCacheService.remove(plan.getUuid());
     }
 

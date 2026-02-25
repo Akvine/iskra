@@ -2,12 +2,11 @@ package ru.akvine.iskra.repositories.converters;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import ru.akvine.iskra.enums.ConstraintType;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Converter
 public class ConstraintListToStringConverter implements AttributeConverter<List<ConstraintType>, String> {

@@ -1,5 +1,6 @@
 package ru.akvine.iskra.rest.mappers.configuration;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,6 @@ import ru.akvine.iskra.services.domain.column.configuration.ColumnConfigurationM
 import ru.akvine.iskra.services.domain.column.configuration.dictionary.ColumnConfigurationDictionaryModel;
 import ru.akvine.iskra.services.domain.column.configuration.dto.CreateColumnConfiguration;
 import ru.akvine.iskra.services.domain.column.configuration.dto.SelectColumnConfiguration;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -50,7 +49,8 @@ public class ColumnConfigurationMapper {
         Asserts.isNotNull(configs);
         return new ConfigurationListResponse()
                 .setCount(configs.size())
-                .setConfigurations(configs.stream().map(this::buildConfigurationDto).toList());
+                .setConfigurations(
+                        configs.stream().map(this::buildConfigurationDto).toList());
     }
 
     public SelectColumnConfiguration mapToSelectColumnConfiguration(SelectConfigurationRequest request) {
@@ -79,7 +79,8 @@ public class ColumnConfigurationMapper {
 
         if (CollectionUtils.isNotEmpty(model.getDictionaries())) {
             config.setDictionariesNames(model.getDictionaries().stream()
-                    .map(ColumnConfigurationDictionaryModel::getDictionaryName).toList());
+                    .map(ColumnConfigurationDictionaryModel::getDictionaryName)
+                    .toList());
         }
 
         if (CollectionUtils.isNotEmpty(model.getConverters())) {

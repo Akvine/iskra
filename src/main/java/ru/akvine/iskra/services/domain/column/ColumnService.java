@@ -1,12 +1,11 @@
 package ru.akvine.iskra.services.domain.column;
 
+import java.util.Collection;
+import java.util.List;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.repositories.entities.ColumnEntity;
 import ru.akvine.iskra.services.domain.column.dto.SelectColumn;
-
-import java.util.Collection;
-import java.util.List;
 
 public interface ColumnService {
     @Transactional(readOnly = true)
