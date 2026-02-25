@@ -19,4 +19,6 @@ public interface PlanProcessService {
 
     @Nullable
     PlanProcessModel getOrNull(String processUuid);
+
+    PlanProcessModel get(String processUuid);
 }

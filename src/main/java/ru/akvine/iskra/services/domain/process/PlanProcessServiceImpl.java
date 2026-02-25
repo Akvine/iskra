@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.utils.Asserts;
-import ru.akvine.compozit.commons.utils.UUIDGenerator;
-import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.exceptions.process.PlanProcessNotFoundException;
 import ru.akvine.iskra.repositories.PlanProcessRepository;
@@ -91,5 +89,10 @@ public class PlanProcessServiceImpl implements PlanProcessService {
             log.debug("Plan process with uuid = [{}] not found! Return null", processUuid);
             return null;
         }
+    }
+
+    @Override
+    public PlanProcessModel get(String processUuid) {
+        return new PlanProcessModel(verifyExistsBy(processUuid));
     }
 }

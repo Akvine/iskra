@@ -8,6 +8,8 @@ public final class ApiErrorCodes {
     public static final String GENERAL_ERROR = "general.error";
     public static final String NO_SESSION = "no.session.error";
 
+    public static final String FIELD_INVALID_FORMAT = "field.invalid.format.error";
+
     public interface Validation {
         String ELEMENTS_MAX_COUNT_ERROR = "elements.max.count.error";
         String FILE_EXTENSION_NOT_SUPPORTED = "file.extension.not.supported.error";
@@ -22,6 +24,7 @@ public final class ApiErrorCodes {
 
     public interface Process {
         String PROCESS_NOT_FOUND_ERROR = "tableProcess.notFound.error";
+        String PLAN_PROCESS_NOT_FOUND_ERROR = "planProcess.notFound.error";
     }
 
     public interface Connection {
@@ -30,6 +33,5 @@ public final class ApiErrorCodes {
 
     public interface Configuration {
         String TABLE_CONFIGURATION_ERROR = "table.configuration.error";
-        String GENERATE_CLEAR_SCRIPT_ERROR = "generate.clear.script.error";
     }
 }
