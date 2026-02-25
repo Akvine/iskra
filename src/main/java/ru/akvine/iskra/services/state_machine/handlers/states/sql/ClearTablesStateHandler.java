@@ -37,43 +37,6 @@ public class ClearTablesStateHandler extends AbstractStateHandler {
                 .setResume(resume)
                 .setProcessUuid(processUuid);
         scriptsFacade.clearTables(payload);
-
-//        selectedTables.forEach((tableName, table) -> {
-//            TableProcessModel tableProcess;
-//            if (resume) {
-//                tableProcess = tableProcessService.get(processUuid, table.getTableName());
-//                UpdateTableProcess updateAction = new UpdateTableProcess()
-//                        .setProcessUuid(processUuid)
-//                        .setTableName(table.getTableName())
-//                        .setState(ProcessState.IN_PROGRESS);
-//                tableProcessService.update(updateAction);
-//            } else {
-//                CreateTableProcess createTableProcessAction = new CreateTableProcess()
-//                        .setPlanUuid(table.getPlan().getUuid())
-//                        .setUserUuid(plan.getUser().getUuid())
-//                        .setProcessUuid(processUuid)
-//                        .setTableName(table.getTableName())
-//                        .setTotalRowsCount(table.getConfiguration().getRowsCount());
-//                tableProcess = tableProcessService.create(createTableProcessAction);
-//            }
-//
-//            TableConfigurationModel configuration = table.getConfiguration();
-//            if (StringUtils.isNotBlank(configuration.getClearScript()) && !resume) {
-//                log.info("Execute clear script for table = [{}], plan uuid = [{}] and name = [{}]",
-//                        table.getTableName(), plan.getUuid(), plan.getName());
-//                try {
-//                    scriptsFacade.executeScript(plan.getConnection(), configuration.getClearScript());
-//                } catch (RuntimeException exception) {
-//                    UpdateTableProcess updateTableProcessAction = new UpdateTableProcess()
-//                            .setPid(tableProcess.getPid())
-//                            .setAddSuccessRowsCount(null)
-//                            .setErrorMessage(exception.getMessage())
-//                            .setState(ProcessState.FAILED);
-//                    tableProcessService.update(updateTableProcessAction);
-//                    throw exception;
-//                }
-//            }
-//        });
     }
 
 

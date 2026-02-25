@@ -43,13 +43,8 @@ public class TableProcessServiceImpl implements TableProcessService {
     public TableProcessModel update(UpdateTableProcess updateTableProcess) {
         Asserts.isNotNull(updateTableProcess);
 
-        TableProcessEntity tableProcessToUpdate;
-        if (StringUtils.isNotBlank(updateTableProcess.getPid())) {
-            tableProcessToUpdate = verifyExists(updateTableProcess.getProcessUuid(),
-                    updateTableProcess.getTableName());
-        } else {
-            tableProcessToUpdate = verifyExists(updateTableProcess.getProcessUuid(), updateTableProcess.getTableName());
-        }
+        TableProcessEntity tableProcessToUpdate =
+                verifyExists(updateTableProcess.getProcessUuid(), updateTableProcess.getTableName());
 
         ProcessState processState = updateTableProcess.getState();
         String errorMessage = updateTableProcess.getErrorMessage();

@@ -10,7 +10,6 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class UpdateTableProcess {
-    private String pid;
     private String processUuid;
     private String tableName;
 
