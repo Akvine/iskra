@@ -32,7 +32,7 @@ public class SyncDataGeneratorFacade implements DataGeneratorFacade {
         TableProcessModel tableProcess = tableProcessService.get(processUuid, tableModel.getTableName());
 
         UpdateTableProcess updateTableProcessAction = new UpdateTableProcess()
-                .setProcessUuid(tableProcess.getProcessUuid());
+                .setProcessUuid(tableProcess.getPlanProcess().getUuid());
         TableConfigurationModel configuration = tableModel.getConfiguration();
 
         int processedRowsCount = (int) tableProcess.getSuccessRowsCount();

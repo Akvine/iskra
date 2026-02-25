@@ -5,7 +5,6 @@ import lombok.experimental.Accessors;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.repositories.entities.TableProcessEntity;
 import ru.akvine.iskra.services.domain.base.Model;
-import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.process.PlanProcessModel;
 
 import java.util.Date;
@@ -13,7 +12,6 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class TableProcessModel extends Model<Long> {
-    private String processUuid;
     private String tableName;
     private long successRowsCount;
     private long totalRowsCount;

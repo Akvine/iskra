@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 public class DictionaryLoader {
     private final DictionaryRepository dictionaryRepository;
 
+    // TODO: требуется улучшить механизм работы со словарями.
+    // Через поле version, если мы хотим обновить сущность словаря существующую - нужно проверять ее и обновлять в БД и кеше
+    // если версия увеличилась. Не надо идти через обновление в xml-скриптах и переводить все туда
     @PostConstruct
     public void init() throws IOException {
         String dictionariesFolderName = "dictionaries";

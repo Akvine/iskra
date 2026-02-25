@@ -20,5 +20,6 @@ public interface TableProcessService {
     @Transactional
     TableProcessEntity verifyExists(String byProcessUuid, String byTableName);
 
+    @Transactional
     List<TableProcessModel> list(ListTableProcess listTableProcess);
 }

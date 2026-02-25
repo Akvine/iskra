@@ -102,7 +102,7 @@ public class TableProcessServiceImpl implements TableProcessService {
         // TODO : сделать через Criteria API или Query DSL, т.к. выгружать в память - не самая лучшая идея, особенно если много таблиц
         if (StringUtils.isNotBlank(listTableProcess.getProcessUuid())) {
             tableProcessModels = tableProcessModels.stream()
-                    .filter(tableProcess -> tableProcess.getProcessUuid().equals(listTableProcess.getProcessUuid()))
+                    .filter(tableProcess -> tableProcess.getPlanProcess().getUuid().equals(listTableProcess.getProcessUuid()))
                     .toList();
         }
         return tableProcessModels;

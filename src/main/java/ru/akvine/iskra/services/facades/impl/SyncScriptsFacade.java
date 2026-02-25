@@ -8,7 +8,6 @@ import ru.akvine.compozit.commons.visor.ConstraintType;
 import ru.akvine.compozit.commons.visor.ScriptResultDto;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.enums.SqlScriptType;
-import ru.akvine.iskra.services.domain.connection.ConnectionModel;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.statistics.SqlStatisticsModel;
 import ru.akvine.iskra.services.domain.statistics.SqlStatisticsService;
@@ -35,11 +34,6 @@ public class SyncScriptsFacade implements ScriptsFacade {
     private final VisorService visorService;
     private final SqlStatisticsService sqlStatisticsService;
     private final TableService tableService;
-
-    @Override
-    public void executeScript(ConnectionModel connection, String script) {
-        visorService.executeScripts(Set.of(script), connection);
-    }
 
     @Override
     public void disableSqlObjects(ProcessPayload payload) {
