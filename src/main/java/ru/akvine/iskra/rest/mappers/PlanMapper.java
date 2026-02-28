@@ -41,8 +41,11 @@ public class PlanMapper {
     private PlanDto buildPlanDto(PlanModel plan) {
         return new PlanDto()
                 .setLastProcessUuid(plan.getLastProcessUuid())
+                .setState(plan.getPlanState().toString())
                 .setUuid(plan.getUuid())
                 .setName(plan.getName())
+                .setCreatedDate(plan.getCreatedDate())
+                .setUpdatedDate(plan.getUpdatedDate())
                 .setConstraintsSettingsInfo(buildConstraintsSettingsInfo(plan));
     }
 

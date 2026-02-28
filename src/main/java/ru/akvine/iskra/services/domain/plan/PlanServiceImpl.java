@@ -1,5 +1,6 @@
 package ru.akvine.iskra.services.domain.plan;
 
+import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -128,6 +129,7 @@ public class PlanServiceImpl implements PlanService {
             planToUpdate.setState(action.getPlanState());
         }
 
+        planToUpdate.setUpdatedDate(new Date());
         return new PlanModel(planRepository.save(planToUpdate));
     }
 }
