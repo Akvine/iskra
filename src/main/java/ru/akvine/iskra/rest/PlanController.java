@@ -9,12 +9,14 @@ import ru.akvine.compozit.commons.dto.Response;
 import ru.akvine.iskra.components.SecurityManager;
 import ru.akvine.iskra.rest.dto.plan.CreatePlanRequest;
 import ru.akvine.iskra.rest.dto.plan.DuplicatePlanRequest;
+import ru.akvine.iskra.rest.dto.plan.PlanUpdateRequest;
 import ru.akvine.iskra.rest.mappers.PlanMapper;
 import ru.akvine.iskra.rest.meta.plan.PlanControllerMeta;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.PlanService;
 import ru.akvine.iskra.services.domain.plan.dto.CreatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.DuplicatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +27,9 @@ public class PlanController implements PlanControllerMeta {
 
     @Override
     public Response list() {
-        List<PlanModel> processes =
+        List<PlanModel> plans =
                 planService.list(securityManager.getCurrentUser().getUuid());
-        return planMapper.mapToProcessListResponse(processes);
+        return planMapper.mapToProcessListResponse(plans);
     }
 
     @Override
@@ -42,5 +44,17 @@ public class PlanController implements PlanControllerMeta {
         DuplicatePlan action = planMapper.mapToDuplicatePlan(request);
         PlanModel plan = planService.duplicate(action);
         return planMapper.mapToProcessListResponse(List.of(plan));
+    }
+
+    @Override
+    public Response update(PlanUpdateRequest request) {
+        UpdatePlan action = planMapper.mapToUpdatePlan(request);
+        PlanModel updatedPlan = planService.update(action);
+        return planMapper.mapToProcessListResponse(List.of(updatedPlan));
+    }
+
+    @Override
+    public Response delete(String uuid) {
+        throw new RuntimeException("Unsupported endpoint");
     }
 }

@@ -129,6 +129,45 @@ public class PlanServiceImpl implements PlanService {
             planToUpdate.setState(action.getPlanState());
         }
 
+        if (StringUtils.isNoneBlank(action.getName()) && !planToUpdate.getName().equals(action.getName())) {
+            planToUpdate.setName(action.getName());
+        }
+
+        if (action.getGenerateScriptsForCheck() != null
+                && !action.getGenerateScriptsForCheck().equals(planToUpdate.isGenerateScriptsForCheck())) {
+            planToUpdate.setGenerateScriptsForCheck(action.getGenerateScriptsForCheck());
+        }
+
+        if (action.getGenerateScriptsForDefault() != null
+                && !action.getGenerateScriptsForDefault().equals(planToUpdate.isGenerateScriptsForDefault())) {
+            planToUpdate.setGenerateScriptsForDefault(action.getGenerateScriptsForDefault());
+        }
+
+        if (action.getGenerateScriptsForIndex() != null
+                && !action.getGenerateScriptsForIndex().equals(planToUpdate.isGenerateScriptsForIndex())) {
+            planToUpdate.setGenerateScriptsForIndex(action.getGenerateScriptsForIndex());
+        }
+
+        if (action.getGenerateScriptsForNotNull() != null
+                && !action.getGenerateScriptsForNotNull().equals(planToUpdate.isGenerateScriptsForNotNull())) {
+            planToUpdate.setGenerateScriptsForNotNull(action.getGenerateScriptsForNotNull());
+        }
+
+        if (action.getGenerateScriptsForPrimaryKey() != null
+                && !action.getGenerateScriptsForPrimaryKey().equals(planToUpdate.isGenerateScriptsForPrimaryKey())) {
+            planToUpdate.setGenerateScriptsForPrimaryKey(action.getGenerateScriptsForPrimaryKey());
+        }
+
+        if (action.getGenerateScriptsForTrigger() != null
+                && !action.getGenerateScriptsForTrigger().equals(planToUpdate.isGenerateScriptsForTrigger())) {
+            planToUpdate.setGenerateScriptsForTrigger(action.getGenerateScriptsForTrigger());
+        }
+
+        if (action.getGenerateScriptsForUnique() != null
+                && !action.getGenerateScriptsForUnique().equals(planToUpdate.isGenerateScriptsForUnique())) {
+            planToUpdate.setGenerateScriptsForUnique(action.getGenerateScriptsForUnique());
+        }
+
         planToUpdate.setUpdatedDate(new Date());
         return new PlanModel(planRepository.save(planToUpdate));
     }

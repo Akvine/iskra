@@ -1,44 +1,28 @@
-package ru.akvine.iskra.services.domain.plan.dto;
+package ru.akvine.iskra.rest.dto.plan;
 
-import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import ru.akvine.iskra.enums.PlanState;
 
 @Data
 @Accessors(chain = true)
-public class UpdatePlan {
+public class PlanUpdateRequest {
+    @NotBlank
     private String planUuid;
-    private String userUuid;
 
-    @Nullable
     private String name;
 
-    @Nullable
-    private PlanState planState;
-
-    @Nullable
-    // TODO: удалить поле
-    private String lastProcessUuid;
-
-    @Nullable
     private Boolean generateScriptsForNotNull;
 
-    @Nullable
     private Boolean generateScriptsForIndex;
 
-    @Nullable
     private Boolean generateScriptsForPrimaryKey;
 
-    @Nullable
     private Boolean generateScriptsForTrigger;
 
-    @Nullable
     private Boolean generateScriptsForUnique;
 
-    @Nullable
     private Boolean generateScriptsForCheck;
 
-    @Nullable
     private Boolean generateScriptsForDefault;
 }

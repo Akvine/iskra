@@ -9,6 +9,7 @@ import ru.akvine.iskra.rest.dto.plan.*;
 import ru.akvine.iskra.services.domain.plan.PlanModel;
 import ru.akvine.iskra.services.domain.plan.dto.CreatePlan;
 import ru.akvine.iskra.services.domain.plan.dto.DuplicatePlan;
+import ru.akvine.iskra.services.domain.plan.dto.UpdatePlan;
 
 @Component
 @RequiredArgsConstructor
@@ -35,6 +36,21 @@ public class PlanMapper {
                 .setUuid(request.getUuid())
                 .setName(request.getName())
                 .setCopyResults(request.isCopyResults())
+                .setUserUuid(securityManager.getCurrentUser().getUuid());
+    }
+
+    public UpdatePlan mapToUpdatePlan(PlanUpdateRequest request) {
+        Asserts.isNotNull(request);
+        return new UpdatePlan()
+                .setPlanUuid(request.getPlanUuid())
+                .setName(request.getName())
+                .setGenerateScriptsForCheck(request.getGenerateScriptsForCheck())
+                .setGenerateScriptsForDefault(request.getGenerateScriptsForDefault())
+                .setGenerateScriptsForIndex(request.getGenerateScriptsForIndex())
+                .setGenerateScriptsForNotNull(request.getGenerateScriptsForNotNull())
+                .setGenerateScriptsForPrimaryKey(request.getGenerateScriptsForPrimaryKey())
+                .setGenerateScriptsForUnique(request.getGenerateScriptsForUnique())
+                .setGenerateScriptsForTrigger(request.getGenerateScriptsForTrigger())
                 .setUserUuid(securityManager.getCurrentUser().getUuid());
     }
 

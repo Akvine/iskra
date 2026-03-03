@@ -29,6 +29,7 @@ public class PlanEntity extends BaseEntity<Long> implements Identifiable {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    // TODO: удалить это неиспользуемое поле вместе с relations_matrix_json
     @Column(name = "LAST_PROCESS_UUID")
     @Nullable
     private String lastProcessUuid;
