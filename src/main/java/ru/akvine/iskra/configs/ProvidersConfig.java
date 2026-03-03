@@ -13,7 +13,7 @@ import ru.akvine.iskra.providers.NotificationServicesProvider;
 import ru.akvine.iskra.providers.StateHandlersProvider;
 import ru.akvine.iskra.services.NotificationService;
 import ru.akvine.iskra.services.impl.notifications.dto.NotificationPayload;
-import ru.akvine.iskra.services.state_machine.handlers.PlanStateHandler;
+import ru.akvine.iskra.services.generation.handlers.PlanStateHandler;
 
 @Configuration
 public class ProvidersConfig {

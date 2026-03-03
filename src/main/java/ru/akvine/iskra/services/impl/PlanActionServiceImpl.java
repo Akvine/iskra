@@ -20,7 +20,7 @@ import ru.akvine.iskra.services.domain.plan.dto.action.StartAction;
 import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.TableService;
 import ru.akvine.iskra.services.domain.table.dto.ListTables;
-import ru.akvine.iskra.services.state_machine.managers.PlanManager;
+import ru.akvine.iskra.services.generation.managers.PlanManager;
 
 @Service
 @RequiredArgsConstructor

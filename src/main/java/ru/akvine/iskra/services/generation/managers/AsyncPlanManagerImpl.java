@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.state_machine.managers;
+package ru.akvine.iskra.services.generation.managers;
 
 import jakarta.annotation.PreDestroy;
 import java.util.Map;

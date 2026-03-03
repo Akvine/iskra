@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.state_machine.handlers.states.process;
+package ru.akvine.iskra.services.generation.handlers.states.process;
 
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import ru.akvine.iskra.services.domain.table.TableModel;
 import ru.akvine.iskra.services.domain.table.process.TableProcessService;
 import ru.akvine.iskra.services.domain.table.process.dto.CreateTableProcess;
 import ru.akvine.iskra.services.facades.DataGeneratorFacade;
-import ru.akvine.iskra.services.state_machine.handlers.AbstractStateHandler;
+import ru.akvine.iskra.services.generation.handlers.AbstractStateHandler;
 
 @Component
 public class InProgressStateHandler extends AbstractStateHandler {

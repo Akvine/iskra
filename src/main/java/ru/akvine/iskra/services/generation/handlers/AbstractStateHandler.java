@@ -1,4 +1,4 @@
-package ru.akvine.iskra.services.state_machine.handlers;
+package ru.akvine.iskra.services.generation.handlers;
 
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;

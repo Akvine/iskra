@@ -1,11 +1,11 @@
-package ru.akvine.iskra.services.state_machine.handlers.states.process;
+package ru.akvine.iskra.services.generation.handlers.states.process;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import ru.akvine.iskra.enums.PlanState;
 import ru.akvine.iskra.services.domain.plan.PlanService;
-import ru.akvine.iskra.services.state_machine.handlers.AbstractStateHandler;
+import ru.akvine.iskra.services.generation.handlers.AbstractStateHandler;
 
 @Component
 @Slf4j

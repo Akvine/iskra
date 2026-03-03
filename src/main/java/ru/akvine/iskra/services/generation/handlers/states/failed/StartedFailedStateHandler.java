@@ -1,9 +1,9 @@
-package ru.akvine.iskra.services.state_machine.handlers.states.failed;
+package ru.akvine.iskra.services.generation.handlers.states.failed;
 
 import org.springframework.stereotype.Component;
 import ru.akvine.iskra.enums.PlanState;
 import ru.akvine.iskra.services.domain.plan.PlanService;
-import ru.akvine.iskra.services.state_machine.handlers.AbstractStateHandler;
+import ru.akvine.iskra.services.generation.handlers.AbstractStateHandler;
 
 @Component
 public class StartedFailedStateHandler extends AbstractStateHandler {
