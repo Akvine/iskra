@@ -89,6 +89,8 @@ public class SyncScriptsFacade implements ScriptsFacade {
                 // Обновляем статус статистики для проблемной таблицы в FAILED
                 action.setState(ProcessState.FAILED);
                 sqlStatisticsService.update(action);
+
+                throw exception;
             }
         });
     }
@@ -150,6 +152,9 @@ public class SyncScriptsFacade implements ScriptsFacade {
                 // Обновляем статус статистики для проблемной таблицы в FAILED
                 action.setState(ProcessState.FAILED);
                 sqlStatisticsService.update(action);
+
+                // Пробрасываем ошибку, чтобы план перешел в *_FAILED и не продолжал выполнение
+                throw exception;
             }
         });
     }
@@ -211,6 +216,9 @@ public class SyncScriptsFacade implements ScriptsFacade {
                 // Обновляем статус статистики для проблемной таблицы в FAILED
                 action.setState(ProcessState.FAILED);
                 sqlStatisticsService.update(action);
+
+                // Пробрасываем ошибку, чтобы план перешел в *_FAILED и не продолжал выполнение
+                throw exception;
             }
         });
     }

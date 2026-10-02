@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import ru.akvine.iskra.enums.ProcessState;
 import ru.akvine.iskra.enums.SqlScriptType;
 import ru.akvine.iskra.repositories.entities.SqlStatisticsEntity;
@@ -29,6 +30,7 @@ public interface SqlStatisticsRepository extends JpaRepository<SqlStatisticsEnti
     Optional<SqlStatisticsEntity> findByUuid(@Param("uuid") String uuid);
 
     @Modifying
+    @Transactional
     @Query("update SqlStatisticsEntity sse set "
             + "sse.processState = :processState "
             + "where "
@@ -37,7 +39,7 @@ public interface SqlStatisticsRepository extends JpaRepository<SqlStatisticsEnti
             + "sse.sqlScriptType = :scriptType "
             + "and "
             + "sse.processState not in :states")
-    List<SqlStatisticsEntity> updateState(
+    int updateState(
             @Param("processState") ProcessState targetState,
             @Param("processUuid") String processUuid,
             @Param("scriptType") SqlScriptType scriptType,

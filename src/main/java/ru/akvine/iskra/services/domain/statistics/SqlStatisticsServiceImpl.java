@@ -61,15 +61,13 @@ public class SqlStatisticsServiceImpl implements SqlStatisticsService {
     }
 
     @Override
-    public List<SqlStatisticsModel> updateToStatus(
+    public int updateToStatus(
             String processUuid,
             SqlScriptType scriptType,
             ProcessState targetState,
             Collection<ProcessState> excludeStates) {
         // TODO : сделать через Criteria API или Query DSL из-за большого числа параметров
-        return sqlStatisticsRepository.updateState(targetState, processUuid, scriptType, excludeStates).stream()
-                .map(SqlStatisticsModel::new)
-                .toList();
+        return sqlStatisticsRepository.updateState(targetState, processUuid, scriptType, excludeStates);
     }
 
     @Override

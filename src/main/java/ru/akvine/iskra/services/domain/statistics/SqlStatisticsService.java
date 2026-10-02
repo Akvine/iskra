@@ -17,7 +17,7 @@ public interface SqlStatisticsService {
     SqlStatisticsModel update(UpdateStatisticAction action);
 
     // TODO: много параметров, завернуть в DTO
-    List<SqlStatisticsModel> updateToStatus(
+    int updateToStatus(
             String processUuid,
             SqlScriptType scriptType,
             ProcessState targetState,
