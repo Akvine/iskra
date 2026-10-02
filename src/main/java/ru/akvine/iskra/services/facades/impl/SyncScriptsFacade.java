@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toMap;
 
 import java.util.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import ru.akvine.compozit.commons.TableName;
 import ru.akvine.compozit.commons.utils.Asserts;
@@ -133,7 +134,10 @@ public class SyncScriptsFacade implements ScriptsFacade {
                     .setUuid(statistics.get(table.getId()).getUuid());
 
             try {
-                visorService.executeScripts(table.getConfiguration().getDropScripts(), plan.getConnection());
+                String clearScript = table.getConfiguration().getClearScript();
+                if (StringUtils.isNotBlank(clearScript)) {
+                    visorService.executeScripts(List.of(clearScript), plan.getConnection());
+                }
 
                 action.setState(ProcessState.COMPLETED);
                 sqlStatisticsService.update(action);
@@ -194,7 +198,7 @@ public class SyncScriptsFacade implements ScriptsFacade {
                     .setUuid(statistics.get(table.getId()).getUuid());
 
             try {
-                visorService.executeScripts(table.getConfiguration().getDropScripts(), plan.getConnection());
+                visorService.executeScripts(table.getConfiguration().getCreateScripts(), plan.getConnection());
 
                 action.setState(ProcessState.COMPLETED);
                 sqlStatisticsService.update(action);
